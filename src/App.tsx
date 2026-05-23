@@ -4,9 +4,11 @@
  */
 
 import { motion } from "motion/react";
-import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight } from "lucide-react";
+import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2 } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
 
-const COMPARISON_DATA = [
+const MOCK_DATA: CountryData[] = [
   { country: "United States", growth: "+4.2%", stability: "High", index: 92, status: "Optimal" },
   { country: "Singapore", growth: "+3.8%", stability: "Very High", index: 95, status: "Premium" },
   { country: "UAE", growth: "+5.1%", stability: "High", index: 88, status: "Emerging" },
@@ -14,8 +16,76 @@ const COMPARISON_DATA = [
   { country: "India", growth: "+7.2%", stability: "Moderate", index: 78, status: "High Potential" },
 ];
 
+// Lazy initialization of Supabase client
+let supabaseClient: any = null;
+function getSupabase() {
+  if (!supabaseClient) {
+    const url = "https://jigsefbiflmmzzkjkmgb.supabase.co";
+    const key = "sb_publishable_qO3SvpC8E-pD8yak-pvpVA_t6Ii4ggq";
+    
+    try {
+      supabaseClient = createClient(url, key);
+    } catch (e) {
+      return null;
+    }
+  }
+  return supabaseClient;
+}
+
+interface CountryData {
+  country: string;
+  growth: string;
+  stability: string;
+  index: number;
+  status: string;
+}
+
 export default function App() {
+  const [countries, setCountries] = useState<CountryData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isLive, setIsLive] = useState(false);
+
   const particles = Array.from({ length: 30 });
+
+  useEffect(() => {
+    async function fetchCountries() {
+      try {
+        setLoading(true);
+        const supabase = getSupabase();
+        
+        if (!supabase) {
+          setCountries(MOCK_DATA);
+          setIsLive(false);
+          setLoading(false);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('countries')
+          .select('*')
+          .order('index', { ascending: false });
+
+        if (error) throw error;
+        
+        if (data && data.length > 0) {
+          setCountries(data);
+          setIsLive(true);
+        } else {
+          setCountries(MOCK_DATA);
+          setIsLive(false);
+        }
+      } catch (err: any) {
+        // Only log actual data fetching errors if Supabase was configured
+        console.warn("Supabase fetch failed, falling back to neural simulations:", err.message);
+        setCountries(MOCK_DATA);
+        setIsLive(false);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCountries();
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden selection:bg-brand-gold/20">
@@ -100,7 +170,11 @@ export default function App() {
                   Real-time comparison of premium growth corridors analyzed by our native AI engine.
                 </p>
               </div>
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase transition-all duration-500 ${isLive ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-brand-gold/10 text-brand-gold border border-brand-gold/20'}`}>
+                  <div className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-emerald-500 animate-pulse' : 'bg-brand-gold'}`} />
+                  {isLive ? 'Neural Live Engine' : 'Neural Simulation Mode'}
+                </div>
                 <div className="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm">Update: May 2026</div>
               </div>
             </div>
@@ -117,31 +191,42 @@ export default function App() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
-                  {COMPARISON_DATA.map((row) => (
-                    <tr key={row.country} className="hover:bg-white/[0.02] transition-colors group">
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 rounded-full bg-brand-gold opacity-50 group-hover:opacity-100 transition-opacity" />
-                          <span className="font-medium text-lg text-white/90">{row.country}</span>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={5} className="px-8 py-12 text-center">
+                        <div className="flex flex-col items-center gap-3">
+                          <Loader2 className="w-8 h-8 text-brand-gold animate-spin" />
+                          <span className="text-white/40 text-sm animate-pulse">Connecting to Supabase Neural Engine...</span>
                         </div>
-                      </td>
-                      <td className="px-8 py-6 text-brand-gold font-mono">{row.growth}</td>
-                      <td className="px-8 py-6 text-white/70">{row.stability}</td>
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
-                            <div className="h-full bg-brand-gold" style={{ width: `${row.index}%` }} />
-                          </div>
-                          <span className="text-xs font-bold">{row.index}</span>
-                        </div>
-                      </td>
-                      <td className="px-8 py-6">
-                        <span className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold">
-                          {row.status}
-                        </span>
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    countries.map((row) => (
+                      <tr key={row.country} className="hover:bg-white/[0.02] transition-colors group">
+                        <td className="px-8 py-6">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-brand-gold opacity-50 group-hover:opacity-100 transition-opacity" />
+                            <span className="font-medium text-lg text-white/90">{row.country}</span>
+                          </div>
+                        </td>
+                        <td className="px-8 py-6 text-brand-gold font-mono">{row.growth}</td>
+                        <td className="px-8 py-6 text-white/70">{row.stability}</td>
+                        <td className="px-8 py-6">
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
+                              <div className="h-full bg-brand-gold" style={{ width: `${row.index}%` }} />
+                            </div>
+                            <span className="text-xs font-bold">{row.index}</span>
+                          </div>
+                        </td>
+                        <td className="px-8 py-6">
+                          <span className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold">
+                            {row.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
