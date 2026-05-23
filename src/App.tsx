@@ -155,10 +155,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
       <div className="relative z-10">
         {/* Navigation */}
         <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-brand-gold to-terracotta-end rounded-lg flex items-center justify-center shadow-lg shadow-brand-gold/20">
-              <CompassIcon className="text-brand-midnight w-6 h-6" />
-            </div>
+          <div className="flex items-center gap-3">
+            <img src="logo.png" alt="Global Compass AI Logo" className="w-10 h-10 object-contain rounded-lg shadow-lg shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-1.5 border border-brand-gold/30" />
             <span className="font-display text-xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
@@ -338,6 +336,49 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Global Signature / Meet the Founder Card */}
+        <section className="py-24 relative overflow-hidden">
+          <div className="container mx-auto px-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="max-w-3xl mx-auto rounded-[2rem] p-1 bg-gradient-to-br from-brand-gold/30 via-transparent to-terracotta-start/30"
+            >
+              <div className="bg-brand-midnight/90 backdrop-blur-3xl rounded-[calc(2rem-4px)] p-8 md:p-12 border border-white/5 flex flex-col md:flex-row items-center gap-10 text-center md:text-left">
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-brand-gold rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
+                  <div className="w-40 h-40 rounded-full border-2 border-brand-gold p-1 shadow-2xl shadow-brand-gold/20 relative z-10">
+                    <img 
+                      src="founder.png" 
+                      alt="mm Raju - Founder Photo" 
+                      className="w-full h-full rounded-full object-cover grayscale brightness-110"
+                    />
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-brand-gold text-brand-midnight p-2 rounded-full shadow-lg border-4 border-brand-midnight">
+                    <Shield className="w-4 h-4" />
+                  </div>
+                </div>
+                
+                <div className="flex-1">
+                  <div className="inline-block px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] font-bold tracking-[0.2em] uppercase mb-4">The Architect</div>
+                  <h3 className="text-3xl font-display font-bold mb-3 tracking-tight">Munchangi Matyaraju <span className="text-brand-gold/80">(mm Raju)</span></h3>
+                  <p className="text-white/50 text-lg leading-relaxed mb-6 font-light">
+                    Visionary behind Global Compass AI, focused on strategic global intelligence and neural economic forecasting for the world's most elite growth corridors.
+                  </p>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                    <button className="px-6 py-2 rounded-full border border-brand-gold/30 text-brand-gold text-xs font-bold hover:bg-brand-gold hover:text-brand-midnight transition-all">CONNECT ON LINKEDIN</button>
+                    <button className="px-6 py-2 rounded-full border border-white/10 text-white/40 text-xs font-bold hover:border-white/20 hover:text-white transition-all">VIEW BIO</button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+          
+          {/* Section Decoration */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-brand-gold/5 blur-[120px] rounded-full pointer-events-none -z-10" />
         </section>
 
         {/* Footer */}
