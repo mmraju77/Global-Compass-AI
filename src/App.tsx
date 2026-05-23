@@ -89,6 +89,42 @@ export default function App() {
     fetchCountries();
   }, []);
 
+  const handleDownloadReport = (country: CountryData) => {
+    const reportContent = `
+GLOBAL COMPASS AI - STRATEGIC INTELLIGENCE REPORT
+--------------------------------------------------
+DATE: ${new Date().toLocaleDateString()}
+COUNTRY: ${country.country_name}
+STRATEGIC STATUS: ${country.strategic_status}
+--------------------------------------------------
+
+METRICS:
+- Compass Index: ${country.compass_index}/100
+- Annual GDP Growth: ${country.annual_growth}
+- Stability Score: ${country.stability_score}
+- Average Salary: ${formatCurrency(country.average_salary_usd)}
+- Personal Tax Rate: ${country.tax_rate_percent !== undefined ? `${country.tax_rate_percent}%` : 'N/A'}
+
+ANALYSIS:
+This report confirms ${country.country_name} as a ${country.strategic_status.toLowerCase()} zone 
+for strategic growth. Our neural engine indicates a ${country.compass_index >= 90 ? 'prime' : 'stable'} 
+window for resource allocation.
+
+--------------------------------------------------
+CONFIDENTIAL - GLOBAL COMPASS LABS
+    `.trim();
+
+    const blob = new Blob([reportContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const formatCurrency = (val?: number) => {
     if (val === undefined || val === null) return "N/A";
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
@@ -448,7 +484,10 @@ export default function App() {
                 </div>
 
                 <div className="mt-10 pt-8 border-t border-white/5 flex flex-col sm:flex-row gap-4">
-                  <button className="flex-1 px-6 py-4 bg-gradient-to-r from-terracotta-start to-terracotta-end text-white font-bold rounded-xl shadow-xl shadow-terracotta-start/20 hover:scale-[1.02] active:scale-95 transition-all">
+                  <button 
+                    onClick={() => handleDownloadReport(selectedCountry)}
+                    className="flex-1 px-6 py-4 bg-gradient-to-r from-terracotta-start to-terracotta-end text-white font-bold rounded-xl shadow-xl shadow-terracotta-start/20 hover:scale-[1.02] active:scale-95 transition-all"
+                  >
                     DOWNLOAD FULL REPORT
                   </button>
                   <button 
