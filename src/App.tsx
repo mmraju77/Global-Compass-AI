@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion } from "motion/react";
-import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
@@ -38,12 +38,15 @@ interface CountryData {
   stability_score: string;
   compass_index: number;
   strategic_status: string;
+  average_salary_usd?: number;
+  tax_rate_percent?: number;
 }
 
 export default function App() {
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLive, setIsLive] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
 
   const particles = Array.from({ length: 30 });
 
@@ -75,7 +78,6 @@ export default function App() {
           setIsLive(false);
         }
       } catch (err: any) {
-        // Only log actual data fetching errors if Supabase was configured
         console.warn("Supabase fetch failed, falling back to neural simulations:", err.message);
         setCountries(MOCK_DATA);
         setIsLive(false);
@@ -86,6 +88,11 @@ export default function App() {
 
     fetchCountries();
   }, []);
+
+  const formatCurrency = (val?: number) => {
+    if (val === undefined || val === null) return "N/A";
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+  };
 
   return (
     <div className="relative min-h-screen overflow-x-hidden selection:bg-brand-gold/20">
@@ -202,7 +209,11 @@ export default function App() {
                     </tr>
                   ) : (
                     countries.map((row) => (
-                      <tr key={row.country_name} className="hover:bg-white/[0.02] transition-colors group">
+                      <tr 
+                        key={row.country_name} 
+                        onClick={() => setSelectedCountry(row)}
+                        className="hover:bg-white/[0.04] cursor-pointer transition-all duration-300 group border-l-2 border-transparent hover:border-brand-gold"
+                      >
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-brand-gold opacity-50 group-hover:opacity-100 transition-opacity" />
@@ -359,6 +370,99 @@ export default function App() {
           </div>
         </footer>
       </div>
+
+      {/* Country Insights Modal */}
+      <AnimatePresence>
+        {selectedCountry && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedCountry(null)}
+              className="absolute inset-0 bg-brand-midnight/80 backdrop-blur-md"
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-2xl bg-brand-midnight border border-brand-gold/20 rounded-3xl overflow-hidden shadow-2xl shadow-black"
+            >
+              {/* Modal Background Particles */}
+              <div className="absolute inset-0 pointer-events-none opacity-30">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/10 blur-[80px]" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-terracotta-start/10 blur-[80px]" />
+              </div>
+
+              {/* Close Button */}
+              <button 
+                onClick={() => setSelectedCountry(null)}
+                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all z-20"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="relative z-10 p-8 md:p-12">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-brand-gold/10 rounded-xl flex items-center justify-center border border-brand-gold/20">
+                    <Globe className="text-brand-gold w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="text-brand-gold text-[10px] font-bold tracking-[0.2em] uppercase">Intelligence Report</div>
+                    <h3 className="text-3xl font-display font-bold text-white">{selectedCountry.country_name}</h3>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                    <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest">
+                      <DollarSign className="w-3 h-3 text-brand-gold" /> Average Salary
+                    </div>
+                    <div className="text-3xl font-display font-bold text-white">
+                      {formatCurrency(selectedCountry.average_salary_usd)}
+                    </div>
+                    <div className="text-[10px] text-white/30 italic">Per annum estimation (USD)</div>
+                  </div>
+
+                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                    <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest">
+                      <Percent className="w-3 h-3 text-brand-gold" /> Personal Tax Rate
+                    </div>
+                    <div className="text-3xl font-display font-bold text-white">
+                      {selectedCountry.tax_rate_percent !== undefined ? `${selectedCountry.tax_rate_percent}%` : 'N/A'}
+                    </div>
+                    <div className="text-[10px] text-white/30 italic">Average across brackets</div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-4 rounded-xl bg-brand-gold/5 border border-brand-gold/10">
+                    <div className="text-sm text-white/70">Strategic Stability Score</div>
+                    <div className="text-sm font-bold text-brand-gold uppercase">{selectedCountry.stability_score}</div>
+                  </div>
+                  <div className="flex justify-between items-center p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                    <div className="text-sm text-white/70">Annual GDP Growth</div>
+                    <div className="text-sm font-bold text-white font-mono">{selectedCountry.annual_growth}</div>
+                  </div>
+                </div>
+
+                <div className="mt-10 pt-8 border-t border-white/5 flex flex-col sm:flex-row gap-4">
+                  <button className="flex-1 px-6 py-4 bg-gradient-to-r from-terracotta-start to-terracotta-end text-white font-bold rounded-xl shadow-xl shadow-terracotta-start/20 hover:scale-[1.02] active:scale-95 transition-all">
+                    DOWNLOAD FULL REPORT
+                  </button>
+                  <button 
+                    onClick={() => setSelectedCountry(null)}
+                    className="px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium rounded-xl transition-all"
+                  >
+                    CLOSE
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
