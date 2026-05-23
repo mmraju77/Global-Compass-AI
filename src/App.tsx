@@ -296,7 +296,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <div className="absolute inset-0 bg-brand-gold rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity" />
                   <div className="w-48 h-48 rounded-full border-2 border-brand-gold p-1 shadow-2xl shadow-brand-gold/30 relative z-10 transition-transform duration-500 group-hover:scale-[1.02]">
                     <img 
-                      src="/founder.jpg.jpeg" 
+                      src="/foundcr.jpg.jpeg" 
                       alt="Founder" 
                       className="w-full h-full rounded-full object-cover grayscale brightness-110 hover:grayscale-0 transition-all duration-700"
                     />
