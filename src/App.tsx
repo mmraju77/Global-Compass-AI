@@ -9,11 +9,11 @@ import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
 const MOCK_DATA: CountryData[] = [
-  { country: "United States", growth: "+4.2%", stability: "High", compass_index: 92, status: "Optimal" },
-  { country: "Singapore", growth: "+3.8%", stability: "Very High", compass_index: 95, status: "Premium" },
-  { country: "UAE", growth: "+5.1%", stability: "High", compass_index: 88, status: "Emerging" },
-  { country: "Switzerland", growth: "+2.4%", stability: "Maximum", compass_index: 97, status: "Stable" },
-  { country: "India", growth: "+7.2%", stability: "Moderate", compass_index: 78, status: "High Potential" },
+  { country_name: "United States", annual_growth: "+4.2%", stability_score: "High", compass_index: 92, strategic_status: "Optimal" },
+  { country_name: "Singapore", annual_growth: "+3.8%", stability_score: "Very High", compass_index: 95, strategic_status: "Premium" },
+  { country_name: "UAE", annual_growth: "+5.1%", stability_score: "High", compass_index: 88, strategic_status: "Emerging" },
+  { country_name: "Switzerland", annual_growth: "+2.4%", stability_score: "Maximum", compass_index: 97, strategic_status: "Stable" },
+  { country_name: "India", annual_growth: "+7.2%", stability_score: "Moderate", compass_index: 78, strategic_status: "High Potential" },
 ];
 
 // Lazy initialization of Supabase client
@@ -33,11 +33,11 @@ function getSupabase() {
 }
 
 interface CountryData {
-  country: string;
-  growth: string;
-  stability: string;
+  country_name: string;
+  annual_growth: string;
+  stability_score: string;
   compass_index: number;
-  status: string;
+  strategic_status: string;
 }
 
 export default function App() {
@@ -202,15 +202,15 @@ export default function App() {
                     </tr>
                   ) : (
                     countries.map((row) => (
-                      <tr key={row.country} className="hover:bg-white/[0.02] transition-colors group">
+                      <tr key={row.country_name} className="hover:bg-white/[0.02] transition-colors group">
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-brand-gold opacity-50 group-hover:opacity-100 transition-opacity" />
-                            <span className="font-medium text-lg text-white/90">{row.country}</span>
+                            <span className="font-medium text-lg text-white/90">{row.country_name}</span>
                           </div>
                         </td>
-                        <td className="px-8 py-6 text-brand-gold font-mono">{row.growth}</td>
-                        <td className="px-8 py-6 text-white/70">{row.stability}</td>
+                        <td className="px-8 py-6 text-brand-gold font-mono">{row.annual_growth}</td>
+                        <td className="px-8 py-6 text-white/70">{row.stability_score}</td>
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-2">
                             <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
@@ -221,7 +221,7 @@ export default function App() {
                         </td>
                         <td className="px-8 py-6">
                           <span className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold">
-                            {row.status}
+                            {row.strategic_status}
                           </span>
                         </td>
                       </tr>
