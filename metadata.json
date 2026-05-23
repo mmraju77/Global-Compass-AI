@@ -1,0 +1,8 @@
+{
+  "name": "Global Compass AI",
+  "description": "Premium AI-driven global financial navigation and growth platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
