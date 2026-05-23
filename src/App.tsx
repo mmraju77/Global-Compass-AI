@@ -9,11 +9,11 @@ import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
 const MOCK_DATA: CountryData[] = [
-  { country: "United States", growth: "+4.2%", stability: "High", index: 92, status: "Optimal" },
-  { country: "Singapore", growth: "+3.8%", stability: "Very High", index: 95, status: "Premium" },
-  { country: "UAE", growth: "+5.1%", stability: "High", index: 88, status: "Emerging" },
-  { country: "Switzerland", growth: "+2.4%", stability: "Maximum", index: 97, status: "Stable" },
-  { country: "India", growth: "+7.2%", stability: "Moderate", index: 78, status: "High Potential" },
+  { country: "United States", growth: "+4.2%", stability: "High", compass_index: 92, status: "Optimal" },
+  { country: "Singapore", growth: "+3.8%", stability: "Very High", compass_index: 95, status: "Premium" },
+  { country: "UAE", growth: "+5.1%", stability: "High", compass_index: 88, status: "Emerging" },
+  { country: "Switzerland", growth: "+2.4%", stability: "Maximum", compass_index: 97, status: "Stable" },
+  { country: "India", growth: "+7.2%", stability: "Moderate", compass_index: 78, status: "High Potential" },
 ];
 
 // Lazy initialization of Supabase client
@@ -36,7 +36,7 @@ interface CountryData {
   country: string;
   growth: string;
   stability: string;
-  index: number;
+  compass_index: number;
   status: string;
 }
 
@@ -63,7 +63,7 @@ export default function App() {
         const { data, error } = await supabase
           .from('countries')
           .select('*')
-          .order('index', { ascending: false });
+          .order('compass_index', { ascending: false });
 
         if (error) throw error;
         
@@ -214,9 +214,9 @@ export default function App() {
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-2">
                             <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
-                              <div className="h-full bg-brand-gold" style={{ width: `${row.index}%` }} />
+                              <div className="h-full bg-brand-gold" style={{ width: `${row.compass_index}%` }} />
                             </div>
-                            <span className="text-xs font-bold">{row.index}</span>
+                            <span className="text-xs font-bold">{row.compass_index}</span>
                           </div>
                         </td>
                         <td className="px-8 py-6">
