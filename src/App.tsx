@@ -155,9 +155,9 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
       <div className="relative z-10">
         {/* Navigation */}
         <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="Global Compass AI Logo" className="w-10 h-10 object-contain rounded-lg shadow-lg shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-1.5 border border-brand-gold/30" />
-            <span className="font-display text-xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
+          <div className="flex items-center gap-4">
+            <img src="/logo.png" alt="Global Compass AI Logo" className="w-12 h-12 object-contain rounded-xl shadow-xl shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-2 border border-brand-gold/30" />
+            <span className="font-display text-2xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
             <a href="#about" className="hover:text-white transition-colors">About Us</a>
@@ -278,99 +278,48 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
           </div>
         </section>
 
-        {/* Founder Profile / About Us */}
-        <section id="about" className="py-32 relative">
+        {/* Leadership Profile */}
+        <section id="about" className="py-24 relative overflow-hidden">
           <div className="container mx-auto px-6">
-            <div className="grid md:grid-cols-2 gap-16 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                className="relative group"
-              >
-                <div className="absolute -inset-4 bg-brand-gold/10 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative rounded-3xl p-1 bg-gradient-to-br from-brand-gold/40 to-transparent">
-                  <div className="rounded-[calc(1.5rem-4px)] overflow-hidden bg-brand-midnight">
-                     <img 
-                      src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800" 
-                      alt="Chief AI Architect" 
-                      className="w-full h-[500px] object-cover opacity-80 filter grayscale hover:grayscale-0 transition-all duration-700"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-brand-midnight to-transparent">
-                      <h3 className="text-3xl font-display font-bold">Munchangi Matyaraju (mm Raju)</h3>
-                      <p className="text-brand-gold font-medium tracking-widest uppercase text-sm mt-1">Chief AI Architect</p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              <div>
-                <h2 className="text-brand-gold text-sm font-bold tracking-widest uppercase mb-4">Leadership Behind the Vision</h2>
-                <h3 className="font-display text-4xl md:text-5xl font-bold mb-8 leading-tight">Masterminding Global <br />Intelligence.</h3>
-                <div className="space-y-6 text-white/60 text-lg leading-relaxed">
-                  <p>
-                    Munchangi Matyaraju, known strategically as <span className="text-white font-medium">mm Raju</span>, 
-                    is the architectural force behind Global Compass AI. With a background in deep neural 
-                    modeling and quantitative finance, mm Raju has pioneered the integration of AI-driven 
-                    geopolitical forecasting into premium wealth management.
-                  </p>
-                  <p>
-                    Global Compass AI was founded on a simple yet radical premise: that the world's 
-                    economic shift can not only be predicted but navigated with mathematical precision. 
-                    Under his leadership, the platform has become the standard for institutional-grade 
-                    growth intelligence.
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-8 mt-12">
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                    <TrendingUp className="text-brand-gold w-6 h-6 mb-3" />
-                    <div className="text-2xl font-bold">$12B+</div>
-                    <div className="text-xs text-white/40 uppercase tracking-widest">Assets Analyzed</div>
-                  </div>
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                    <Users className="text-brand-gold w-6 h-6 mb-3" />
-                    <div className="text-2xl font-bold">15+</div>
-                    <div className="text-xs text-white/40 uppercase tracking-widest">Global Jurisdictions</div>
-                  </div>
-                </div>
-              </div>
+            <div className="text-center mb-16 px-4">
+              <h2 className="text-brand-gold text-sm font-bold tracking-[0.3em] uppercase mb-4">Leadership Intelligence</h2>
+              <h3 className="font-display text-4xl md:text-5xl font-bold tracking-tight">The Architect of Global Strategy</h3>
             </div>
-          </div>
-        </section>
-
-        {/* Global Signature / Meet the Founder Card */}
-        <section className="py-24 relative overflow-hidden">
-          <div className="container mx-auto px-6">
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="max-w-3xl mx-auto rounded-[2rem] p-1 bg-gradient-to-br from-brand-gold/30 via-transparent to-terracotta-start/30"
+              className="max-w-4xl mx-auto rounded-[2.5rem] p-1 bg-gradient-to-br from-brand-gold/30 via-transparent to-terracotta-start/30 shadow-2xl shadow-brand-gold/5"
             >
-              <div className="bg-brand-midnight/90 backdrop-blur-3xl rounded-[calc(2rem-4px)] p-8 md:p-12 border border-white/5 flex flex-col md:flex-row items-center gap-10 text-center md:text-left">
+              <div className="bg-brand-midnight/90 backdrop-blur-3xl rounded-[calc(2.5rem-4px)] p-8 md:p-16 border border-white/5 flex flex-col md:flex-row items-center gap-12 text-center md:text-left">
                 <div className="relative group">
-                  <div className="absolute inset-0 bg-brand-gold rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
-                  <div className="w-40 h-40 rounded-full border-2 border-brand-gold p-1 shadow-2xl shadow-brand-gold/20 relative z-10">
+                  <div className="absolute inset-0 bg-brand-gold rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity" />
+                  <div className="w-48 h-48 rounded-full border-2 border-brand-gold p-1 shadow-2xl shadow-brand-gold/30 relative z-10 transition-transform duration-500 group-hover:scale-[1.02]">
                     <img 
                       src="/founder.jpg.jpeg" 
                       alt="mm Raju - Founder Photo" 
-                      className="w-full h-full rounded-full object-cover grayscale brightness-110"
+                      className="w-full h-full rounded-full object-cover grayscale brightness-110 hover:grayscale-0 transition-all duration-700"
                     />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 bg-brand-gold text-brand-midnight p-2 rounded-full shadow-lg border-4 border-brand-midnight">
-                    <Shield className="w-4 h-4" />
+                  <div className="absolute -bottom-2 -right-2 bg-brand-gold text-brand-midnight p-2.5 rounded-full shadow-lg border-4 border-brand-midnight">
+                    <Shield className="w-5 h-5" />
                   </div>
                 </div>
                 
                 <div className="flex-1">
-                  <div className="inline-block px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] font-bold tracking-[0.2em] uppercase mb-4">The Architect</div>
-                  <h3 className="text-3xl font-display font-bold mb-3 tracking-tight">Munchangi Matyaraju <span className="text-brand-gold/80">(mm Raju)</span></h3>
-                  <p className="text-white/50 text-lg leading-relaxed mb-6 font-light">
-                    Visionary behind Global Compass AI, focused on strategic global intelligence and neural economic forecasting for the world's most elite growth corridors.
-                  </p>
+                  <div className="inline-block px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Chief AI Architect</div>
+                  <h3 className="text-3xl md:text-4xl font-display font-bold mb-4 tracking-tight">Munchangi Matyaraju <span className="text-brand-gold/80 block md:inline mt-2 md:mt-0">(mm Raju)</span></h3>
+                  <div className="space-y-4 text-white/50 text-lg leading-relaxed mb-8 font-light max-w-sm mx-auto md:mx-0">
+                    <p className="italic">
+                      "Visionary behind Global Compass AI, focused on strategic global intelligence and neural economic forecasting."
+                    </p>
+                    <p className="text-sm not-italic opacity-70">
+                      Pioneering the integration of quantitative models to navigate the future of global wealth with mathematical precision.
+                    </p>
+                  </div>
                   <div className="flex flex-wrap justify-center md:justify-start gap-4">
-                    <button className="px-6 py-2 rounded-full border border-brand-gold/30 text-brand-gold text-xs font-bold hover:bg-brand-gold hover:text-brand-midnight transition-all">CONNECT ON LINKEDIN</button>
-                    <button className="px-6 py-2 rounded-full border border-white/10 text-white/40 text-xs font-bold hover:border-white/20 hover:text-white transition-all">VIEW BIO</button>
+                    <button className="px-8 py-3 rounded-xl bg-brand-gold text-brand-midnight text-xs font-bold hover:bg-white transition-all shadow-lg shadow-brand-gold/20 active:scale-95">CONNECT VIA LINKEDIN</button>
+                    <button className="px-8 py-3 rounded-xl border border-white/10 text-white/40 text-xs font-bold hover:border-white/20 hover:text-white transition-all">VIEW STRATEGIC BIO</button>
                   </div>
                 </div>
               </div>
@@ -378,7 +327,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
           </div>
           
           {/* Section Decoration */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-brand-gold/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[600px] bg-brand-gold/5 blur-[150px] rounded-full pointer-events-none -z-10" />
         </section>
 
         {/* Footer */}
