@@ -156,7 +156,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
         {/* Navigation */}
         <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <img src="/logo.png" alt="Global Compass AI Logo" className="w-12 h-12 object-contain rounded-xl shadow-xl shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-2 border border-brand-gold/30" />
+            <img src="/logo.png" className="h-9 w-9 object-contain rounded-xl shadow-xl shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-1.5 border border-brand-gold/30" alt="Logo" />
             <span className="font-display text-2xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
@@ -297,7 +297,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <div className="w-48 h-48 rounded-full border-2 border-brand-gold p-1 shadow-2xl shadow-brand-gold/30 relative z-10 transition-transform duration-500 group-hover:scale-[1.02]">
                     <img 
                       src="/founder.jpg.jpeg" 
-                      alt="mm Raju - Founder Photo" 
+                      alt="Founder" 
                       className="w-full h-full rounded-full object-cover grayscale brightness-110 hover:grayscale-0 transition-all duration-700"
                     />
                   </div>
