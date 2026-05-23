@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent } from "lucide-react";
+import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
@@ -318,8 +318,24 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     </p>
                   </div>
                   <div className="flex flex-wrap justify-center md:justify-start gap-4">
-                    <button className="px-8 py-3 rounded-xl bg-brand-gold text-brand-midnight text-xs font-bold hover:bg-white transition-all shadow-lg shadow-brand-gold/20 active:scale-95">CONNECT VIA LINKEDIN</button>
-                    <button className="px-8 py-3 rounded-xl border border-white/10 text-white/40 text-xs font-bold hover:border-white/20 hover:text-white transition-all">VIEW STRATEGIC BIO</button>
+                    <a 
+                      href="https://www.linkedin.com/in/munchingi-matya-raju-52baa71bb/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-8 py-3 rounded-xl bg-brand-gold text-brand-midnight text-xs font-bold hover:bg-white transition-all shadow-lg shadow-brand-gold/20 active:scale-95 flex items-center gap-2"
+                    >
+                      <Linkedin className="w-4 h-4" />
+                      CONNECT VIA LINKEDIN
+                    </a>
+                    <a 
+                      href="https://x.com/mmraju77" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-8 py-3 rounded-xl border border-white/10 text-white/60 text-xs font-bold hover:border-brand-gold/50 hover:text-brand-gold transition-all flex items-center gap-2"
+                    >
+                      <Twitter className="w-4 h-4" />
+                      FOLLOW ON X
+                    </a>
                   </div>
                 </div>
               </div>
@@ -345,6 +361,24 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   The world's premier neural-intelligence platform for strategic wealth relocation 
                   and global economic navigation.
                 </p>
+                <div className="flex gap-4">
+                  <a 
+                    href="https://www.linkedin.com/in/munchingi-matya-raju-52baa71bb/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-brand-gold hover:border-brand-gold/50 transition-all"
+                  >
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                  <a 
+                    href="https://x.com/mmraju77" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-brand-gold hover:border-brand-gold/50 transition-all"
+                  >
+                    <Twitter className="w-5 h-5" />
+                  </a>
+                </div>
               </div>
               <div>
                 <h4 className="font-bold mb-6">Solutions</h4>
