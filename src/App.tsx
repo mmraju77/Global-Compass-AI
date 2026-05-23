@@ -155,9 +155,9 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
       <div className="relative z-10">
         {/* Navigation */}
         <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
-          <div className="flex items-center gap-5">
-            <img src="/logo.png" className="h-14 w-auto object-contain rounded-xl shadow-2xl shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-2 border border-brand-gold/30" alt="Logo" />
-            <span className="font-display text-2xl md:text-3xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
+          <div className="flex items-center gap-6">
+            <img src="/logo.png" className="h-16 w-auto object-contain rounded-xl shadow-2xl shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-2 border border-brand-gold/30" alt="Logo" />
+            <span className="font-display text-2xl md:text-4xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
             <a href="#about" className="hover:text-white transition-colors">About Us</a>
