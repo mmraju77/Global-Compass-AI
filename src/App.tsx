@@ -142,9 +142,10 @@ export default function App() {
   const [savedReports, setSavedReports] = useState<any[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
-  const fetchSavedReports = async () => {
+  const fetchSavedReports = async (overrideUser?: any) => {
     const supabase = getSupabase();
-    if (!supabase || !user) return;
+    const activeUser = overrideUser || user;
+    if (!supabase || !activeUser) return;
 
     try {
       const { data, error } = await supabase
@@ -168,15 +169,22 @@ export default function App() {
   }, [user]);
 
   const handleSaveReport = async () => {
-    if (!user) {
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    // Explicitly fetch session to ensure we have the most up-to-date auth state
+    const { data: { session } } = await supabase.auth.getSession();
+    const activeUser = session?.user || user;
+
+    if (!activeUser) {
       triggerNotification("Please request private access to save reports.");
       return;
     }
 
-    if (!compareA || !compareB) return;
-
-    const supabase = getSupabase();
-    if (!supabase) return;
+    if (!compareA || !compareB) {
+      triggerNotification("Please select two jurisdictions to compare first.");
+      return;
+    }
 
     try {
       setIsSaving(true);
@@ -184,7 +192,7 @@ export default function App() {
         .from('saved_reports')
         .insert([
           { 
-            user_id: user.id, 
+            user_id: activeUser.id, 
             country_a: compareA.country_name, 
             country_b: compareB.country_name 
           }
@@ -192,7 +200,7 @@ export default function App() {
 
       if (error) throw error;
       triggerNotification("Strategic Intelligence Saved to Archives.");
-      fetchSavedReports();
+      fetchSavedReports(activeUser);
     } catch (err: any) {
       triggerNotification(err.message || "Failed to save intelligence report.");
     } finally {
