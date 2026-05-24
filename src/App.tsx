@@ -50,6 +50,15 @@ export default function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMsg, setNotificationMsg] = useState("");
+  const [user, setUser] = useState<any>(null);
+  
+  // Auth Form State
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [regName, setRegName] = useState("");
+  const [regEmail, setRegEmail] = useState("");
+  const [regPassword, setRegPassword] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
 
   const scrollToId = (id: string) => {
     const element = document.getElementById(id);
@@ -103,7 +112,77 @@ export default function App() {
     }
 
     fetchCountries();
+
+    // Set up Auth listener
+    const supabase = getSupabase();
+    if (supabase) {
+      supabase.auth.getSession().then(({ data: { session } }: any) => {
+        setUser(session?.user ?? null);
+      });
+
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          setIsLoginOpen(false);
+        }
+      });
+
+      return () => subscription.unsubscribe();
+    }
   }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    try {
+      setAuthLoading(true);
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      triggerNotification("Authentication Successful. Welcome back.");
+      setEmail("");
+      setPassword("");
+    } catch (err: any) {
+      triggerNotification(err.message || "Failed to authenticate.");
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    try {
+      setAuthLoading(true);
+      const { error } = await supabase.auth.signUp({
+        email: regEmail,
+        password: regPassword,
+        options: {
+          data: { full_name: regName }
+        }
+      });
+      if (error) throw error;
+      triggerNotification("Registration Successful. Please check your email.");
+      setRegName("");
+      setRegEmail("");
+      setRegPassword("");
+    } catch (err: any) {
+      triggerNotification(err.message || "Failed to initialize registration.");
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    const supabase = getSupabase();
+    if (supabase) {
+      await supabase.auth.signOut();
+      triggerNotification("Signed out from neural session.");
+    }
+  };
 
   const handleDownloadReport = (country: CountryData) => {
     const reportContent = `
@@ -178,12 +257,24 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
             <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-white transition-colors">About Us</a>
             <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-white transition-colors">Jurisdictions</a>
-            <button 
-              onClick={() => setIsLoginOpen(true)}
-              className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-white transition-all"
-            >
-              Login
-            </button>
+            {user ? (
+              <div className="flex items-center gap-4">
+                <span className="text-brand-gold font-bold">Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'Member'}</span>
+                <button 
+                  onClick={handleLogout}
+                  className="px-5 py-2 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-white transition-all"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button 
+                onClick={() => setIsLoginOpen(true)}
+                className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-white transition-all"
+              >
+                Login
+              </button>
+            )}
           </div>
         </nav>
 
@@ -402,20 +493,48 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     ))}
                   </div>
                 </div>
-                <div className="space-y-4">
+                <form className="space-y-4" onSubmit={handleRegister}>
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-white/40">Full Name</label>
-                    <input type="text" placeholder="John Doe" className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all" />
+                    <input 
+                      type="text" 
+                      required
+                      value={regName}
+                      onChange={(e) => setRegName(e.target.value)}
+                      placeholder="John Doe" 
+                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all" 
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-white/40">Neural Email Address</label>
-                    <input type="email" placeholder="john@nebula.com" className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all" />
+                    <input 
+                      type="email" 
+                      required
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      placeholder="john@nebula.com" 
+                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all" 
+                    />
                   </div>
-                  <button className="w-full py-4 bg-brand-gold text-brand-midnight font-bold rounded-xl hover:bg-white transition-all shadow-xl shadow-brand-gold/10">
-                    REQUEST PRIVATE ACCESS
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-white/40">Secure Password</label>
+                    <input 
+                      type="password" 
+                      required
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      placeholder="••••••••" 
+                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all" 
+                    />
+                  </div>
+                  <button 
+                    disabled={authLoading}
+                    className="w-full py-4 bg-brand-gold text-brand-midnight font-bold rounded-xl hover:bg-white transition-all shadow-xl shadow-brand-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {authLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "REQUEST PRIVATE ACCESS"}
                   </button>
                   <p className="text-[10px] text-center text-white/20 uppercase tracking-widest">Initial allocation limited to premium cohorts</p>
-                </div>
+                </form>
               </div>
             </div>
           </div>
@@ -637,13 +756,16 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 <p className="text-white/40 text-sm">Access your neural intelligence dashboard.</p>
               </div>
 
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-6" onSubmit={handleLogin}>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-white/40 flex items-center gap-2">
                     <Mail className="w-3 h-3" /> Email Address
                   </label>
                   <input 
                     type="email" 
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@company.com" 
                     className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold/50 focus:outline-none transition-all placeholder:text-white/10"
                   />
@@ -654,12 +776,18 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </label>
                   <input 
                     type="password" 
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••" 
                     className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold/50 focus:outline-none transition-all placeholder:text-white/10"
                   />
                 </div>
-                <button className="w-full py-4 bg-brand-gold text-brand-midnight font-bold rounded-xl hover:bg-white transition-all shadow-xl shadow-brand-gold/20">
-                  SECURE AUTHENTICATION
+                <button 
+                  disabled={authLoading}
+                  className="w-full py-4 bg-brand-gold text-brand-midnight font-bold rounded-xl hover:bg-white transition-all shadow-xl shadow-brand-gold/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {authLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "SECURE AUTHENTICATION"}
                 </button>
               </form>
 
