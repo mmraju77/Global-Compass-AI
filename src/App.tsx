@@ -334,7 +334,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             <img src="/logo.png" className="h-16 w-auto object-contain rounded-xl shadow-2xl shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-2 border border-brand-gold/30" alt="Logo" />
             <span className="font-display text-2xl md:text-4xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
             <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-white transition-colors">About Us</a>
             <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-white transition-colors">Jurisdictions</a>
             {user ? (
@@ -371,11 +371,11 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             </div>
             <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
               Navigate the Future of <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-slate-100 to-terracotta-start">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-slate-400 to-terracotta-start">
                 Global Wealth & Growth
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
               Global Compass AI translates complex economic shifts into actionable intelligence. 
               Secure your assets and optimize growth across the world's most stable jurisdictions.
             </p>
@@ -407,7 +407,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             <div className="flex flex-col md:flex-row justify-between items-end gap-8 font-display">
               <div className="max-w-xl">
                 <h2 className="text-4xl font-bold mb-4 text-white">Strategic Jurisdictions</h2>
-                <p className="text-gray-300 text-lg">
+                <p className="text-gray-400 text-lg">
                   Real-time comparison of premium growth corridors analyzed by our native AI engine.
                 </p>
               </div>
@@ -492,7 +492,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
 
                     return (
                       <div key={metric.key} className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 space-y-4">
-                        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300">
+                        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
                           <metric.icon className="w-3 h-3 text-brand-gold" />
                           {metric.label}
                         </div>
@@ -500,7 +500,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex-1 text-center space-y-1">
                             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareA.country_name}</div>
-                            <div className={`text-lg font-display font-bold text-amber-400 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
+                            <div className={`text-lg font-display font-bold text-amber-600 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                               {displayA || "N/A"}
                             </div>
                           </div>
@@ -509,7 +509,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
 
                           <div className="flex-1 text-center space-y-1">
                             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareB.country_name}</div>
-                            <div className={`text-lg font-display font-bold text-slate-200 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
+                            <div className={`text-lg font-display font-bold text-slate-400 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                               {displayB || "N/A"}
                             </div>
                           </div>
@@ -520,11 +520,11 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           {valA + valB > 0 ? (
                             <>
                               <div 
-                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-amber-400' : 'bg-white/20'}`} 
+                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-amber-600' : 'bg-white/20'}`} 
                                 style={{ width: `${(valA / (valA + valB)) * 100}%` }} 
                               />
                               <div 
-                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-slate-200' : 'bg-white/20'}`} 
+                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-slate-400' : 'bg-white/20'}`} 
                                 style={{ width: `${(valB / (valA + valB)) * 100}%` }} 
                               />
                             </>
@@ -541,7 +541,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-gold/5 border border-brand-gold/10 text-brand-gold/40 mb-4">
                     <Globe className="w-8 h-8" />
                   </div>
-                  <h3 className="text-gray-300 font-display text-lg">Select two distinct jurisdictions for neural comparison</h3>
+                  <h3 className="text-gray-400 font-display text-lg">Select two distinct jurisdictions for neural comparison</h3>
                   <p className="text-slate-400 text-xs mt-2 uppercase tracking-widest">Awaiting Alpha & Beta Selection</p>
                 </div>
               )}
@@ -551,7 +551,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             <div className="overflow-x-auto rounded-2xl border border-white/10 bg-brand-midnight/50 backdrop-blur-xl">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-white/10 text-slate-300 text-xs font-bold uppercase tracking-widest">
+                  <tr className="border-b border-white/10 text-slate-400 text-xs font-bold uppercase tracking-widest">
                     <th className="px-8 py-6">Region</th>
                     <th className="px-8 py-6">Annual Growth</th>
                     <th className="px-8 py-6">Stability Score</th>
@@ -579,11 +579,11 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-brand-gold opacity-50 group-hover:opacity-100 transition-opacity" />
-                            <span className="font-medium text-lg text-slate-200">{row.country_name}</span>
+                            <span className="font-medium text-lg text-slate-400">{row.country_name}</span>
                           </div>
                         </td>
                         <td className="px-8 py-6 text-brand-gold font-mono font-bold">{row.annual_growth}</td>
-                        <td className="px-8 py-6 text-slate-200">{row.stability_score}</td>
+                        <td className="px-8 py-6 text-slate-400">{row.stability_score}</td>
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-2">
                             <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
@@ -636,8 +636,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 
                 <div className="flex-1">
                   <div className="inline-block px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Chief AI Architect</div>
-                  <h3 className="text-3xl md:text-4xl font-display font-bold mb-4 tracking-tight text-slate-200">Munchangi Matyaraju <span className="text-brand-gold/80 block md:inline mt-2 md:mt-0">(mm Raju)</span></h3>
-                  <div className="space-y-4 text-gray-300 text-lg leading-relaxed mb-8 font-light max-w-sm mx-auto md:mx-0">
+                  <h3 className="text-3xl md:text-4xl font-display font-bold mb-4 tracking-tight text-slate-300">Munchangi Matyaraju <span className="text-brand-gold/80 block md:inline mt-2 md:mt-0">(mm Raju)</span></h3>
+                  <div className="space-y-4 text-gray-400 text-lg leading-relaxed mb-8 font-light max-w-sm mx-auto md:mx-0">
                     <p className="italic">
                       "Visionary behind Global Compass AI, focused on strategic global intelligence and neural economic forecasting."
                     </p>
@@ -659,7 +659,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       href="https://x.com/mmraju77" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="px-8 py-3 rounded-xl border border-white/10 text-slate-200 text-xs font-bold hover:border-brand-gold/50 hover:text-brand-gold transition-all flex items-center gap-2"
+                      className="px-8 py-3 rounded-xl border border-white/10 text-slate-400 text-xs font-bold hover:border-brand-gold/50 hover:text-brand-gold transition-all flex items-center gap-2"
                     >
                       <Twitter className="w-4 h-4" />
                       FOLLOW ON X
@@ -684,8 +684,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h2 className="font-display text-4xl font-bold mb-6 text-slate-100">Begin Your Wealth Journey</h2>
-                  <p className="text-gray-300 text-lg mb-8">
+                  <h2 className="font-display text-4xl font-bold mb-6 text-slate-300">Begin Your Wealth Journey</h2>
+                  <p className="text-gray-400 text-lg mb-8">
                     Join our exclusive network of global growth seekers. Intelligence that moves as fast as the markets.
                   </p>
                   <div className="space-y-4">
@@ -695,7 +695,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       "Tax Optimization Strategies",
                       "Confidential Growth Network"
                     ].map((item, i) => (
-                      <div key={i} className="flex items-center gap-3 text-sm text-slate-200">
+                      <div key={i} className="flex items-center gap-3 text-sm text-slate-400">
                         <CheckCircle2 className="w-5 h-5 text-brand-gold" />
                         {item}
                       </div>
@@ -704,7 +704,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 </div>
                 <form className="space-y-4" onSubmit={handleRegister}>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-slate-300">Full Name</label>
+                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Full Name</label>
                     <input 
                       type="text" 
                       required
@@ -715,7 +715,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-slate-300">Neural Email Address</label>
+                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Neural Email Address</label>
                     <input 
                       type="email" 
                       required
@@ -726,7 +726,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-slate-300">Secure Password</label>
+                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Secure Password</label>
                     <input 
                       type="password" 
                       required
@@ -758,9 +758,9 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <div className="w-8 h-8 bg-brand-gold rounded flex items-center justify-center">
                     <Zap className="text-brand-midnight w-5 h-5" />
                   </div>
-                  <span className="font-display text-xl font-bold tracking-tight text-slate-200">GLOBAL COMPASS AI</span>
+                  <span className="font-display text-xl font-bold tracking-tight text-slate-300">GLOBAL COMPASS AI</span>
                 </div>
-                <p className="text-gray-300 max-w-sm mb-8">
+                <p className="text-gray-400 max-w-sm mb-8">
                   The world's premier neural-intelligence platform for strategic wealth relocation 
                   and global economic navigation.
                 </p>
@@ -785,7 +785,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               </div>
               <div>
                 <h4 className="font-bold mb-6 text-white text-sm uppercase tracking-widest">Solutions</h4>
-                <ul className="space-y-4 text-gray-300 text-sm">
+                <ul className="space-y-4 text-gray-400 text-sm">
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> Wealth Migration</a></li>
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> Jurisdiction Audits</a></li>
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> AI Portfolio Guard</a></li>
@@ -794,7 +794,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               </div>
               <div>
                 <h4 className="font-bold mb-6 text-white text-sm uppercase tracking-widest">Company</h4>
-                <ul className="space-y-4 text-gray-300 text-sm">
+                <ul className="space-y-4 text-gray-400 text-sm">
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> Privacy Policy</a></li>
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> Security Standards</a></li>
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> Press Room</a></li>
@@ -809,9 +809,9 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 <div className="p-8 rounded-xl bg-white/[0.02] border border-white/5">
                   <div className="flex items-start gap-4 mb-4">
                     <Shield className="w-5 h-5 text-brand-gold flex-shrink-0" />
-                    <h5 className="font-bold text-xs uppercase tracking-widest text-gray-200">Regulatory & Financial Disclaimer</h5>
+                    <h5 className="font-bold text-xs uppercase tracking-widest text-slate-300">Regulatory & Financial Disclaimer</h5>
                   </div>
-                  <div className="space-y-4 text-[11px] text-gray-400 leading-relaxed uppercase">
+                  <div className="space-y-4 text-[11px] text-gray-500 leading-relaxed uppercase">
                     <p>
                       GLOBAL COMPASS AI (THE "PLATFORM") PROVIDES STRATEGIC DATA ANALYSIS AND AI-GENERATED INSIGHTS FOR INFORMATIONAL PURPOSES ONLY. THE CONTENTS DO NOT CONSTITUTE FINANCIAL, INVESTMENT, TAX, OR LEGAL ADVICE. USERS SHOULD CONSULT WITH PROFESSIONAL ADVISORS BEFORE MAKING ANY FINANCIAL DECISIONS OR CROSS-BORDER ASSET TRANSFERS. 
                     </p>
@@ -879,7 +879,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
                   <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-300 text-[10px] font-bold uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <DollarSign className="w-3 h-3 text-brand-gold" /> Avg Salary
                     </div>
                     <div className="text-xl font-display font-bold text-white">
@@ -888,7 +888,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </div>
 
                   <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-300 text-[10px] font-bold uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <Percent className="w-3 h-3 text-brand-gold" /> Tax Rate
                     </div>
                     <div className="text-xl font-display font-bold text-white">
@@ -897,7 +897,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </div>
 
                   <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-300 text-[10px] font-bold uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <Home className="w-3 h-3 text-brand-gold" /> Avg Rent
                     </div>
                     <div className="text-xl font-display font-bold text-white">
@@ -906,7 +906,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </div>
 
                   <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-300 text-[10px] font-bold uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <HeartPulse className="w-3 h-3 text-brand-gold" /> Healthcare
                     </div>
                     <div className="flex items-center gap-2">
@@ -917,7 +917,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </div>
 
                   <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-300 text-[10px] font-bold uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <Shield className="w-3 h-3 text-brand-gold" /> Safety
                     </div>
                     <div className="text-xl font-display font-bold text-white">
@@ -926,7 +926,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </div>
 
                   <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-300 text-[10px] font-bold uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <Wifi className="w-3 h-3 text-brand-gold" /> Connectivity
                     </div>
                     <div className="text-xl font-display font-bold text-white">
@@ -937,11 +937,11 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
 
                 <div className="space-y-4">
                   <div className="flex justify-between items-center p-4 rounded-xl bg-brand-gold/5 border border-brand-gold/10">
-                    <div className="text-sm text-slate-200">Strategic Stability Score</div>
+                    <div className="text-sm text-slate-400">Strategic Stability Score</div>
                     <div className="text-sm font-bold text-brand-gold uppercase">{selectedCountry.stability_score}</div>
                   </div>
                   <div className="flex justify-between items-center p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                    <div className="text-sm text-slate-200">Annual GDP Growth</div>
+                    <div className="text-sm text-slate-400">Annual GDP Growth</div>
                     <div className="text-sm font-bold text-white font-mono">{selectedCountry.annual_growth}</div>
                   </div>
                 </div>
@@ -998,12 +998,12 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <Lock className="text-brand-gold w-8 h-8" />
                 </div>
                 <h3 className="text-3xl font-display font-bold text-white mb-2">Welcome Back</h3>
-                <p className="text-gray-300 text-sm">Access your neural intelligence dashboard.</p>
+                <p className="text-gray-400 text-sm">Access your neural intelligence dashboard.</p>
               </div>
 
               <form className="space-y-6" onSubmit={handleLogin}>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-300 flex items-center gap-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
                     <Mail className="w-3 h-3" /> Email Address
                   </label>
                   <input 
@@ -1016,7 +1016,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-300 flex items-center gap-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
                     <Lock className="w-3 h-3" /> Secure Password
                   </label>
                   <input 
