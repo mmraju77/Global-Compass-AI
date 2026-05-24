@@ -10,24 +10,24 @@ import { useEffect, useState } from "react";
 
 const MOCK_DATA: CountryData[] = [
   { 
-    country_name: "United States", annual_growth: "+4.2%", stability_score: "High", compass_index: 92, strategic_status: "Optimal",
-    average_salary_usd: 85000, tax_rate_percent: 25, rent_cost_usd: 2200, healthcare_score: 78, safety_rating: 82, internet_speed_mbps: 185
+    country_name: "Switzerland", annual_growth: "+2.4%", stability_score: "Maximum", compass_index: 97, strategic_status: "Stable",
+    average_salary_usd: 95000, tax_rate_percent: 18, rent_cost_usd: 2800, healthcare_score: 89, safety_rating: 91, internet_speed_mbps: 145
   },
   { 
     country_name: "Singapore", annual_growth: "+3.8%", stability_score: "Very High", compass_index: 95, strategic_status: "Premium",
-    average_salary_usd: 72000, tax_rate_percent: 15, rent_cost_usd: 3500, healthcare_score: 94, safety_rating: 98, internet_speed_mbps: 265
+    average_salary_usd: 72000, tax_rate_percent: 15, rent_cost_usd: 3200, healthcare_score: 92, safety_rating: 93, internet_speed_mbps: 210
   },
   { 
     country_name: "UAE", annual_growth: "+5.1%", stability_score: "High", compass_index: 88, strategic_status: "Emerging",
-    average_salary_usd: 68000, tax_rate_percent: 0, rent_cost_usd: 2800, healthcare_score: 82, safety_rating: 94, internet_speed_mbps: 195
+    average_salary_usd: 68000, tax_rate_percent: 0, rent_cost_usd: 2100, healthcare_score: 78, safety_rating: 88, internet_speed_mbps: 120
   },
   { 
-    country_name: "Switzerland", annual_growth: "+2.4%", stability_score: "Maximum", compass_index: 97, strategic_status: "Stable",
-    average_salary_usd: 95000, tax_rate_percent: 18, rent_cost_usd: 2600, healthcare_score: 96, safety_rating: 95, internet_speed_mbps: 210
+    country_name: "Germany", annual_growth: "+1.8%", stability_score: "High", compass_index: 91, strategic_status: "Optimal",
+    average_salary_usd: 62000, tax_rate_percent: 32, rent_cost_usd: 1400, healthcare_score: 85, safety_rating: 82, internet_speed_mbps: 95
   },
   { 
     country_name: "India", annual_growth: "+7.2%", stability_score: "Moderate", compass_index: 78, strategic_status: "High Potential",
-    average_salary_usd: 32000, tax_rate_percent: 22, rent_cost_usd: 850, healthcare_score: 68, safety_rating: 76, internet_speed_mbps: 145
+    average_salary_usd: 32000, tax_rate_percent: 22, rent_cost_usd: 450, healthcare_score: 68, safety_rating: 72, internet_speed_mbps: 85
   },
 ];
 
@@ -711,7 +711,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Home className="w-3 h-3 text-brand-gold" /> Avg Rent
                     </div>
                     <div className="text-xl font-display font-bold text-white">
-                      {formatCurrency(selectedCountry.rent_cost_usd)}
+                      {formatCurrency(selectedCountry.rent_cost_usd)} <span className="text-[10px] text-white/20 font-normal">/ mo</span>
                     </div>
                   </div>
 
@@ -721,7 +721,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     </div>
                     <div className="flex items-center gap-2">
                        <span className="text-xl font-display font-bold text-white">{selectedCountry.healthcare_score || 'N/A'}</span>
-                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-gold/10 text-brand-gold border border-brand-gold/20">PREMIUM</span>
+                       <span className="text-[10px] text-white/20 font-normal">/ 100</span>
                     </div>
                   </div>
 
@@ -730,7 +730,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Shield className="w-3 h-3 text-brand-gold" /> Safety
                     </div>
                     <div className="text-xl font-display font-bold text-white">
-                      {selectedCountry.safety_rating || 'N/A'}<span className="text-white/20 text-xs font-normal">/100</span>
+                      {selectedCountry.safety_rating || 'N/A'} <span className="text-white/20 text-[10px] font-normal">/ 100</span>
                     </div>
                   </div>
 
@@ -739,7 +739,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Wifi className="w-3 h-3 text-brand-gold" /> Connectivity
                     </div>
                     <div className="text-xl font-display font-bold text-white">
-                      {selectedCountry.internet_speed_mbps || 'N/A'}<span className="text-white/20 text-xs font-normal ml-1">Mbps</span>
+                      {selectedCountry.internet_speed_mbps || 'N/A'} <span className="text-white/20 text-[10px] font-normal">Mbps</span>
                     </div>
                   </div>
                 </div>
