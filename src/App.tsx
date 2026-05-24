@@ -467,16 +467,28 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     { label: "Stability Index", key: "compass_index", icon: Shield, suffix: "/100" },
                     { label: "Avg Annual Salary", key: "average_salary_usd", icon: DollarSign, format: (v: number) => formatCurrency(v) },
                     { label: "Optimal Tax Rate", key: "tax_rate_percent", icon: Percent, suffix: "%" },
-                    { label: "Monthly Rent", key: "rent_cost_usd", icon: Home, format: (v: number) => formatCurrency(v) },
-                    { label: "Safety Rating", key: "safety_rating", icon: Shield, suffix: "/100" },
-                    { label: "Internet Speed", key: "internet_speed_mbps", icon: Wifi, suffix: " Mbps" },
+                    { label: "Monthly Rent", key: "rent_cost_usd", icon: Home, countryMetric: "rent" },
+                    { label: "Safety Rating", key: "safety_rating", icon: Shield, countryMetric: "safety" },
+                    { label: "Internet Speed", key: "internet_speed_mbps", icon: Wifi, countryMetric: "internet" },
                   ].map((metric) => {
                     const valA = (compareA as any)[metric.key] || 0;
                     const valB = (compareB as any)[metric.key] || 0;
-                    // Lower is better for tax and rent
+
+                    // Support for dynamic strings from countryMetrics
+                    const displayA = (metric as any).countryMetric 
+                      ? countryMetrics[compareA.country_name]?.[(metric as any).countryMetric as keyof typeof countryMetrics[string]] 
+                      : (metric.format ? metric.format(valA) : `${valA}${metric.suffix || ""}`);
+                    
+                    const displayB = (metric as any).countryMetric 
+                      ? countryMetrics[compareB.country_name]?.[(metric as any).countryMetric as keyof typeof countryMetrics[string]] 
+                      : (metric.format ? metric.format(valB) : `${valB}${metric.suffix || ""}`);
+
+                    // Higher index/salary/speed/safety is better, but lower rent/tax is better
                     const isLowerBetter = metric.key === "tax_rate_percent" || metric.key === "rent_cost_usd";
-                    const isABetter = isLowerBetter ? valA < valB : valA > valB;
-                    const isBBetter = isLowerBetter ? valB < valA : valB > valA;
+                    
+                    // Logic for visual indicators (using numbers from data object for logic)
+                    const isABetter = isLowerBetter ? (valA < valB && valA !== 0) : (valA > valB);
+                    const isBBetter = isLowerBetter ? (valB < valA && valB !== 0) : (valB > valA);
 
                     return (
                       <div key={metric.key} className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 space-y-4">
@@ -487,32 +499,38 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         
                         <div className="flex items-center justify-between gap-4">
                           <div className={`flex-1 text-center space-y-1 ${isABetter ? 'text-brand-gold' : 'text-white/40'}`}>
-                            <div className="text-sm font-bold uppercase opacity-40">{compareA.country_name}</div>
+                            <div className="text-[10px] font-bold uppercase opacity-40 truncate">{compareA.country_name}</div>
                             <div className={`text-lg font-display font-bold ${isABetter ? 'scale-110 origin-center transition-transform' : ''}`}>
-                              {metric.format ? metric.format(valA) : valA}{metric.suffix}
+                              {displayA || "N/A"}
                             </div>
                           </div>
                           
                           <div className="w-px h-8 bg-white/10" />
 
                           <div className={`flex-1 text-center space-y-1 ${isBBetter ? 'text-brand-gold' : 'text-white/40'}`}>
-                            <div className="text-sm font-bold uppercase opacity-40">{compareB.country_name}</div>
+                            <div className="text-[10px] font-bold uppercase opacity-40 truncate">{compareB.country_name}</div>
                             <div className={`text-lg font-display font-bold ${isBBetter ? 'scale-110 origin-center transition-transform' : ''}`}>
-                              {metric.format ? metric.format(valB) : valB}{metric.suffix}
+                              {displayB || "N/A"}
                             </div>
                           </div>
                         </div>
 
                         {/* Comparison Progress Bar */}
                         <div className="relative h-1.5 w-full bg-white/5 rounded-full overflow-hidden flex">
-                          <div 
-                            className={`h-full transition-all duration-700 ${isABetter ? 'bg-brand-gold' : 'bg-white/20'}`} 
-                            style={{ width: `${(valA / (valA + valB)) * 100}%` }} 
-                          />
-                          <div 
-                            className={`h-full transition-all duration-700 ${isBBetter ? 'bg-brand-gold' : 'bg-white/20'}`} 
-                            style={{ width: `${(valB / (valA + valB)) * 100}%` }} 
-                          />
+                          {valA + valB > 0 ? (
+                            <>
+                              <div 
+                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-brand-gold' : 'bg-white/20'}`} 
+                                style={{ width: `${(valA / (valA + valB)) * 100}%` }} 
+                              />
+                              <div 
+                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-brand-gold' : 'bg-white/20'}`} 
+                                style={{ width: `${(valB / (valA + valB)) * 100}%` }} 
+                              />
+                            </>
+                          ) : (
+                            <div className="w-full h-full bg-white/5" />
+                          )}
                         </div>
                       </div>
                     );
