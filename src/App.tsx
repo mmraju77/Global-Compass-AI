@@ -491,14 +491,23 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     const valA = (compareA as any)[metric.key] || 0;
                     const valB = (compareB as any)[metric.key] || 0;
 
-                    // Support for dynamic strings from countryMetrics
-                    const displayA = (metric as any).countryMetric 
-                      ? countryMetrics[compareA.country_name]?.[(metric as any).countryMetric as keyof typeof countryMetrics[string]] 
-                      : (metric.format ? metric.format(valA) : `${valA}${metric.suffix || ""}`);
-                    
-                    const displayB = (metric as any).countryMetric 
-                      ? countryMetrics[compareB.country_name]?.[(metric as any).countryMetric as keyof typeof countryMetrics[string]] 
-                      : (metric.format ? metric.format(valB) : `${valB}${metric.suffix || ""}`);
+                    // Support for dynamic strings from live data with countryMetrics fallback
+                    const getDisplayValue = (country: CountryData) => {
+                      if (metric.key === "rent_cost_usd" && country.rent_cost_usd) return formatCurrency(country.rent_cost_usd);
+                      if (metric.key === "healthcare_score" && country.healthcare_score) return `${country.healthcare_score} / 100`;
+                      if (metric.key === "safety_rating" && country.safety_rating) return `${country.safety_rating} / 100`;
+                      if (metric.key === "internet_speed_mbps" && country.internet_speed_mbps) return `${country.internet_speed_mbps} Mbps`;
+                      
+                      // Fallback to countryMetrics if property is missing
+                      if ((metric as any).countryMetric) {
+                        return countryMetrics[country.country_name]?.[(metric as any).countryMetric as keyof typeof countryMetrics[string]];
+                      }
+                      
+                      return metric.format ? metric.format((country as any)[metric.key] || 0) : `${(country as any)[metric.key] || 0}${metric.suffix || ""}`;
+                    };
+
+                    const displayA = getDisplayValue(compareA);
+                    const displayB = getDisplayValue(compareB);
 
                     // Higher index/salary/speed/safety is better, but lower rent/tax is better
                     const isLowerBetter = metric.key === "tax_rate_percent" || metric.key === "rent_cost_usd";
@@ -930,7 +939,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Home className="w-3 h-3 text-amber-600" /> Avg Rent
                     </div>
                     <div className="text-xl font-display font-bold text-slate-400">
-                      {countryMetrics[selectedCountry.country_name]?.rent || "N/A"}
+                      {selectedCountry.rent_cost_usd ? formatCurrency(selectedCountry.rent_cost_usd) : (countryMetrics[selectedCountry.country_name]?.rent || "N/A")}
                     </div>
                   </div>
 
@@ -940,7 +949,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     </div>
                     <div className="flex items-center gap-2">
                        <span className="text-xl font-display font-bold text-slate-400">
-                         {countryMetrics[selectedCountry.country_name]?.healthcare || "N/A"}
+                         {selectedCountry.healthcare_score ? `${selectedCountry.healthcare_score} / 100` : (countryMetrics[selectedCountry.country_name]?.healthcare || "N/A")}
                        </span>
                     </div>
                   </div>
@@ -950,7 +959,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Shield className="w-3 h-3 text-amber-600" /> Safety
                     </div>
                     <div className="text-xl font-display font-bold text-slate-400">
-                      {countryMetrics[selectedCountry.country_name]?.safety || "N/A"}
+                      {selectedCountry.safety_rating ? `${selectedCountry.safety_rating} / 100` : (countryMetrics[selectedCountry.country_name]?.safety || "N/A")}
                     </div>
                   </div>
 
@@ -959,7 +968,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Wifi className="w-3 h-3 text-amber-600" /> Connectivity
                     </div>
                     <div className="text-xl font-display font-bold text-slate-400">
-                      {countryMetrics[selectedCountry.country_name]?.internet || "N/A"}
+                      {selectedCountry.internet_speed_mbps ? `${selectedCountry.internet_speed_mbps} Mbps` : (countryMetrics[selectedCountry.country_name]?.internet || "N/A")}
                     </div>
                   </div>
                 </div>
