@@ -6,7 +6,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const MOCK_DATA: CountryData[] = [
   { 
@@ -498,33 +498,33 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         </div>
                         
                         <div className="flex items-center justify-between gap-4">
-                          <div className={`flex-1 text-center space-y-1 ${isABetter ? 'text-amber-400' : 'text-amber-400/30'}`}>
+                          <div className="flex-1 text-center space-y-1">
                             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareA.country_name}</div>
-                            <div className={`text-lg font-display font-bold ${isABetter ? 'scale-110 origin-center transition-transform' : ''}`}>
+                            <div className={`text-lg font-display font-bold text-amber-400 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                               {displayA || "N/A"}
                             </div>
                           </div>
                           
                           <div className="w-px h-8 bg-white/10" />
 
-                          <div className={`flex-1 text-center space-y-1 ${isBBetter ? 'text-slate-200' : 'text-slate-200/30'}`}>
+                          <div className="flex-1 text-center space-y-1">
                             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareB.country_name}</div>
-                            <div className={`text-lg font-display font-bold ${isBBetter ? 'scale-110 origin-center transition-transform' : ''}`}>
+                            <div className={`text-lg font-display font-bold text-slate-200 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                               {displayB || "N/A"}
                             </div>
                           </div>
                         </div>
 
                         {/* Comparison Progress Bar */}
-                        <div className="relative h-1.5 w-full bg-white/5 rounded-full overflow-hidden flex">
+                        <div className="relative h-1.5 w-full bg-white/10 rounded-full overflow-hidden flex">
                           {valA + valB > 0 ? (
                             <>
                               <div 
-                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-brand-gold' : 'bg-white/20'}`} 
+                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-amber-400' : 'bg-white/20'}`} 
                                 style={{ width: `${(valA / (valA + valB)) * 100}%` }} 
                               />
                               <div 
-                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-brand-gold' : 'bg-white/20'}`} 
+                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-slate-200' : 'bg-white/20'}`} 
                                 style={{ width: `${(valB / (valA + valB)) * 100}%` }} 
                               />
                             </>
