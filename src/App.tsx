@@ -334,7 +334,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             <img src="/logo.png" className="h-16 w-auto object-contain rounded-xl shadow-2xl shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-2 border border-brand-gold/30" alt="Logo" />
             <span className="font-display text-2xl md:text-4xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-200">
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
             <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-white transition-colors">About Us</a>
             <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-white transition-colors">Jurisdictions</a>
             {user ? (
@@ -498,8 +498,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         </div>
                         
                         <div className="flex items-center justify-between gap-4">
-                          <div className={`flex-1 text-center space-y-1 ${isABetter ? 'text-amber-400' : 'text-amber-400/40'}`}>
-                            <div className="text-[10px] font-bold uppercase opacity-60 truncate">{compareA.country_name}</div>
+                          <div className={`flex-1 text-center space-y-1 ${isABetter ? 'text-amber-400' : 'text-amber-400/30'}`}>
+                            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareA.country_name}</div>
                             <div className={`text-lg font-display font-bold ${isABetter ? 'scale-110 origin-center transition-transform' : ''}`}>
                               {displayA || "N/A"}
                             </div>
@@ -507,8 +507,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           
                           <div className="w-px h-8 bg-white/10" />
 
-                          <div className={`flex-1 text-center space-y-1 ${isBBetter ? 'text-slate-100' : 'text-slate-100/40'}`}>
-                            <div className="text-[10px] font-bold uppercase opacity-60 truncate">{compareB.country_name}</div>
+                          <div className={`flex-1 text-center space-y-1 ${isBBetter ? 'text-slate-200' : 'text-slate-200/30'}`}>
+                            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareB.country_name}</div>
                             <div className={`text-lg font-display font-bold ${isBBetter ? 'scale-110 origin-center transition-transform' : ''}`}>
                               {displayB || "N/A"}
                             </div>
@@ -579,7 +579,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-brand-gold opacity-50 group-hover:opacity-100 transition-opacity" />
-                            <span className="font-medium text-lg text-white">{row.country_name}</span>
+                            <span className="font-medium text-lg text-slate-200">{row.country_name}</span>
                           </div>
                         </td>
                         <td className="px-8 py-6 text-brand-gold font-mono font-bold">{row.annual_growth}</td>
@@ -636,7 +636,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 
                 <div className="flex-1">
                   <div className="inline-block px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Chief AI Architect</div>
-                  <h3 className="text-3xl md:text-4xl font-display font-bold mb-4 tracking-tight">Munchangi Matyaraju <span className="text-brand-gold/80 block md:inline mt-2 md:mt-0">(mm Raju)</span></h3>
+                  <h3 className="text-3xl md:text-4xl font-display font-bold mb-4 tracking-tight text-slate-200">Munchangi Matyaraju <span className="text-brand-gold/80 block md:inline mt-2 md:mt-0">(mm Raju)</span></h3>
                   <div className="space-y-4 text-gray-300 text-lg leading-relaxed mb-8 font-light max-w-sm mx-auto md:mx-0">
                     <p className="italic">
                       "Visionary behind Global Compass AI, focused on strategic global intelligence and neural economic forecasting."
@@ -684,7 +684,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h2 className="font-display text-4xl font-bold mb-6 text-white">Begin Your Wealth Journey</h2>
+                  <h2 className="font-display text-4xl font-bold mb-6 text-slate-100">Begin Your Wealth Journey</h2>
                   <p className="text-gray-300 text-lg mb-8">
                     Join our exclusive network of global growth seekers. Intelligence that moves as fast as the markets.
                   </p>
@@ -756,9 +756,9 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               <div className="col-span-1 md:col-span-2">
                 <div className="flex items-center gap-2 mb-6">
                   <div className="w-8 h-8 bg-brand-gold rounded flex items-center justify-center">
-                    <CompassIcon className="text-brand-midnight w-5 h-5" />
+                    <Zap className="text-brand-midnight w-5 h-5" />
                   </div>
-                  <span className="font-display text-xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
+                  <span className="font-display text-xl font-bold tracking-tight text-slate-200">GLOBAL COMPASS AI</span>
                 </div>
                 <p className="text-gray-300 max-w-sm mb-8">
                   The world's premier neural-intelligence platform for strategic wealth relocation 
