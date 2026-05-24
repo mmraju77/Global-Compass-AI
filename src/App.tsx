@@ -359,7 +359,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
         </nav>
 
         {/* Hero Section */}
-        <header className="container mx-auto px-6 pt-20 pb-32 flex flex-col items-center text-center">
+        <header className="container mx-auto px-6 pt-20 pb-20 flex flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -400,10 +400,11 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
           </motion.div>
         </header>
 
-        {/* Comparison Section */}
-        <section id="compare" className="py-24 bg-black/40 border-y border-white/5">
-          <div className="container mx-auto px-6">
-            <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-10 font-display">
+        {/* Global Hub: Comparison Tool & Index Table */}
+        <section id="compare" className="py-20 bg-black/40 border-y border-white/5">
+          <div className="container mx-auto px-6 flex flex-col gap-10">
+            {/* Headline */}
+            <div className="flex flex-col md:flex-row justify-between items-end gap-8 font-display">
               <div className="max-w-xl">
                 <h2 className="text-4xl font-bold mb-4">Strategic Jurisdictions</h2>
                 <p className="text-white/50 text-lg">
@@ -419,8 +420,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               </div>
             </div>
 
-            {/* Comparison Tool */}
-            <div className="mb-10 p-8 md:p-12 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-xl relative overflow-hidden">
+            {/* Comparison Tool Wrapper */}
+            <div className="p-8 md:p-12 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
               <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-10">
                 <div className="w-full md:w-1/3">
@@ -528,6 +529,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               )}
             </div>
 
+            {/* Index Table */}
             <div className="overflow-x-auto rounded-2xl border border-white/10 bg-brand-midnight/50 backdrop-blur-xl">
               <table className="w-full text-left">
                 <thead>
