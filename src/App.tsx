@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap } from "lucide-react";
+import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 
@@ -475,93 +475,188 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               </div>
 
               {compareA && compareB && compareA.country_name !== compareB.country_name ? (
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                >
-                  {[
-                    { label: "Stability Index", key: "compass_index", icon: Shield, suffix: "/100" },
-                    { label: "Avg Annual Salary", key: "average_salary_usd", icon: DollarSign, format: (v: number) => formatCurrency(v) },
-                    { label: "Optimal Tax Rate", key: "tax_rate_percent", icon: Percent, suffix: "%" },
-                    { label: "Monthly Rent", key: "rent_cost_usd", icon: Home, countryMetric: "rent" },
-                    { label: "Safety Rating", key: "safety_rating", icon: Shield, countryMetric: "safety" },
-                    { label: "Internet Speed", key: "internet_speed_mbps", icon: Wifi, countryMetric: "internet" },
-                  ].map((metric) => {
-                    const valA = (compareA as any)[metric.key] || 0;
-                    const valB = (compareB as any)[metric.key] || 0;
+                <>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  >
+                    {[
+                      { label: "Stability Index", key: "compass_index", icon: Shield, suffix: "/100" },
+                      { label: "Avg Annual Salary", key: "average_salary_usd", icon: DollarSign, format: (v: number) => formatCurrency(v) },
+                      { label: "Optimal Tax Rate", key: "tax_rate_percent", icon: Percent, suffix: "%" },
+                      { label: "Monthly Rent", key: "rent_cost_usd", icon: Home, countryMetric: "rent" },
+                      { label: "Safety Rating", key: "safety_rating", icon: Shield, countryMetric: "safety" },
+                      { label: "Internet Speed", key: "internet_speed_mbps", icon: Wifi, countryMetric: "internet" },
+                    ].map((metric) => {
+                      const valA = (compareA as any)[metric.key] || 0;
+                      const valB = (compareB as any)[metric.key] || 0;
 
-                    // Support for dynamic strings from live data with countryMetrics fallback
-                    const getDisplayValue = (country: CountryData) => {
-                      if (metric.key === "rent_cost_usd" && country.rent_cost_usd) return formatCurrency(country.rent_cost_usd);
-                      if (metric.key === "healthcare_score" && country.healthcare_score) return `${country.healthcare_score} / 100`;
-                      if (metric.key === "safety_rating" && country.safety_rating) return `${country.safety_rating} / 100`;
-                      if (metric.key === "internet_speed_mbps" && country.internet_speed_mbps) return `${country.internet_speed_mbps} Mbps`;
-                      
-                      // Fallback to countryMetrics if property is missing
-                      if ((metric as any).countryMetric) {
-                        return countryMetrics[country.country_name]?.[(metric as any).countryMetric as keyof typeof countryMetrics[string]];
-                      }
-                      
-                      return metric.format ? metric.format((country as any)[metric.key] || 0) : `${(country as any)[metric.key] || 0}${metric.suffix || ""}`;
-                    };
-
-                    const displayA = getDisplayValue(compareA);
-                    const displayB = getDisplayValue(compareB);
-
-                    // Higher index/salary/speed/safety is better, but lower rent/tax is better
-                    const isLowerBetter = metric.key === "tax_rate_percent" || metric.key === "rent_cost_usd";
-                    
-                    // Logic for visual indicators (using numbers from data object for logic)
-                    const isABetter = isLowerBetter ? (valA < valB && valA !== 0) : (valA > valB);
-                    const isBBetter = isLowerBetter ? (valB < valA && valB !== 0) : (valB > valA);
-
-                    return (
-                      <div key={metric.key} className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 space-y-4">
-                        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
-                          <metric.icon className="w-3 h-3 text-amber-600" />
-                          {metric.label}
-                        </div>
+                      // Support for dynamic strings from live data with countryMetrics fallback
+                      const getDisplayValue = (country: CountryData) => {
+                        if (metric.key === "rent_cost_usd" && country.rent_cost_usd) return formatCurrency(country.rent_cost_usd);
+                        if (metric.key === "healthcare_score" && country.healthcare_score) return `${country.healthcare_score} / 100`;
+                        if (metric.key === "safety_rating" && country.safety_rating) return `${country.safety_rating} / 100`;
+                        if (metric.key === "internet_speed_mbps" && country.internet_speed_mbps) return `${country.internet_speed_mbps} Mbps`;
                         
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="flex-1 text-center space-y-1">
-                            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareA.country_name}</div>
-                            <div className={`text-lg font-display font-bold text-amber-600 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
-                              {displayA || "N/A"}
-                            </div>
+                        // Fallback to countryMetrics if property is missing
+                        if ((metric as any).countryMetric) {
+                          return countryMetrics[country.country_name]?.[(metric as any).countryMetric as keyof typeof countryMetrics[string]];
+                        }
+                        
+                        return metric.format ? metric.format((country as any)[metric.key] || 0) : `${(country as any)[metric.key] || 0}${metric.suffix || ""}`;
+                      };
+
+                      const displayA = getDisplayValue(compareA);
+                      const displayB = getDisplayValue(compareB);
+
+                      // Higher index/salary/speed/safety is better, but lower rent/tax is better
+                      const isLowerBetter = metric.key === "tax_rate_percent" || metric.key === "rent_cost_usd";
+                      
+                      // Logic for visual indicators (using numbers from data object for logic)
+                      const isABetter = isLowerBetter ? (valA < valB && valA !== 0) : (valA > valB);
+                      const isBBetter = isLowerBetter ? (valB < valA && valB !== 0) : (valB > valA);
+
+                      return (
+                        <div key={metric.key} className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 space-y-4">
+                          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                            <metric.icon className="w-3 h-3 text-amber-600" />
+                            {metric.label}
                           </div>
                           
-                          <div className="w-px h-8 bg-white/10" />
+                          <div className="flex items-center justify-between gap-4">
+                            <div className="flex-1 text-center space-y-1">
+                              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareA.country_name}</div>
+                              <div className={`text-lg font-display font-bold text-amber-600 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
+                                {displayA || "N/A"}
+                              </div>
+                            </div>
+                            
+                            <div className="w-px h-8 bg-white/10" />
 
-                          <div className="flex-1 text-center space-y-1">
-                            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareB.country_name}</div>
-                            <div className={`text-lg font-display font-bold text-slate-400 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
-                              {displayB || "N/A"}
+                            <div className="flex-1 text-center space-y-1">
+                              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareB.country_name}</div>
+                              <div className={`text-lg font-display font-bold text-slate-400 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
+                                {displayB || "N/A"}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Comparison Progress Bar */}
+                          <div className="relative h-1.5 w-full bg-white/10 rounded-full overflow-hidden flex">
+                            {valA + valB > 0 ? (
+                              <>
+                                <div 
+                                  className={`h-full transition-all duration-700 ${isABetter ? 'bg-amber-600/70' : 'bg-white/10'}`} 
+                                  style={{ width: `${(valA / (valA + valB)) * 100}%` }} 
+                                />
+                                <div 
+                                  className={`h-full transition-all duration-700 ${isBBetter ? 'bg-slate-400/70' : 'bg-white/10'}`} 
+                                  style={{ width: `${(valB / (valA + valB)) * 100}%` }} 
+                                />
+                              </>
+                            ) : (
+                              <div className="w-full h-full bg-white/5" />
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </motion.div>
+                  
+                  {/* Visual Analytics Chart Section */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-12 p-8 rounded-3xl bg-white/[0.02] border border-white/5"
+                  >
+                    <div className="flex items-center gap-3 mb-8">
+                      <div className="w-10 h-10 rounded-xl bg-amber-600/10 flex items-center justify-center border border-amber-600/20">
+                        <BarChart3 className="w-5 h-5 text-amber-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Visual Analytics Comparison</h3>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Relative Metric Scaling Optimization</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-10">
+                      {/* Salary Chart */}
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-end">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Average Annual Salary</span>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                              <span>{compareA.country_name}</span>
+                              <span>{formatCurrency(compareA.average_salary_usd)}</span>
+                            </div>
+                            <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${(compareA.average_salary_usd / Math.max(compareA.average_salary_usd, compareB.average_salary_usd, 1)) * 100}%` }}
+                                transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+                                className="h-full bg-amber-600/60"
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                              <span>{compareB.country_name}</span>
+                              <span>{formatCurrency(compareB.average_salary_usd)}</span>
+                            </div>
+                            <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${(compareB.average_salary_usd / Math.max(compareA.average_salary_usd, compareB.average_salary_usd, 1)) * 100}%` }}
+                                transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+                                className="h-full bg-slate-500/50"
+                              />
                             </div>
                           </div>
                         </div>
+                      </div>
 
-                        {/* Comparison Progress Bar */}
-                        <div className="relative h-1.5 w-full bg-white/10 rounded-full overflow-hidden flex">
-                          {valA + valB > 0 ? (
-                            <>
-                              <div 
-                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-amber-600/70' : 'bg-white/10'}`} 
-                                style={{ width: `${(valA / (valA + valB)) * 100}%` }} 
+                      {/* Tax Rate Chart */}
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-end">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Optimal Tax Rate</span>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                              <span>{compareA.country_name}</span>
+                              <span>{compareA.tax_rate_percent}%</span>
+                            </div>
+                            <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${(compareA.tax_rate_percent / Math.max(compareA.tax_rate_percent, compareB.tax_rate_percent, 1)) * 100}%` }}
+                                transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
+                                className="h-full bg-amber-600/60"
                               />
-                              <div 
-                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-slate-400/70' : 'bg-white/10'}`} 
-                                style={{ width: `${(valB / (valA + valB)) * 100}%` }} 
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                              <span>{compareB.country_name}</span>
+                              <span>{compareB.tax_rate_percent}%</span>
+                            </div>
+                            <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${(compareB.tax_rate_percent / Math.max(compareA.tax_rate_percent, compareB.tax_rate_percent, 1)) * 100}%` }}
+                                transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
+                                className="h-full bg-slate-500/50"
                               />
-                            </>
-                          ) : (
-                            <div className="w-full h-full bg-white/5" />
-                          )}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    );
-                  })}
-                </motion.div>
+                    </div>
+                  </motion.div>
+                </>
               ) : (
                 <div className="py-8 text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-gold/5 border border-brand-gold/10 text-amber-600/40 mb-4">
