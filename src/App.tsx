@@ -211,6 +211,16 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (isLoginOpen) {
+      setEmail("");
+      setPassword("");
+      setRegEmail("");
+      setRegPassword("");
+      setRegName("");
+    }
+  }, [isLoginOpen]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = getSupabase();
@@ -710,11 +720,19 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </div>
                 </div>
                 <form className="space-y-4" onSubmit={handleRegister}>
+                  {/* Autofill Honeypot */}
+                  <div className="absolute -top-[1000px] -left-[1000px] pointer-events-none" aria-hidden="true">
+                    <input type="text" name="dummy_name" tabIndex={-1} />
+                    <input type="email" name="dummy_email" tabIndex={-1} />
+                    <input type="password" name="dummy_password" tabIndex={-1} />
+                  </div>
+
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Full Name</label>
                     <input 
                       type="text" 
                       required
+                      autoComplete="one-time-code"
                       value={regName}
                       onChange={(e) => setRegName(e.target.value)}
                       placeholder="John Doe" 
@@ -726,7 +744,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <input 
                       type="email" 
                       required
-                      autoComplete="off"
+                      autoComplete="one-time-code"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
                       placeholder="john@nebula.com" 
@@ -738,7 +756,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <input 
                       type="password" 
                       required
-                      autoComplete="new-password"
+                      autoComplete="one-time-code"
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
                       placeholder="••••••••" 
@@ -1011,6 +1029,12 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               </div>
 
               <form className="space-y-6" onSubmit={handleLogin}>
+                {/* Autofill Honeypot */}
+                <div className="absolute -top-[1000px] -left-[1000px] pointer-events-none" aria-hidden="true">
+                  <input type="email" name="dummy_email_login" tabIndex={-1} />
+                  <input type="password" name="dummy_password_login" tabIndex={-1} />
+                </div>
+
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
                     <Mail className="w-3 h-3" /> Email Address
@@ -1018,7 +1042,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <input 
                     type="email" 
                     required
-                    autoComplete="off"
+                    autoComplete="one-time-code"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@company.com" 
@@ -1032,7 +1056,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <input 
                     type="password" 
                     required
-                    autoComplete="current-password"
+                    autoComplete="one-time-code"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••" 
