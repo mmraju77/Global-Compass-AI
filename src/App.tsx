@@ -481,20 +481,20 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             {user && (
               <a href="#archives" onClick={(e) => { e.preventDefault(); scrollToId('archives'); }} className="hover:text-amber-600 transition-colors">My Archives</a>
             )}
-            {isAdmin && (
-              <button 
-                onClick={() => setIsAdminPanelOpen(true)}
-                className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-600/10 border border-amber-600/30 text-amber-600 text-xs font-bold hover:bg-amber-600/20 transition-all uppercase tracking-widest"
-              >
-                <Lock className="w-3 h-3" /> Admin Panel
-              </button>
-            )}
             {user ? (
               <div className="flex items-center gap-4">
                 <span className="text-amber-600 font-bold">Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'Member'}</span>
+                {user?.email?.toLowerCase() === "moovi7g@gmail.com" && (
+                  <button 
+                    onClick={() => setIsAdminPanelOpen(!isAdminPanelOpen)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-amber-600/30 text-amber-600 text-xs font-bold hover:bg-amber-600/10 transition-all uppercase tracking-widest cursor-pointer"
+                  >
+                    <Lock className="w-3 h-3" /> Admin Panel
+                  </button>
+                )}
                 <button 
                   onClick={handleLogout}
-                  className="px-5 py-2 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-slate-400 transition-all"
+                  className="px-5 py-2 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-slate-400 transition-all cursor-pointer"
                 >
                   Logout
                 </button>
