@@ -403,7 +403,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
         {/* Comparison Section */}
         <section id="compare" className="py-24 bg-black/40 border-y border-white/5">
           <div className="container mx-auto px-6">
-            <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-16 font-display">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-10 font-display">
               <div className="max-w-xl">
                 <h2 className="text-4xl font-bold mb-4">Strategic Jurisdictions</h2>
                 <p className="text-white/50 text-lg">
@@ -420,9 +420,9 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             </div>
 
             {/* Comparison Tool */}
-            <div className="mb-16 p-8 md:p-12 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-xl relative overflow-hidden">
+            <div className="mb-10 p-8 md:p-12 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
-              <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-12">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-10">
                 <div className="w-full md:w-1/3">
                   <div className="text-[10px] font-bold uppercase tracking-widest text-brand-gold mb-3 ml-1">Jurisdiction Alpha</div>
                   <select 
@@ -518,7 +518,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   })}
                 </motion.div>
               ) : (
-                <div className="py-12 text-center">
+                <div className="py-8 text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-gold/5 border border-brand-gold/10 text-brand-gold/30 mb-4">
                     <Globe className="w-8 h-8" />
                   </div>
