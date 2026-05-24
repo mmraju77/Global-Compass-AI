@@ -500,7 +500,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex-1 text-center space-y-1">
                             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareA.country_name}</div>
-                            <div className={`text-lg font-display font-bold text-amber-600/80 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
+                            <div className={`text-lg font-display font-bold text-amber-700 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                               {displayA || "N/A"}
                             </div>
                           </div>
@@ -509,7 +509,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
 
                           <div className="flex-1 text-center space-y-1">
                             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareB.country_name}</div>
-                            <div className={`text-lg font-display font-bold text-slate-400/80 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
+                            <div className={`text-lg font-display font-bold text-slate-500 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                               {displayB || "N/A"}
                             </div>
                           </div>
@@ -520,11 +520,11 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           {valA + valB > 0 ? (
                             <>
                               <div 
-                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-amber-600/70' : 'bg-white/10'}`} 
+                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-amber-700/70' : 'bg-white/10'}`} 
                                 style={{ width: `${(valA / (valA + valB)) * 100}%` }} 
                               />
                               <div 
-                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-slate-400/70' : 'bg-white/10'}`} 
+                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-slate-500/70' : 'bg-white/10'}`} 
                                 style={{ width: `${(valB / (valA + valB)) * 100}%` }} 
                               />
                             </>
