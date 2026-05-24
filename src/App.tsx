@@ -4,16 +4,31 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2 } from "lucide-react";
+import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
 const MOCK_DATA: CountryData[] = [
-  { country_name: "United States", annual_growth: "+4.2%", stability_score: "High", compass_index: 92, strategic_status: "Optimal" },
-  { country_name: "Singapore", annual_growth: "+3.8%", stability_score: "Very High", compass_index: 95, strategic_status: "Premium" },
-  { country_name: "UAE", annual_growth: "+5.1%", stability_score: "High", compass_index: 88, strategic_status: "Emerging" },
-  { country_name: "Switzerland", annual_growth: "+2.4%", stability_score: "Maximum", compass_index: 97, strategic_status: "Stable" },
-  { country_name: "India", annual_growth: "+7.2%", stability_score: "Moderate", compass_index: 78, strategic_status: "High Potential" },
+  { 
+    country_name: "United States", annual_growth: "+4.2%", stability_score: "High", compass_index: 92, strategic_status: "Optimal",
+    average_salary_usd: 85000, tax_rate_percent: 25, rent_cost_usd: 2200, healthcare_score: 78, safety_rating: 82, internet_speed_mbps: 185
+  },
+  { 
+    country_name: "Singapore", annual_growth: "+3.8%", stability_score: "Very High", compass_index: 95, strategic_status: "Premium",
+    average_salary_usd: 72000, tax_rate_percent: 15, rent_cost_usd: 3500, healthcare_score: 94, safety_rating: 98, internet_speed_mbps: 265
+  },
+  { 
+    country_name: "UAE", annual_growth: "+5.1%", stability_score: "High", compass_index: 88, strategic_status: "Emerging",
+    average_salary_usd: 68000, tax_rate_percent: 0, rent_cost_usd: 2800, healthcare_score: 82, safety_rating: 94, internet_speed_mbps: 195
+  },
+  { 
+    country_name: "Switzerland", annual_growth: "+2.4%", stability_score: "Maximum", compass_index: 97, strategic_status: "Stable",
+    average_salary_usd: 95000, tax_rate_percent: 18, rent_cost_usd: 2600, healthcare_score: 96, safety_rating: 95, internet_speed_mbps: 210
+  },
+  { 
+    country_name: "India", annual_growth: "+7.2%", stability_score: "Moderate", compass_index: 78, strategic_status: "High Potential",
+    average_salary_usd: 32000, tax_rate_percent: 22, rent_cost_usd: 850, healthcare_score: 68, safety_rating: 76, internet_speed_mbps: 145
+  },
 ];
 
 // Lazy initialization of Supabase client
@@ -40,6 +55,10 @@ interface CountryData {
   strategic_status: string;
   average_salary_usd?: number;
   tax_rate_percent?: number;
+  rent_cost_usd?: number;
+  healthcare_score?: number;
+  safety_rating?: number;
+  internet_speed_mbps?: number;
 }
 
 export default function App() {
@@ -668,25 +687,60 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                    <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest">
-                      <DollarSign className="w-3 h-3 text-brand-gold" /> Average Salary
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div className="flex items-center gap-2 text-white/40 text-[10px] font-bold uppercase tracking-widest">
+                      <DollarSign className="w-3 h-3 text-brand-gold" /> Avg Salary
                     </div>
-                    <div className="text-3xl font-display font-bold text-white">
+                    <div className="text-xl font-display font-bold text-white">
                       {formatCurrency(selectedCountry.average_salary_usd)}
                     </div>
-                    <div className="text-[10px] text-white/30 italic">Per annum estimation (USD)</div>
                   </div>
 
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                    <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest">
-                      <Percent className="w-3 h-3 text-brand-gold" /> Personal Tax Rate
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div className="flex items-center gap-2 text-white/40 text-[10px] font-bold uppercase tracking-widest">
+                      <Percent className="w-3 h-3 text-brand-gold" /> Tax Rate
                     </div>
-                    <div className="text-3xl font-display font-bold text-white">
+                    <div className="text-xl font-display font-bold text-white">
                       {selectedCountry.tax_rate_percent !== undefined ? `${selectedCountry.tax_rate_percent}%` : 'N/A'}
                     </div>
-                    <div className="text-[10px] text-white/30 italic">Average across brackets</div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div className="flex items-center gap-2 text-white/40 text-[10px] font-bold uppercase tracking-widest">
+                      <Home className="w-3 h-3 text-brand-gold" /> Avg Rent
+                    </div>
+                    <div className="text-xl font-display font-bold text-white">
+                      {formatCurrency(selectedCountry.rent_cost_usd)}
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div className="flex items-center gap-2 text-white/40 text-[10px] font-bold uppercase tracking-widest">
+                      <HeartPulse className="w-3 h-3 text-brand-gold" /> Healthcare
+                    </div>
+                    <div className="flex items-center gap-2">
+                       <span className="text-xl font-display font-bold text-white">{selectedCountry.healthcare_score || 'N/A'}</span>
+                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-gold/10 text-brand-gold border border-brand-gold/20">PREMIUM</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div className="flex items-center gap-2 text-white/40 text-[10px] font-bold uppercase tracking-widest">
+                      <Shield className="w-3 h-3 text-brand-gold" /> Safety
+                    </div>
+                    <div className="text-xl font-display font-bold text-white">
+                      {selectedCountry.safety_rating || 'N/A'}<span className="text-white/20 text-xs font-normal">/100</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div className="flex items-center gap-2 text-white/40 text-[10px] font-bold uppercase tracking-widest">
+                      <Wifi className="w-3 h-3 text-brand-gold" /> Connectivity
+                    </div>
+                    <div className="text-xl font-display font-bold text-white">
+                      {selectedCountry.internet_speed_mbps || 'N/A'}<span className="text-white/20 text-xs font-normal ml-1">Mbps</span>
+                    </div>
                   </div>
                 </div>
 
