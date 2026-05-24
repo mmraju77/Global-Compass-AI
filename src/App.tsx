@@ -744,6 +744,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <input 
                       type="email" 
                       required
+                      readOnly
+                      onFocus={(e) => e.target.removeAttribute('readOnly')}
                       autoComplete="one-time-code"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
@@ -1042,6 +1044,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <input 
                     type="email" 
                     required
+                    readOnly
+                    onFocus={(e) => e.target.removeAttribute('readOnly')}
                     autoComplete="one-time-code"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
