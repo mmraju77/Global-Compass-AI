@@ -216,16 +216,19 @@ export default function App() {
     const supabase = getSupabase();
     if (!supabase) return;
 
+    const emailVal = email;
+    const passwordVal = password;
+
     try {
       setAuthLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email: emailVal, password: passwordVal });
       if (error) throw error;
       triggerNotification("Authentication Successful. Welcome back.");
-      setEmail("");
-      setPassword("");
     } catch (err: any) {
       triggerNotification(err.message || "Failed to authenticate.");
     } finally {
+      setEmail("");
+      setPassword("");
       setAuthLoading(false);
     }
   };
@@ -235,23 +238,27 @@ export default function App() {
     const supabase = getSupabase();
     if (!supabase) return;
 
+    const nameVal = regName;
+    const emailVal = regEmail;
+    const passwordVal = regPassword;
+
     try {
       setAuthLoading(true);
       const { error } = await supabase.auth.signUp({
-        email: regEmail,
-        password: regPassword,
+        email: emailVal,
+        password: passwordVal,
         options: {
-          data: { full_name: regName }
+          data: { full_name: nameVal }
         }
       });
       if (error) throw error;
       triggerNotification("Registration Successful. Please check your email.");
-      setRegName("");
-      setRegEmail("");
-      setRegPassword("");
     } catch (err: any) {
       triggerNotification(err.message || "Failed to initialize registration.");
     } finally {
+      setRegName("");
+      setRegEmail("");
+      setRegPassword("");
       setAuthLoading(false);
     }
   };
@@ -719,6 +726,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <input 
                       type="email" 
                       required
+                      autoComplete="off"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
                       placeholder="john@nebula.com" 
@@ -730,6 +738,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <input 
                       type="password" 
                       required
+                      autoComplete="new-password"
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
                       placeholder="••••••••" 
@@ -1009,6 +1018,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <input 
                     type="email" 
                     required
+                    autoComplete="off"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@company.com" 
@@ -1022,6 +1032,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <input 
                     type="password" 
                     required
+                    autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••" 
