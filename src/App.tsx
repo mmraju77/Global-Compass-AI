@@ -26,6 +26,46 @@ const MOCK_DATA: CountryData[] = [
     average_salary_usd: 62000, tax_rate_percent: 32, rent_cost_usd: 1400, healthcare_score: 85, safety_rating: 82, internet_speed_mbps: 95
   },
   { 
+    country_name: "Luxembourg", annual_growth: "+2.1%", stability_score: "Maximum", compass_index: 94, strategic_status: "Premium",
+    average_salary_usd: 88000, tax_rate_percent: 24, rent_cost_usd: 2300, healthcare_score: 86, safety_rating: 85, internet_speed_mbps: 135
+  },
+  { 
+    country_name: "United States", annual_growth: "+4.2%", stability_score: "High", compass_index: 92, strategic_status: "Optimal",
+    average_salary_usd: 85000, tax_rate_percent: 25, rent_cost_usd: 2100, healthcare_score: 76, safety_rating: 71, internet_speed_mbps: 185
+  },
+  { 
+    country_name: "Norway", annual_growth: "+1.5%", stability_score: "Maximum", compass_index: 93, strategic_status: "Stable",
+    average_salary_usd: 78000, tax_rate_percent: 28, rent_cost_usd: 1550, healthcare_score: 88, safety_rating: 89, internet_speed_mbps: 160
+  },
+  { 
+    country_name: "Denmark", annual_growth: "+1.6%", stability_score: "Very High", compass_index: 92, strategic_status: "Stable",
+    average_salary_usd: 75000, tax_rate_percent: 35, rent_cost_usd: 1600, healthcare_score: 87, safety_rating: 88, internet_speed_mbps: 150
+  },
+  { 
+    country_name: "Australia", annual_growth: "+2.8%", stability_score: "High", compass_index: 89, strategic_status: "Stable",
+    average_salary_usd: 70000, tax_rate_percent: 32, rent_cost_usd: 1850, healthcare_score: 84, safety_rating: 83, internet_speed_mbps: 125
+  },
+  { 
+    country_name: "Sweden", annual_growth: "+1.9%", stability_score: "High", compass_index: 90, strategic_status: "Stable",
+    average_salary_usd: 65000, tax_rate_percent: 30, rent_cost_usd: 1350, healthcare_score: 83, safety_rating: 79, internet_speed_mbps: 155
+  },
+  { 
+    country_name: "Netherlands", annual_growth: "+2.2%", stability_score: "High", compass_index: 91, strategic_status: "Optimal",
+    average_salary_usd: 68000, tax_rate_percent: 37, rent_cost_usd: 1800, healthcare_score: 86, safety_rating: 84, internet_speed_mbps: 170
+  },
+  { 
+    country_name: "Canada", annual_growth: "+2.0%", stability_score: "High", compass_index: 88, strategic_status: "Stable",
+    average_salary_usd: 64000, tax_rate_percent: 28, rent_cost_usd: 1700, healthcare_score: 81, safety_rating: 82, internet_speed_mbps: 140
+  },
+  { 
+    country_name: "Ireland", annual_growth: "+5.8%", stability_score: "High", compass_index: 86, strategic_status: "Emerging",
+    average_salary_usd: 72000, tax_rate_percent: 20, rent_cost_usd: 2200, healthcare_score: 75, safety_rating: 81, internet_speed_mbps: 130
+  },
+  { 
+    country_name: "United Kingdom", annual_growth: "+1.2%", stability_score: "High", compass_index: 84, strategic_status: "Stable",
+    average_salary_usd: 60000, tax_rate_percent: 20, rent_cost_usd: 1750, healthcare_score: 79, safety_rating: 75, internet_speed_mbps: 120
+  },
+  { 
     country_name: "India", annual_growth: "+7.2%", stability_score: "Moderate", compass_index: 78, strategic_status: "High Potential",
     average_salary_usd: 32000, tax_rate_percent: 22, rent_cost_usd: 450, healthcare_score: 68, safety_rating: 72, internet_speed_mbps: 85
   },
@@ -96,6 +136,9 @@ export default function App() {
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
+
+  const [compareA, setCompareA] = useState<CountryData | null>(null);
+  const [compareB, setCompareB] = useState<CountryData | null>(null);
 
   const scrollToId = (id: string) => {
     const element = document.getElementById(id);
@@ -360,9 +403,9 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
         {/* Comparison Section */}
         <section id="compare" className="py-24 bg-black/40 border-y border-white/5">
           <div className="container mx-auto px-6">
-            <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-16">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-16 font-display">
               <div className="max-w-xl">
-                <h2 className="font-display text-4xl font-bold mb-4">Strategic Jurisdictions</h2>
+                <h2 className="text-4xl font-bold mb-4">Strategic Jurisdictions</h2>
                 <p className="text-white/50 text-lg">
                   Real-time comparison of premium growth corridors analyzed by our native AI engine.
                 </p>
@@ -374,6 +417,115 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 </div>
                 <div className="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm">Update: May 2026</div>
               </div>
+            </div>
+
+            {/* Comparison Tool */}
+            <div className="mb-16 p-8 md:p-12 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
+              <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-12">
+                <div className="w-full md:w-1/3">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-brand-gold mb-3 ml-1">Jurisdiction Alpha</div>
+                  <select 
+                    value={compareA?.country_name || ""}
+                    onChange={(e) => setCompareA(countries.find(c => c.country_name === e.target.value) || null)}
+                    className="w-full px-6 py-4 rounded-xl bg-brand-midnight border border-white/10 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="">Select Country A</option>
+                    {countries.map(c => (
+                      <option key={c.country_name} value={c.country_name}>{c.country_name}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="flex items-center justify-center w-12 h-12 rounded-full border border-brand-gold/20 bg-brand-gold/5 text-brand-gold animate-pulse">
+                  <Zap className="w-6 h-6" />
+                </div>
+
+                <div className="w-full md:w-1/3">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-brand-gold mb-3 ml-1">Jurisdiction Beta</div>
+                  <select 
+                    value={compareB?.country_name || ""}
+                    onChange={(e) => setCompareB(countries.find(c => c.country_name === e.target.value) || null)}
+                    className="w-full px-6 py-4 rounded-xl bg-brand-midnight border border-white/10 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="">Select Country B</option>
+                    {countries.map(c => (
+                      <option key={c.country_name} value={c.country_name}>{c.country_name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {compareA && compareB && compareA.country_name !== compareB.country_name ? (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
+                  {[
+                    { label: "Stability Index", key: "compass_index", icon: Shield, suffix: "/100" },
+                    { label: "Avg Annual Salary", key: "average_salary_usd", icon: DollarSign, format: (v: number) => formatCurrency(v) },
+                    { label: "Optimal Tax Rate", key: "tax_rate_percent", icon: Percent, suffix: "%" },
+                    { label: "Monthly Rent", key: "rent_cost_usd", icon: Home, format: (v: number) => formatCurrency(v) },
+                    { label: "Safety Rating", key: "safety_rating", icon: Shield, suffix: "/100" },
+                    { label: "Internet Speed", key: "internet_speed_mbps", icon: Wifi, suffix: " Mbps" },
+                  ].map((metric) => {
+                    const valA = (compareA as any)[metric.key] || 0;
+                    const valB = (compareB as any)[metric.key] || 0;
+                    // Lower is better for tax and rent
+                    const isLowerBetter = metric.key === "tax_rate_percent" || metric.key === "rent_cost_usd";
+                    const isABetter = isLowerBetter ? valA < valB : valA > valB;
+                    const isBBetter = isLowerBetter ? valB < valA : valB > valA;
+
+                    return (
+                      <div key={metric.key} className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 space-y-4">
+                        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+                          <metric.icon className="w-3 h-3 text-brand-gold" />
+                          {metric.label}
+                        </div>
+                        
+                        <div className="flex items-center justify-between gap-4">
+                          <div className={`flex-1 text-center space-y-1 ${isABetter ? 'text-brand-gold' : 'text-white/40'}`}>
+                            <div className="text-sm font-bold uppercase opacity-40">{compareA.country_name}</div>
+                            <div className={`text-lg font-display font-bold ${isABetter ? 'scale-110 origin-center transition-transform' : ''}`}>
+                              {metric.format ? metric.format(valA) : valA}{metric.suffix}
+                            </div>
+                          </div>
+                          
+                          <div className="w-px h-8 bg-white/10" />
+
+                          <div className={`flex-1 text-center space-y-1 ${isBBetter ? 'text-brand-gold' : 'text-white/40'}`}>
+                            <div className="text-sm font-bold uppercase opacity-40">{compareB.country_name}</div>
+                            <div className={`text-lg font-display font-bold ${isBBetter ? 'scale-110 origin-center transition-transform' : ''}`}>
+                              {metric.format ? metric.format(valB) : valB}{metric.suffix}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Comparison Progress Bar */}
+                        <div className="relative h-1.5 w-full bg-white/5 rounded-full overflow-hidden flex">
+                          <div 
+                            className={`h-full transition-all duration-700 ${isABetter ? 'bg-brand-gold' : 'bg-white/20'}`} 
+                            style={{ width: `${(valA / (valA + valB)) * 100}%` }} 
+                          />
+                          <div 
+                            className={`h-full transition-all duration-700 ${isBBetter ? 'bg-brand-gold' : 'bg-white/20'}`} 
+                            style={{ width: `${(valB / (valA + valB)) * 100}%` }} 
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </motion.div>
+              ) : (
+                <div className="py-12 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-gold/5 border border-brand-gold/10 text-brand-gold/30 mb-4">
+                    <Globe className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-white/40 font-display text-lg">Select two distinct jurisdictions for neural comparison</h3>
+                  <p className="text-white/20 text-xs mt-2 uppercase tracking-widest">Awaiting Alpha & Beta Selection</p>
+                </div>
+              )}
             </div>
 
             <div className="overflow-x-auto rounded-2xl border border-white/10 bg-brand-midnight/50 backdrop-blur-xl">
