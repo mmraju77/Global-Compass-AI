@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter } from "lucide-react";
+import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
@@ -47,6 +47,22 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [isLive, setIsLive] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMsg, setNotificationMsg] = useState("");
+
+  const scrollToId = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const triggerNotification = (msg: string) => {
+    setNotificationMsg(msg);
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 3000);
+  };
 
   const particles = Array.from({ length: 30 });
 
@@ -160,9 +176,12 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             <span className="font-display text-2xl md:text-4xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
-            <a href="#about" className="hover:text-white transition-colors">About Us</a>
-            <a href="#compare" className="hover:text-white transition-colors">Jurisdictions</a>
-            <button className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-white transition-all">
+            <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-white transition-colors">About Us</a>
+            <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-white transition-colors">Jurisdictions</a>
+            <button 
+              onClick={() => setIsLoginOpen(true)}
+              className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-white transition-all"
+            >
               Login
             </button>
           </div>
@@ -190,11 +209,20 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               Secure your assets and optimize growth across the world's most stable jurisdictions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="group relative px-8 py-4 bg-gradient-to-r from-terracotta-start to-terracotta-end text-white font-bold rounded-xl shadow-2xl shadow-terracotta-start/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+              <button 
+                onClick={() => scrollToId('join')}
+                className="group relative px-8 py-4 bg-gradient-to-r from-terracotta-start to-terracotta-end text-white font-bold rounded-xl shadow-2xl shadow-terracotta-start/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+              >
                 JOIN FREE & BEGIN YOUR GROWTH PATH
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
-              <button className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition-all font-medium">
+              <button 
+                onClick={() => {
+                  scrollToId('compare');
+                  triggerNotification("Performance Dashboard coming soon in Phase-2");
+                }}
+                className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition-all font-medium"
+              >
                 View Performance
               </button>
             </div>
@@ -344,6 +372,53 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
           
           {/* Section Decoration */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[600px] bg-brand-gold/5 blur-[150px] rounded-full pointer-events-none -z-10" />
+        </section>
+
+        {/* Global Registration Section */}
+        <section id="join" className="py-24 relative overflow-hidden bg-gradient-to-b from-transparent to-brand-midnight">
+          <div className="container mx-auto px-6">
+            <div className="max-w-4xl mx-auto rounded-[2.5rem] bg-white/[0.02] border border-white/5 p-8 md:p-16 backdrop-blur-xl relative overflow-hidden">
+              {/* Accents */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-terracotta-start/5 blur-[100px] -z-10" />
+              
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                  <h2 className="font-display text-4xl font-bold mb-6">Begin Your Wealth Journey</h2>
+                  <p className="text-white/50 text-lg mb-8">
+                    Join our exclusive network of global growth seekers. Intelligence that moves as fast as the markets.
+                  </p>
+                  <div className="space-y-4">
+                    {[
+                      "Neural Jurisdiction Analysis",
+                      "Daily Resource Allocation Insights",
+                      "Tax Optimization Strategies",
+                      "Confidential Growth Network"
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-3 text-sm text-white/70">
+                        <CheckCircle2 className="w-5 h-5 text-brand-gold" />
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-white/40">Full Name</label>
+                    <input type="text" placeholder="John Doe" className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-white/40">Neural Email Address</label>
+                    <input type="email" placeholder="john@nebula.com" className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all" />
+                  </div>
+                  <button className="w-full py-4 bg-brand-gold text-brand-midnight font-bold rounded-xl hover:bg-white transition-all shadow-xl shadow-brand-gold/10">
+                    REQUEST PRIVATE ACCESS
+                  </button>
+                  <p className="text-[10px] text-center text-white/20 uppercase tracking-widest">Initial allocation limited to premium cohorts</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Footer */}
@@ -524,6 +599,99 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               </div>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Login Modal */}
+      <AnimatePresence>
+        {isLoginOpen && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsLoginOpen(false)}
+              className="absolute inset-0 bg-brand-midnight/90 backdrop-blur-xl"
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-md bg-brand-midnight border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl p-8 md:p-12"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/10 blur-[50px] -z-10" />
+              
+              <button 
+                onClick={() => setIsLoginOpen(false)}
+                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all z-20"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/20 mx-auto mb-6">
+                  <Lock className="text-brand-gold w-8 h-8" />
+                </div>
+                <h3 className="text-3xl font-display font-bold text-white mb-2">Welcome Back</h3>
+                <p className="text-white/40 text-sm">Access your neural intelligence dashboard.</p>
+              </div>
+
+              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/40 flex items-center gap-2">
+                    <Mail className="w-3 h-3" /> Email Address
+                  </label>
+                  <input 
+                    type="email" 
+                    placeholder="name@company.com" 
+                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold/50 focus:outline-none transition-all placeholder:text-white/10"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/40 flex items-center gap-2">
+                    <Lock className="w-3 h-3" /> Secure Password
+                  </label>
+                  <input 
+                    type="password" 
+                    placeholder="••••••••" 
+                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold/50 focus:outline-none transition-all placeholder:text-white/10"
+                  />
+                </div>
+                <button className="w-full py-4 bg-brand-gold text-brand-midnight font-bold rounded-xl hover:bg-white transition-all shadow-xl shadow-brand-gold/20">
+                  SECURE AUTHENTICATION
+                </button>
+              </form>
+
+              <div className="mt-8 flex justify-between items-center text-[10px] text-white/30 uppercase tracking-widest">
+                <button className="hover:text-brand-gold transition-colors">Forgot Access?</button>
+                <button 
+                  onClick={() => {
+                    setIsLoginOpen(false);
+                    scrollToId('join');
+                  }}
+                  className="hover:text-brand-gold transition-colors"
+                >
+                  Create Account
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Global Notifications */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 50, x: '-50%' }}
+            className="fixed bottom-12 left-1/2 z-[200] px-6 py-3 bg-brand-midnight border border-brand-gold/30 rounded-full text-brand-gold font-bold text-xs tracking-widest shadow-2xl backdrop-blur-xl flex items-center gap-3"
+          >
+            <div className="w-2 h-2 rounded-full bg-brand-gold animate-ping" />
+            {notificationMsg}
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
