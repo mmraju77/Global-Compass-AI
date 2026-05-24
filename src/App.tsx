@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3 } from "lucide-react";
+import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 
@@ -139,6 +139,80 @@ export default function App() {
 
   const [compareA, setCompareA] = useState<CountryData | null>(null);
   const [compareB, setCompareB] = useState<CountryData | null>(null);
+  const [savedReports, setSavedReports] = useState<any[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const fetchSavedReports = async () => {
+    const supabase = getSupabase();
+    if (!supabase || !user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('saved_reports')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setSavedReports(data || []);
+    } catch (err: any) {
+      console.error("Error fetching saved reports:", err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchSavedReports();
+    } else {
+      setSavedReports([]);
+    }
+  }, [user]);
+
+  const handleSaveReport = async () => {
+    if (!user) {
+      triggerNotification("Please request private access to save reports.");
+      return;
+    }
+
+    if (!compareA || !compareB) return;
+
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    try {
+      setIsSaving(true);
+      const { error } = await supabase
+        .from('saved_reports')
+        .insert([
+          { 
+            user_id: user.id, 
+            country_a: compareA.country_name, 
+            country_b: compareB.country_name 
+          }
+        ]);
+
+      if (error) throw error;
+      triggerNotification("Strategic Intelligence Saved to Archives.");
+      fetchSavedReports();
+    } catch (err: any) {
+      triggerNotification(err.message || "Failed to save intelligence report.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const loadSavedReport = (report: any) => {
+    const countryA = countries.find(c => c.country_name === report.country_a);
+    const countryB = countries.find(c => c.country_name === report.country_b);
+
+    if (countryA && countryB) {
+      setCompareA(countryA);
+      setCompareB(countryB);
+      scrollToId('compare');
+      triggerNotification(`Reloading: ${report.country_a} vs ${report.country_b}`);
+    } else {
+      triggerNotification("One or more jurisdictions have been updated in the neural engine.");
+    }
+  };
 
   const scrollToId = (id: string) => {
     const element = document.getElementById(id);
@@ -354,6 +428,9 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
             <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-slate-400 transition-colors">About Us</a>
             <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-slate-400 transition-colors">Jurisdictions</a>
+            {user && (
+              <a href="#archives" onClick={(e) => { e.preventDefault(); scrollToId('archives'); }} className="hover:text-amber-600 transition-colors">My Archives</a>
+            )}
             {user ? (
               <div className="flex items-center gap-4">
                 <span className="text-amber-600 font-bold">Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'Member'}</span>
@@ -656,6 +733,28 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       </div>
                     </div>
                   </motion.div>
+
+                  {/* Save Report Action */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1 }}
+                    className="mt-8 flex justify-center"
+                  >
+                    <button 
+                      onClick={handleSaveReport}
+                      disabled={isSaving}
+                      className="group relative flex items-center gap-3 px-10 py-5 rounded-2xl bg-amber-600 shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-95 transition-all text-brand-midnight font-bold overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      {isSaving ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <FileText className="w-5 h-5" />
+                      )}
+                      <span className="relative tracking-widest text-sm uppercase">Save Comparison Report</span>
+                    </button>
+                  </motion.div>
                 </>
               ) : (
                 <div className="py-8 text-center">
@@ -726,6 +825,72 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             </div>
           </div>
         </section>
+
+        {/* Strategic Archives Section - Only for Authenticated Users */}
+        {user && savedReports.length > 0 && (
+          <section id="archives" className="py-24 relative">
+            <div className="container mx-auto px-6">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-600/10 border border-amber-600/20 text-amber-600 text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Personal Strategic Vault</div>
+                  <h2 className="font-display text-4xl font-bold tracking-tight text-slate-400">Saved Intelligence Archives</h2>
+                </div>
+                <p className="text-slate-500 text-sm max-w-sm uppercase tracking-widest leading-relaxed">
+                  Historical Jurisdictional comparisons curated for your specific neural focus.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {savedReports.map((report) => (
+                  <motion.div
+                    key={report.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    onClick={() => loadSavedReport(report)}
+                    className="group p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-amber-600/30 hover:bg-white/[0.04] transition-all cursor-pointer relative overflow-hidden"
+                  >
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-amber-600/5 blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-amber-600/20 group-hover:border-amber-600/40 transition-all">
+                        <History className="w-5 h-5 text-slate-500 group-hover:text-amber-600" />
+                      </div>
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                        {new Date(report.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Alpha</div>
+                        <div className="text-lg font-display font-bold text-slate-400 group-hover:text-amber-600 transition-colors uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+                          {report.country_a}
+                        </div>
+                      </div>
+                      
+                      <div className="text-amber-600/30 font-bold italic text-sm">VS</div>
+
+                      <div className="flex-1 text-right">
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Beta</div>
+                        <div className="text-lg font-display font-bold text-slate-400 group-hover:text-amber-600 transition-colors uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+                          {report.country_b}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+                      <div className="flex items-center gap-1 text-amber-600 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0">
+                        Load Neural Model <ChevronRight className="w-3 h-3" />
+                      </div>
+                      <Bookmark className="w-3 h-3 text-slate-600" />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Leadership Profile */}
         <section id="about" className="py-24 relative overflow-hidden">
