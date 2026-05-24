@@ -31,6 +31,14 @@ const MOCK_DATA: CountryData[] = [
   },
 ];
 
+const countryMetrics: Record<string, { rent: string; healthcare: string; safety: string; internet: string }> = {
+  "Switzerland": { rent: "$2,800 / mo", healthcare: "89 / 100", safety: "91 / 100", internet: "145 Mbps" },
+  "Singapore": { rent: "$3,200 / mo", healthcare: "92 / 100", safety: "93 / 100", internet: "210 Mbps" },
+  "UAE": { rent: "$2,100 / mo", healthcare: "78 / 100", safety: "88 / 100", internet: "120 Mbps" },
+  "Germany": { rent: "$1,400 / mo", healthcare: "85 / 100", safety: "82 / 100", internet: "95 Mbps" },
+  "India": { rent: "$450 / mo", healthcare: "68 / 100", safety: "72 / 100", internet: "85 Mbps" }
+};
+
 // Lazy initialization of Supabase client
 let supabaseClient: any = null;
 function getSupabase() {
@@ -711,7 +719,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Home className="w-3 h-3 text-brand-gold" /> Avg Rent
                     </div>
                     <div className="text-xl font-display font-bold text-white">
-                      {formatCurrency(selectedCountry.rent_cost_usd)} <span className="text-[10px] text-white/20 font-normal">/ mo</span>
+                      {countryMetrics[selectedCountry.country_name]?.rent || "N/A"}
                     </div>
                   </div>
 
@@ -720,8 +728,9 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <HeartPulse className="w-3 h-3 text-brand-gold" /> Healthcare
                     </div>
                     <div className="flex items-center gap-2">
-                       <span className="text-xl font-display font-bold text-white">{selectedCountry.healthcare_score || 'N/A'}</span>
-                       <span className="text-[10px] text-white/20 font-normal">/ 100</span>
+                       <span className="text-xl font-display font-bold text-white">
+                         {countryMetrics[selectedCountry.country_name]?.healthcare || "N/A"}
+                       </span>
                     </div>
                   </div>
 
@@ -730,7 +739,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Shield className="w-3 h-3 text-brand-gold" /> Safety
                     </div>
                     <div className="text-xl font-display font-bold text-white">
-                      {selectedCountry.safety_rating || 'N/A'} <span className="text-white/20 text-[10px] font-normal">/ 100</span>
+                      {countryMetrics[selectedCountry.country_name]?.safety || "N/A"}
                     </div>
                   </div>
 
@@ -739,7 +748,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Wifi className="w-3 h-3 text-brand-gold" /> Connectivity
                     </div>
                     <div className="text-xl font-display font-bold text-white">
-                      {selectedCountry.internet_speed_mbps || 'N/A'} <span className="text-white/20 text-[10px] font-normal">Mbps</span>
+                      {countryMetrics[selectedCountry.country_name]?.internet || "N/A"}
                     </div>
                   </div>
                 </div>
