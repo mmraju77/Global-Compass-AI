@@ -332,17 +332,17 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
         <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
           <div className="flex items-center gap-6">
             <img src="/logo.png" className="h-16 w-auto object-contain rounded-xl shadow-2xl shadow-brand-gold/20 bg-gradient-to-br from-brand-gold/20 to-terracotta-end/20 p-2 border border-brand-gold/30" alt="Logo" />
-            <span className="font-display text-2xl md:text-4xl font-bold tracking-tight">GLOBAL COMPASS AI</span>
+            <span className="font-display text-2xl md:text-4xl font-bold tracking-tight text-slate-400">GLOBAL COMPASS AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-            <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-white transition-colors">About Us</a>
-            <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-white transition-colors">Jurisdictions</a>
+            <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-slate-200 transition-colors">About Us</a>
+            <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-slate-200 transition-colors">Jurisdictions</a>
             {user ? (
               <div className="flex items-center gap-4">
                 <span className="text-brand-gold font-bold">Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'Member'}</span>
                 <button 
                   onClick={handleLogout}
-                  className="px-5 py-2 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-white transition-all"
+                  className="px-5 py-2 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-slate-200 transition-all"
                 >
                   Logout
                 </button>
@@ -350,7 +350,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             ) : (
               <button 
                 onClick={() => setIsLoginOpen(true)}
-                className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-white transition-all"
+                className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-slate-200 transition-all"
               >
                 Login
               </button>
@@ -371,7 +371,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             </div>
             <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
               Navigate the Future of <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-slate-400 to-terracotta-start">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600/80 via-slate-500 to-terracotta-start/80">
                 Global Wealth & Growth
               </span>
             </h1>
@@ -406,7 +406,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             {/* Headline */}
             <div className="flex flex-col md:flex-row justify-between items-end gap-8 font-display">
               <div className="max-w-xl">
-                <h2 className="text-4xl font-bold mb-4 text-white">Strategic Jurisdictions</h2>
+                <h2 className="text-4xl font-bold mb-4 text-slate-400">Strategic Jurisdictions</h2>
                 <p className="text-gray-400 text-lg">
                   Real-time comparison of premium growth corridors analyzed by our native AI engine.
                 </p>
@@ -429,7 +429,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <select 
                     value={compareA?.country_name || ""}
                     onChange={(e) => setCompareA(countries.find(c => c.country_name === e.target.value) || null)}
-                    className="w-full px-6 py-4 rounded-xl bg-brand-midnight border border-white/10 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                    className="w-full px-6 py-4 rounded-xl bg-brand-midnight border border-white/10 text-slate-400 font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
                   >
                     <option value="">Select Country A</option>
                     {countries.map(c => (
@@ -447,7 +447,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <select 
                     value={compareB?.country_name || ""}
                     onChange={(e) => setCompareB(countries.find(c => c.country_name === e.target.value) || null)}
-                    className="w-full px-6 py-4 rounded-xl bg-brand-midnight border border-white/10 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                    className="w-full px-6 py-4 rounded-xl bg-brand-midnight border border-white/10 text-slate-400 font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
                   >
                     <option value="">Select Country B</option>
                     {countries.map(c => (
@@ -500,7 +500,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex-1 text-center space-y-1">
                             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareA.country_name}</div>
-                            <div className={`text-lg font-display font-bold text-amber-600 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
+                            <div className={`text-lg font-display font-bold text-amber-600/80 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                               {displayA || "N/A"}
                             </div>
                           </div>
@@ -509,7 +509,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
 
                           <div className="flex-1 text-center space-y-1">
                             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareB.country_name}</div>
-                            <div className={`text-lg font-display font-bold text-slate-400 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
+                            <div className={`text-lg font-display font-bold text-slate-400/80 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                               {displayB || "N/A"}
                             </div>
                           </div>
@@ -520,11 +520,11 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           {valA + valB > 0 ? (
                             <>
                               <div 
-                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-amber-600' : 'bg-white/20'}`} 
+                                className={`h-full transition-all duration-700 ${isABetter ? 'bg-amber-600/70' : 'bg-white/10'}`} 
                                 style={{ width: `${(valA / (valA + valB)) * 100}%` }} 
                               />
                               <div 
-                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-slate-400' : 'bg-white/20'}`} 
+                                className={`h-full transition-all duration-700 ${isBBetter ? 'bg-slate-400/70' : 'bg-white/10'}`} 
                                 style={{ width: `${(valB / (valA + valB)) * 100}%` }} 
                               />
                             </>
@@ -582,18 +582,18 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                             <span className="font-medium text-lg text-slate-400">{row.country_name}</span>
                           </div>
                         </td>
-                        <td className="px-8 py-6 text-brand-gold font-mono font-bold">{row.annual_growth}</td>
+                        <td className="px-8 py-6 text-brand-gold font-mono font-bold opacity-80">{row.annual_growth}</td>
                         <td className="px-8 py-6 text-slate-400">{row.stability_score}</td>
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-2">
                             <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
-                              <div className="h-full bg-brand-gold" style={{ width: `${row.compass_index}%` }} />
+                              <div className="h-full bg-amber-600/70" style={{ width: `${row.compass_index}%` }} />
                             </div>
-                            <span className="text-xs font-bold">{row.compass_index}</span>
+                            <span className="text-xs font-bold text-slate-400">{row.compass_index}</span>
                           </div>
                         </td>
                         <td className="px-8 py-6">
-                          <span className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold">
+                          <span className="inline-block px-3 py-1 rounded-full bg-slate-800/40 border border-slate-700/50 text-slate-300 text-xs font-bold">
                             {row.strategic_status}
                           </span>
                         </td>
@@ -610,8 +610,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
         <section id="about" className="py-24 relative overflow-hidden">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16 px-4">
-              <h2 className="text-brand-gold text-sm font-bold tracking-[0.3em] uppercase mb-4">Leadership Intelligence</h2>
-              <h3 className="font-display text-4xl md:text-5xl font-bold tracking-tight">The Architect of Global Strategy</h3>
+              <h2 className="text-brand-gold text-sm font-bold tracking-[0.3em] uppercase mb-4 opacity-70">Leadership Intelligence</h2>
+              <h3 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-400">The Architect of Global Strategy</h3>
             </div>
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
@@ -711,7 +711,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       value={regName}
                       onChange={(e) => setRegName(e.target.value)}
                       placeholder="John Doe" 
-                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-white" 
+                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-slate-400" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -722,7 +722,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
                       placeholder="john@nebula.com" 
-                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-white" 
+                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-slate-400" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -733,7 +733,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
                       placeholder="••••••••" 
-                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-white" 
+                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-slate-400" 
                     />
                   </div>
                   <button 
@@ -784,7 +784,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 </div>
               </div>
               <div>
-                <h4 className="font-bold mb-6 text-white text-sm uppercase tracking-widest">Solutions</h4>
+                <h4 className="font-bold mb-6 text-slate-400 text-sm uppercase tracking-widest">Solutions</h4>
                 <ul className="space-y-4 text-gray-400 text-sm">
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> Wealth Migration</a></li>
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> Jurisdiction Audits</a></li>
@@ -793,7 +793,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold mb-6 text-white text-sm uppercase tracking-widest">Company</h4>
+                <h4 className="font-bold mb-6 text-slate-400 text-sm uppercase tracking-widest">Company</h4>
                 <ul className="space-y-4 text-gray-400 text-sm">
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> Privacy Policy</a></li>
                   <li><a href="#" className="hover:text-brand-gold flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-brand-gold opacity-0 group-hover:opacity-100 transition-all" /> Security Standards</a></li>
@@ -861,7 +861,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               {/* Close Button */}
               <button 
                 onClick={() => setSelectedCountry(null)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white transition-all z-20"
+                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-slate-200 transition-all z-20"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -873,7 +873,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </div>
                   <div>
                     <div className="text-brand-gold text-[10px] font-bold tracking-[0.2em] uppercase">Intelligence Report</div>
-                    <h3 className="text-3xl font-display font-bold text-white">{selectedCountry.country_name}</h3>
+                    <h3 className="text-3xl font-display font-bold text-slate-400">{selectedCountry.country_name}</h3>
                   </div>
                 </div>
 
@@ -882,7 +882,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <DollarSign className="w-3 h-3 text-brand-gold" /> Avg Salary
                     </div>
-                    <div className="text-xl font-display font-bold text-white">
+                    <div className="text-xl font-display font-bold text-slate-400">
                       {formatCurrency(selectedCountry.average_salary_usd)}
                     </div>
                   </div>
@@ -891,7 +891,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <Percent className="w-3 h-3 text-brand-gold" /> Tax Rate
                     </div>
-                    <div className="text-xl font-display font-bold text-white">
+                    <div className="text-xl font-display font-bold text-slate-400">
                       {selectedCountry.tax_rate_percent !== undefined ? `${selectedCountry.tax_rate_percent}%` : 'N/A'}
                     </div>
                   </div>
@@ -900,7 +900,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <Home className="w-3 h-3 text-brand-gold" /> Avg Rent
                     </div>
-                    <div className="text-xl font-display font-bold text-white">
+                    <div className="text-xl font-display font-bold text-slate-400">
                       {countryMetrics[selectedCountry.country_name]?.rent || "N/A"}
                     </div>
                   </div>
@@ -910,7 +910,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <HeartPulse className="w-3 h-3 text-brand-gold" /> Healthcare
                     </div>
                     <div className="flex items-center gap-2">
-                       <span className="text-xl font-display font-bold text-white">
+                       <span className="text-xl font-display font-bold text-slate-400">
                          {countryMetrics[selectedCountry.country_name]?.healthcare || "N/A"}
                        </span>
                     </div>
@@ -920,7 +920,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <Shield className="w-3 h-3 text-brand-gold" /> Safety
                     </div>
-                    <div className="text-xl font-display font-bold text-white">
+                    <div className="text-xl font-display font-bold text-slate-400">
                       {countryMetrics[selectedCountry.country_name]?.safety || "N/A"}
                     </div>
                   </div>
@@ -929,7 +929,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
                       <Wifi className="w-3 h-3 text-brand-gold" /> Connectivity
                     </div>
-                    <div className="text-xl font-display font-bold text-white">
+                    <div className="text-xl font-display font-bold text-slate-400">
                       {countryMetrics[selectedCountry.country_name]?.internet || "N/A"}
                     </div>
                   </div>
@@ -942,7 +942,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </div>
                   <div className="flex justify-between items-center p-4 rounded-xl bg-white/[0.02] border border-white/5">
                     <div className="text-sm text-slate-400">Annual GDP Growth</div>
-                    <div className="text-sm font-bold text-white font-mono">{selectedCountry.annual_growth}</div>
+                    <div className="text-sm font-bold text-slate-400 font-mono">{selectedCountry.annual_growth}</div>
                   </div>
                 </div>
 
@@ -955,7 +955,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   </button>
                   <button 
                     onClick={() => setSelectedCountry(null)}
-                    className="px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium rounded-xl transition-all"
+                    className="px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 font-medium rounded-xl transition-all"
                   >
                     CLOSE
                   </button>
@@ -988,7 +988,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
               
               <button 
                 onClick={() => setIsLoginOpen(false)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all z-20"
+                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-500 hover:text-slate-300 transition-all z-20"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -997,7 +997,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/20 mx-auto mb-6">
                   <Lock className="text-brand-gold w-8 h-8" />
                 </div>
-                <h3 className="text-3xl font-display font-bold text-white mb-2">Welcome Back</h3>
+                <h3 className="text-3xl font-display font-bold text-slate-400 mb-2">Welcome Back</h3>
                 <p className="text-gray-400 text-sm">Access your neural intelligence dashboard.</p>
               </div>
 
@@ -1012,7 +1012,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@company.com" 
-                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold/50 focus:outline-none transition-all placeholder:text-slate-500 text-white"
+                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold/50 focus:outline-none transition-all placeholder:text-slate-500 text-slate-400"
                   />
                 </div>
                 <div className="space-y-2">
@@ -1025,7 +1025,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••" 
-                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold/50 focus:outline-none transition-all placeholder:text-slate-500 text-white"
+                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold/50 focus:outline-none transition-all placeholder:text-slate-500 text-slate-400"
                   />
                 </div>
                 <button 
