@@ -142,6 +142,48 @@ export default function App() {
   const [savedReports, setSavedReports] = useState<any[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Admin State
+  const isAdmin = user?.email === "MooVi7g@gmail.com";
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+  const [isUpserting, setIsUpserting] = useState(false);
+  const [adminFormData, setAdminFormData] = useState<Partial<CountryData>>({
+    country_name: "",
+    annual_growth: "+0.0%",
+    stability_score: "Stable",
+    compass_index: 50,
+    strategic_status: "Neutral",
+    average_salary_usd: 50000,
+    tax_rate_percent: 20,
+    rent_cost_usd: 1500,
+    healthcare_score: 70,
+    safety_rating: 70,
+    internet_speed_mbps: 100
+  });
+
+  const handleAdminUpsert = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const supabase = getSupabase();
+    if (!supabase || !isAdmin) return;
+
+    try {
+      setIsUpserting(true);
+      const { error } = await supabase
+        .from('countries')
+        .upsert([adminFormData], { onConflict: 'country_name' });
+
+      if (error) throw error;
+      triggerNotification("Jurisdiction Matrix Successfully Synchronized.");
+      setIsAdminPanelOpen(false);
+      // Refresh countries list
+      const { data } = await supabase.from('countries').select('*').order('compass_index', { ascending: false });
+      if (data) setCountries(data);
+    } catch (err: any) {
+      triggerNotification(err.message || "Matrix Synchronization Failure.");
+    } finally {
+      setIsUpserting(false);
+    }
+  };
+
   const fetchSavedReports = async (overrideUser?: any) => {
     const supabase = getSupabase();
     const activeUser = overrideUser || user;
@@ -438,6 +480,14 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-slate-400 transition-colors">Jurisdictions</a>
             {user && (
               <a href="#archives" onClick={(e) => { e.preventDefault(); scrollToId('archives'); }} className="hover:text-amber-600 transition-colors">My Archives</a>
+            )}
+            {isAdmin && (
+              <button 
+                onClick={() => setIsAdminPanelOpen(true)}
+                className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-600/10 border border-amber-600/30 text-amber-600 text-xs font-bold hover:bg-amber-600/20 transition-all uppercase tracking-widest"
+              >
+                <Lock className="w-3 h-3" /> Admin Panel
+              </button>
             )}
             {user ? (
               <div className="flex items-center gap-4">
@@ -1140,7 +1190,190 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
         </footer>
       </div>
 
-      {/* Country Insights Modal */}
+        {/* Admin Control Center Modal */}
+        <AnimatePresence>
+          {isAdminPanelOpen && (
+            <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsAdminPanelOpen(false)}
+                className="absolute inset-0 bg-brand-midnight/90 backdrop-blur-xl"
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-3xl bg-brand-midnight border border-white/10 shadow-2xl flex flex-col"
+              >
+                <div className="p-8 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-amber-600/20 flex items-center justify-center border border-amber-600/30">
+                      <Lock className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-display font-bold text-slate-400">Admin Control Center</h2>
+                      <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Jurisdictional Data Override Matrix</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => setIsAdminPanelOpen(false)}
+                    className="p-2 rounded-full hover:bg-white/5 transition-colors text-slate-500 hover:text-white"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                  <form onSubmit={handleAdminUpsert} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <h3 className="text-xs font-bold text-amber-600 uppercase tracking-[0.2em] mb-4">Core Identification</h3>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Country Name</label>
+                        <input 
+                          type="text"
+                          required
+                          value={adminFormData.country_name}
+                          onChange={(e) => setAdminFormData({...adminFormData, country_name: e.target.value})}
+                          className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                          placeholder="e.g., Switzerland"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Annual Growth</label>
+                          <input 
+                            type="text"
+                            value={adminFormData.annual_growth}
+                            onChange={(e) => setAdminFormData({...adminFormData, annual_growth: e.target.value})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="+2.4%"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Stability Score</label>
+                          <input 
+                            type="text"
+                            value={adminFormData.stability_score}
+                            onChange={(e) => setAdminFormData({...adminFormData, stability_score: e.target.value})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="Maximum"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Compass Index (0-100)</label>
+                          <input 
+                            type="number"
+                            value={adminFormData.compass_index}
+                            onChange={(e) => setAdminFormData({...adminFormData, compass_index: parseInt(e.target.value)})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Strategic Status</label>
+                          <input 
+                            type="text"
+                            value={adminFormData.strategic_status}
+                            onChange={(e) => setAdminFormData({...adminFormData, strategic_status: e.target.value})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="Premium"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <h3 className="text-xs font-bold text-amber-600 uppercase tracking-[0.2em] mb-4">Economic & Living Metrics</h3>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Avg Annual Salary ($)</label>
+                          <input 
+                            type="number"
+                            value={adminFormData.average_salary_usd}
+                            onChange={(e) => setAdminFormData({...adminFormData, average_salary_usd: parseInt(e.target.value)})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Tax Rate (%)</label>
+                          <input 
+                            type="number"
+                            value={adminFormData.tax_rate_percent}
+                            onChange={(e) => setAdminFormData({...adminFormData, tax_rate_percent: parseInt(e.target.value)})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Monthly Rent ($)</label>
+                          <input 
+                            type="number"
+                            value={adminFormData.rent_cost_usd}
+                            onChange={(e) => setAdminFormData({...adminFormData, rent_cost_usd: parseInt(e.target.value)})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Healthcare Score (0-100)</label>
+                          <input 
+                            type="number"
+                            value={adminFormData.healthcare_score}
+                            onChange={(e) => setAdminFormData({...adminFormData, healthcare_score: parseInt(e.target.value)})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Safety Rating (0-100)</label>
+                          <input 
+                            type="number"
+                            value={adminFormData.safety_rating}
+                            onChange={(e) => setAdminFormData({...adminFormData, safety_rating: parseInt(e.target.value)})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Internet Speed (Mbps)</label>
+                          <input 
+                            type="number"
+                            value={adminFormData.internet_speed_mbps}
+                            onChange={(e) => setAdminFormData({...adminFormData, internet_speed_mbps: parseInt(e.target.value)})}
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="md:col-span-2 pt-6 flex justify-end gap-4">
+                      <button 
+                        type="button"
+                        onClick={() => setIsAdminPanelOpen(false)}
+                        className="px-8 py-3 rounded-xl border border-white/10 text-slate-400 font-bold hover:bg-white/5 transition-all uppercase tracking-widest text-xs"
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        type="submit"
+                        disabled={isUpserting}
+                        className="px-10 py-3 rounded-xl bg-amber-600 text-brand-midnight font-bold shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-xs flex items-center gap-2"
+                      >
+                        {isUpserting ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+                        {isUpserting ? "Synchronizing Matrix..." : "Override Jurisdiction Matrix"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Country Insights Modal */}
       <AnimatePresence>
         {selectedCountry && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
