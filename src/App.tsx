@@ -157,23 +157,28 @@ export default function App() {
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const [isUpserting, setIsUpserting] = useState(false);
 
-  // Individual Form States
+  // Individual Form States - Use strings for inputs to allow empty/clearing
   const [adminCountryName, setAdminCountryName] = useState("");
   const [adminAnnualGrowth, setAdminAnnualGrowth] = useState("+0.0%");
   const [adminStabilityScore, setAdminStabilityScore] = useState("Stable");
-  const [adminCompassIndex, setAdminCompassIndex] = useState(50);
+  const [adminCompassIndex, setAdminCompassIndex] = useState<string | number>(50);
   const [adminStrategicStatus, setAdminStrategicStatus] = useState("Neutral");
-  const [adminSalary, setAdminSalary] = useState(50000);
-  const [adminTax, setAdminTax] = useState(20);
-  const [adminRent, setAdminRent] = useState(1500);
-  const [adminHealthcare, setAdminHealthcare] = useState(70);
-  const [adminSafety, setAdminSafety] = useState(70);
-  const [adminInternet, setAdminInternet] = useState(100);
+  const [adminSalary, setAdminSalary] = useState<string | number>(50000);
+  const [adminTax, setAdminTax] = useState<string | number>(20);
+  const [adminRent, setAdminRent] = useState<string | number>(1500);
+  const [adminHealthcare, setAdminHealthcare] = useState<string | number>(70);
+  const [adminSafety, setAdminSafety] = useState<string | number>(70);
+  const [adminInternet, setAdminInternet] = useState<string | number>(100);
 
   // Intelligent Auto-Populate on Type
   const handleCountryNameChange = (newName: string) => {
     setAdminCountryName(newName);
-    if (!newName.trim()) return;
+    
+    // If empty, reset all fields
+    if (!newName.trim()) {
+      resetAdminForm();
+      return;
+    }
 
     // Robust case-insensitive lookup
     const existing = countries.find(c => c.country_name?.toLowerCase() === newName.trim().toLowerCase());
@@ -190,7 +195,24 @@ export default function App() {
       setAdminHealthcare(existing.healthcare || 0);
       setAdminSafety(existing.safety || 0);
       setAdminInternet(existing.internet || 0);
+    } else {
+      // If user is typing something that doesn't match yet, DON'T clear 
+      // if they just deleted a character, but DO allow clearing if brand new
     }
+  };
+
+  const resetAdminForm = () => {
+    setAdminCountryName("");
+    setAdminAnnualGrowth("+0.0%");
+    setAdminStabilityScore("Stable");
+    setAdminCompassIndex(50);
+    setAdminStrategicStatus("Neutral");
+    setAdminSalary(50000);
+    setAdminTax(20);
+    setAdminRent(1500);
+    setAdminHealthcare(70);
+    setAdminSafety(70);
+    setAdminInternet(100);
   };
 
   const handleAdminUpsert = async (e: React.FormEvent) => {
@@ -1331,7 +1353,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <input 
                             type="number"
                             value={adminCompassIndex}
-                            onChange={(e) => setAdminCompassIndex(parseInt(e.target.value) || 0)}
+                            onChange={(e) => setAdminCompassIndex(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1356,7 +1378,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <input 
                             type="number"
                             value={adminSalary}
-                            onChange={(e) => setAdminSalary(parseInt(e.target.value) || 0)}
+                            onChange={(e) => setAdminSalary(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1365,7 +1387,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <input 
                             type="number"
                             value={adminTax}
-                            onChange={(e) => setAdminTax(parseInt(e.target.value) || 0)}
+                            onChange={(e) => setAdminTax(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1376,7 +1398,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <input 
                             type="number"
                             value={adminRent}
-                            onChange={(e) => setAdminRent(parseInt(e.target.value) || 0)}
+                            onChange={(e) => setAdminRent(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1385,7 +1407,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <input 
                             type="number"
                             value={adminHealthcare}
-                            onChange={(e) => setAdminHealthcare(parseInt(e.target.value) || 0)}
+                            onChange={(e) => setAdminHealthcare(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1396,7 +1418,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <input 
                             type="number"
                             value={adminSafety}
-                            onChange={(e) => setAdminSafety(parseInt(e.target.value) || 0)}
+                            onChange={(e) => setAdminSafety(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1405,7 +1427,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <input 
                             type="number"
                             value={adminInternet}
-                            onChange={(e) => setAdminInternet(parseInt(e.target.value) || 0)}
+                            onChange={(e) => setAdminInternet(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
