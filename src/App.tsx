@@ -175,18 +175,21 @@ export default function App() {
     setAdminCountryName(newName);
     if (!newName.trim()) return;
 
-    const found = countries.find(c => c.country_name?.toLowerCase() === newName.trim().toLowerCase());
-    if (found) {
-      setAdminAnnualGrowth(found.annual_growth || "+0.0%");
-      setAdminStabilityScore(found.stability_score || "Stable");
-      setAdminCompassIndex(found.compass_index || 50);
-      setAdminStrategicStatus(found.strategic_status || "Neutral");
-      setAdminSalary(found.average_salary_usd || 0);
-      setAdminTax(found.tax_rate_percent || 0);
-      setAdminRent(found.rent || 0);
-      setAdminHealthcare(found.healthcare || 0);
-      setAdminSafety(found.safety || 0);
-      setAdminInternet(found.internet || 0);
+    // Robust case-insensitive lookup
+    const existing = countries.find(c => c.country_name?.toLowerCase() === newName.trim().toLowerCase());
+    
+    if (existing) {
+      // Total Hydration of all 11 metrics
+      setAdminAnnualGrowth(existing.annual_growth || "+0.0%");
+      setAdminStabilityScore(existing.stability_score || "Stable");
+      setAdminCompassIndex(existing.compass_index || 50);
+      setAdminStrategicStatus(existing.strategic_status || "Neutral");
+      setAdminSalary(existing.average_salary_usd || 0);
+      setAdminTax(existing.tax_rate_percent || 0);
+      setAdminRent(existing.rent || 0);
+      setAdminHealthcare(existing.healthcare || 0);
+      setAdminSafety(existing.safety || 0);
+      setAdminInternet(existing.internet || 0);
     }
   };
 
@@ -197,21 +200,25 @@ export default function App() {
 
     try {
       setIsUpserting(true);
+      const cleanName = adminCountryName.trim();
       
-      // Sanitized Payload Construction
+      // Safe-Guard: Check if this is an existing country to provide fallbacks for empty fields
+      const existingRef = countries.find(c => c.country_name?.toLowerCase() === cleanName.toLowerCase());
+      
+      // Sanitized Payload Construction with "Blank Protection"
       const payload = {
-        country_name: adminCountryName.trim(),
-        annual_growth: adminAnnualGrowth || "+0.0%",
-        stability_score: adminStabilityScore || "Stable",
-        compass_index: Number(adminCompassIndex) || 50,
-        strategic_status: adminStrategicStatus || "Neutral",
-        average_salary_usd: Number(adminSalary) || 0,
-        tax_rate_percent: Number(adminTax) || 0,
-        rent: Number(adminRent) || 0,
-        healthcare: Number(adminHealthcare) || 0,
-        safety: Number(adminSafety) || 0,
-        internet: Number(adminInternet) || 0,
-        cost_of_living_score: 70 // Database schema safety fallback
+        country_name: cleanName,
+        annual_growth: adminAnnualGrowth || (existingRef?.annual_growth) || "+0.0%",
+        stability_score: adminStabilityScore || (existingRef?.stability_score) || "Stable",
+        compass_index: !isNaN(Number(adminCompassIndex)) ? Number(adminCompassIndex) : (existingRef?.compass_index || 50),
+        strategic_status: adminStrategicStatus || (existingRef?.strategic_status) || "Neutral",
+        average_salary_usd: !isNaN(Number(adminSalary)) ? Number(adminSalary) : (existingRef?.average_salary_usd || 0),
+        tax_rate_percent: !isNaN(Number(adminTax)) ? Number(adminTax) : (existingRef?.tax_rate_percent || 0),
+        rent: !isNaN(Number(adminRent)) ? Number(adminRent) : (existingRef?.rent || 0),
+        healthcare: !isNaN(Number(adminHealthcare)) ? Number(adminHealthcare) : (existingRef?.healthcare || 0),
+        safety: !isNaN(Number(adminSafety)) ? Number(adminSafety) : (existingRef?.safety || 0),
+        internet: !isNaN(Number(adminInternet)) ? Number(adminInternet) : (existingRef?.internet || 0),
+        cost_of_living_score: 70
       };
 
       const { error } = await supabase
@@ -220,10 +227,16 @@ export default function App() {
 
       if (error) throw error;
       
-      alert("Data Saved Successfully!");
+      alert("Matrix Overridden Successfully!");
       triggerNotification("Jurisdiction Matrix Successfully Synchronized.");
       
-      // Clear Form States
+      // Immediate Live State Refresh
+      const { data: freshData } = await supabase.from('countries').select('*').order('compass_index', { ascending: false });
+      if (freshData) setCountries(freshData);
+      
+      setIsAdminPanelOpen(false);
+      
+      // Clear Form States for next entry
       setAdminCountryName("");
       setAdminAnnualGrowth("+0.0%");
       setAdminStabilityScore("Stable");
@@ -235,12 +248,6 @@ export default function App() {
       setAdminHealthcare(70);
       setAdminSafety(70);
       setAdminInternet(100);
-
-      setIsAdminPanelOpen(false);
-      
-      // Immediate Live State Refresh
-      const { data: freshData } = await supabase.from('countries').select('*').order('compass_index', { ascending: false });
-      if (freshData) setCountries(freshData);
     } catch (err: any) {
       alert("Database Error: " + (err.message || "Unknown synchronization failure."));
       triggerNotification(err.message || "Matrix Synchronization Failure.");
