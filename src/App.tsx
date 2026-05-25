@@ -174,12 +174,32 @@ export default function App() {
   const [user, setUser] = useState<any>(null);
 
   // Dynamic Currency Configuration
-  const [selectedCurrency, setSelectedCurrency] = useState<'USD' | 'EUR' | 'INR' | 'AED'>('USD');
-  const CONVERSION_RATES = {
-    USD: { rate: 1, symbol: '$' },
-    EUR: { rate: 0.92, symbol: '€' },
-    INR: { rate: 83, symbol: '₹' },
-    AED: { rate: 3.67, symbol: 'د.إ' }
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
+  const CONVERSION_RATES: Record<string, { rate: number, symbol: string, name: string }> = {
+    USD: { rate: 1, symbol: '$', name: 'US Dollar' },
+    EUR: { rate: 0.92, symbol: '€', name: 'Euro' },
+    GBP: { rate: 0.79, symbol: '£', name: 'British Pound' },
+    INR: { rate: 83.20, symbol: '₹', name: 'Indian Rupee' },
+    AED: { rate: 3.67, symbol: 'د.إ', name: 'UAE Dirham' },
+    CHF: { rate: 0.91, symbol: 'CHF', name: 'Swiss Franc' },
+    JPY: { rate: 156.40, symbol: '¥', name: 'Japanese Yen' },
+    SGD: { rate: 1.35, symbol: 'S$', name: 'Singapore Dollar' },
+    CAD: { rate: 1.37, symbol: 'C$', name: 'Canadian Dollar' },
+    AUD: { rate: 1.51, symbol: 'A$', name: 'Australian Dollar' },
+    HKD: { rate: 7.82, symbol: 'HK$', name: 'Hong Kong Dollar' },
+    CNY: { rate: 7.24, symbol: '¥', name: 'Chinese Yuan' },
+    SAR: { rate: 3.75, symbol: 'SR', name: 'Saudi Riyal' },
+    QAR: { rate: 3.64, symbol: 'QR', name: 'Qatari Riyal' },
+    KRW: { rate: 1365, symbol: '₩', name: 'South Korean Won' },
+    BRL: { rate: 5.15, symbol: 'R$', name: 'Brazilian Real' },
+    MXN: { rate: 16.70, symbol: '$', name: 'Mexican Peso' },
+    ZAR: { rate: 18.40, symbol: 'R', name: 'South African Rand' },
+    TRY: { rate: 32.20, symbol: '₺', name: 'Turkish Lira' },
+    SEK: { rate: 10.75, symbol: 'kr', name: 'Swedish Krona' },
+    NOK: { rate: 10.70, symbol: 'kr', name: 'Norwegian Krone' },
+    DKK: { rate: 6.85, symbol: 'kr', name: 'Danish Krone' },
+    MYR: { rate: 4.70, symbol: 'RM', name: 'Malaysian Ringgit' },
+    NZD: { rate: 1.63, symbol: '$', name: 'New Zealand Dollar' }
   };
   
   // Auth Form State
@@ -826,19 +846,20 @@ export default function App() {
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3 bg-[#111111]/90 backdrop-blur-xl px-5 py-3 rounded-xl border border-[#d4af37]/40 hover:border-[#d4af37] transition-all group/select shadow-inner shadow-black">
+                <div className="relative flex items-center gap-3 bg-[#111111]/90 backdrop-blur-xl px-5 py-3 rounded-xl border border-[#d4af37]/40 hover:border-[#d4af37] transition-all group/select shadow-inner shadow-black">
                   <select 
                     value={selectedCurrency}
-                    onChange={(e) => setSelectedCurrency(e.target.value as any)}
-                    className="bg-transparent border-none text-sm font-bold text-white focus:outline-none cursor-pointer tracking-wider min-w-[140px] appearance-none"
+                    onChange={(e) => setSelectedCurrency(e.target.value)}
+                    className="bg-transparent border-none text-sm font-bold text-white focus:outline-none cursor-pointer tracking-wider min-w-[200px] appearance-none z-10"
                     style={{ backgroundImage: 'none' }}
                   >
-                    <option value="USD" className="bg-[#111111] text-white text-base">USD ($)</option>
-                    <option value="EUR" className="bg-[#111111] text-white text-base">EUR (€)</option>
-                    <option value="INR" className="bg-[#111111] text-white text-base">INR (₹)</option>
-                    <option value="AED" className="bg-[#111111] text-white text-base">AED (د.إ)</option>
+                    {Object.entries(CONVERSION_RATES).map(([code, config]) => (
+                      <option key={code} value={code} className="bg-[#111111] text-white text-base py-2">
+                        {code} ({config.symbol}) — {config.name}
+                      </option>
+                    ))}
                   </select>
-                  <div className="w-2.5 h-2.5 border-r-2 border-b-2 border-[#d4af37]/60 rotate-45 transform -translate-y-0.5 group-hover/select:border-[#d4af37] transition-all" />
+                  <div className="absolute right-5 w-2.5 h-2.5 border-r-2 border-b-2 border-[#d4af37]/60 rotate-45 transform -translate-y-0.5 group-hover/select:border-[#d4af37] transition-all pointer-events-none" />
                 </div>
               </div>
             </div>
