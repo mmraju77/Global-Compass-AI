@@ -559,16 +559,53 @@ export default function App() {
           throw new Error("Neural content wrapper not accessible in the current DOM branch.");
         }
 
+        // 2. Safe Document Rendering Fallback: Clone and Normalize
+        // Create a deep clone to manipulate without disrupting the live UI
+        const clone = element.cloneNode(true) as HTMLElement;
+        clone.style.width = "750px"; 
+        clone.style.backgroundColor = "#060B13"; // brand-midnight HEX
+        clone.style.padding = "40px";
+        clone.style.borderRadius = "24px";
+        
+        // Force all child elements to use standard colors and remove incompatible properties
+        const allElements = clone.querySelectorAll('*');
+        allElements.forEach((node: any) => {
+          const el = node as HTMLElement;
+          const style = window.getComputedStyle(el);
+          
+          // Fix potential oklch/oklab issues by forcing standard colors based on known theme
+          if (el.classList.contains('text-amber-600')) el.style.color = "#d97706";
+          if (el.classList.contains('text-slate-400')) el.style.color = "#94a3b8";
+          if (el.classList.contains('bg-brand-gold/10')) el.style.backgroundColor = "rgba(204, 164, 59, 0.1)";
+          if (el.classList.contains('bg-brand-gold/20')) el.style.border = "1px solid rgba(204, 164, 59, 0.2)";
+          if (el.classList.contains('bg-white/5')) el.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+          if (el.classList.contains('border-white/10')) el.style.borderColor = "rgba(255, 255, 255, 0.1)";
+          
+          // Strip transitions and modern filters that might break html2canvas
+          el.style.transition = "none";
+          el.style.animation = "none";
+          el.style.backdropFilter = "none";
+          el.style.filter = "none";
+          
+          // Ensure fonts are readable
+          if (style.fontSize.includes('okl')) el.style.fontSize = "14px"; 
+        });
+
         const opt = {
-          margin:       15,
+          margin:       10,
           filename:     `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.pdf`,
           image:        { type: 'jpeg' as const, quality: 1.0 },
           html2canvas:  { 
             scale: 2, 
-            backgroundColor: '#020617', 
+            backgroundColor: '#060B13', 
             useCORS: true,
             letterRendering: true,
-            logging: false
+            logging: false,
+            // 3. Fallback to standard color space
+            onclone: (doc: Document) => {
+              const el = doc.getElementById('report-modal-content');
+              if (el) el.style.color = "#94a3b8";
+            }
           },
           jsPDF:        { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
         };
@@ -578,8 +615,11 @@ export default function App() {
         // 3. Bulletproof isolated async workflow
         html2pdf()
           .set(opt)
-          .from(element)
+          .from(clone)
           .save()
+          .then(() => {
+            // Clean up is handled by memory management, but we could explicitly remove it if we added to DOM
+          })
           .catch((err: any) => {
             alert("PDF Generation Error: " + err.message);
           });
@@ -1589,83 +1629,83 @@ export default function App() {
                 <X className="w-5 h-5" />
               </button>
 
-              <div id="report-modal-content" className="relative z-10 p-8 md:p-12">
+              <div id="report-modal-content" className="relative z-10 p-8 md:p-12" style={{ backgroundColor: '#060B13' }}>
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-brand-gold/10 rounded-xl flex items-center justify-center border border-brand-gold/20">
-                    <Globe className="text-amber-600 w-6 h-6" />
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center border" style={{ backgroundColor: 'rgba(204, 164, 59, 0.1)', borderColor: 'rgba(204, 164, 59, 0.2)' }}>
+                    <Globe className="w-6 h-6" style={{ color: '#d97706' }} />
                   </div>
                   <div>
-                    <div className="text-amber-600 text-[10px] font-bold tracking-[0.2em] uppercase">Intelligence Report</div>
-                    <h3 className="text-3xl font-display font-bold text-slate-400">{selectedCountry.country_name}</h3>
+                    <div className="text-[10px] font-bold tracking-[0.2em] uppercase" style={{ color: '#d97706' }}>Intelligence Report</div>
+                    <h3 className="text-3xl font-display font-bold" style={{ color: '#94a3b8' }}>{selectedCountry.country_name}</h3>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                      <DollarSign className="w-3 h-3 text-amber-600" /> Avg Salary
+                  <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                      <DollarSign className="w-3 h-3" style={{ color: '#d97706' }} /> Avg Salary
                     </div>
-                    <div className="text-xl font-display font-bold text-slate-400">
+                    <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
                       {formatCurrency(selectedCountry.average_salary_usd)}
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                      <Percent className="w-3 h-3 text-amber-600" /> Tax Rate
+                  <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                      <Percent className="w-3 h-3" style={{ color: '#d97706' }} /> Tax Rate
                     </div>
-                    <div className="text-xl font-display font-bold text-slate-400">
+                    <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
                       {selectedCountry.tax_rate_percent !== undefined ? `${selectedCountry.tax_rate_percent}%` : 'N/A'}
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                      <Home className="w-3 h-3 text-amber-600" /> Avg Rent
+                  <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                      <Home className="w-3 h-3" style={{ color: '#d97706' }} /> Avg Rent
                     </div>
-                    <div className="text-xl font-display font-bold text-slate-400">
+                    <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
                       {selectedCountry.rent ? formatCurrency(selectedCountry.rent) : (countryMetrics[selectedCountry.country_name]?.rent || "N/A")}
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                      <HeartPulse className="w-3 h-3 text-amber-600" /> Healthcare
+                  <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                      <HeartPulse className="w-3 h-3" style={{ color: '#d97706' }} /> Healthcare
                     </div>
                     <div className="flex items-center gap-2">
-                       <span className="text-xl font-display font-bold text-slate-400">
+                       <span className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
                          {selectedCountry.healthcare ? `${selectedCountry.healthcare} / 100` : (countryMetrics[selectedCountry.country_name]?.healthcare || "N/A")}
                        </span>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                      <Shield className="w-3 h-3 text-amber-600" /> Safety
+                  <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                      <Shield className="w-3 h-3" style={{ color: '#d97706' }} /> Safety
                     </div>
-                    <div className="text-xl font-display font-bold text-slate-400">
+                    <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
                       {selectedCountry.safety ? `${selectedCountry.safety} / 100` : (countryMetrics[selectedCountry.country_name]?.safety || "N/A")}
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                      <Wifi className="w-3 h-3 text-amber-600" /> Connectivity
+                  <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                      <Wifi className="w-3 h-3" style={{ color: '#d97706' }} /> Connectivity
                     </div>
-                    <div className="text-xl font-display font-bold text-slate-400">
+                    <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
                       {selectedCountry.internet ? `${selectedCountry.internet} Mbps` : (countryMetrics[selectedCountry.country_name]?.internet || "N/A")}
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center p-4 rounded-xl bg-brand-gold/5 border border-brand-gold/10">
-                    <div className="text-sm text-slate-400">Strategic Stability Score</div>
-                    <div className="text-sm font-bold text-amber-600 uppercase">{selectedCountry.stability_score}</div>
+                  <div className="flex justify-between items-center p-4 rounded-xl border" style={{ backgroundColor: 'rgba(204, 164, 59, 0.05)', borderColor: 'rgba(204, 164, 59, 0.1)' }}>
+                    <div className="text-sm" style={{ color: '#94a3b8' }}>Strategic Stability Score</div>
+                    <div className="text-sm font-bold uppercase" style={{ color: '#d97706' }}>{selectedCountry.stability_score}</div>
                   </div>
-                  <div className="flex justify-between items-center p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                    <div className="text-sm text-slate-400">Annual GDP Growth</div>
-                    <div className="text-sm font-bold text-slate-400 font-mono">{selectedCountry.annual_growth}</div>
+                  <div className="flex justify-between items-center p-4 rounded-xl border" style={{ backgroundColor: 'rgba(255, 255, 255, 0.02)', borderColor: 'rgba(255, 255, 255, 0.05)' }}>
+                    <div className="text-sm" style={{ color: '#94a3b8' }}>Annual GDP Growth</div>
+                    <div className="text-sm font-bold font-mono" style={{ color: '#94a3b8' }}>{selectedCountry.annual_growth}</div>
                   </div>
                 </div>
 
