@@ -172,6 +172,15 @@ export default function App() {
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMsg, setNotificationMsg] = useState("");
   const [user, setUser] = useState<any>(null);
+
+  // Dynamic Currency Configuration
+  const [selectedCurrency, setSelectedCurrency] = useState<'USD' | 'EUR' | 'INR' | 'AED'>('USD');
+  const CONVERSION_RATES = {
+    USD: { rate: 1, symbol: '$' },
+    EUR: { rate: 0.92, symbol: '€' },
+    INR: { rate: 83, symbol: '₹' },
+    AED: { rate: 3.67, symbol: 'د.إ' }
+  };
   
   // Auth Form State
   const [email, setEmail] = useState("");
@@ -191,12 +200,16 @@ export default function App() {
     const val = (country as any)[metric.key];
     if (val === undefined || val === null || val === "") return "N/A";
     
-    // If it's already a formatted string, return as is
-    if (typeof val === "string" && (val.includes("$") || val.includes("/") || val.includes("Mbps") || val.includes("%"))) {
+    // If it's already a formatted string, return as is (except for rent strings we want to convert)
+    if (typeof val === "string" && (val.includes("$") || val.includes("/") || val.includes("Mbps") || val.includes("%")) && metric.key !== "rent") {
       return val;
     }
 
-    if (metric.key === "rent") return typeof val === "number" ? formatCurrency(val) : val;
+    if (metric.key === "rent") {
+      const formatted = formatCurrency(val);
+      const isMonthly = String(val).toLowerCase().includes("mo");
+      return formatted + (isMonthly ? " / mo" : "");
+    }
     if (metric.key === "healthcare") return typeof val === "number" ? `${val} / 100` : val;
     if (metric.key === "safety") return typeof val === "number" ? `${val} / 100` : val;
     if (metric.key === "internet") return typeof val === "number" ? `${val} Mbps` : val;
@@ -601,7 +614,16 @@ export default function App() {
           { label: "Average Annual Salary", value: formatCurrency(country.average_salary_usd) },
           { label: "Optimal Tax Rate", value: (country.tax_rate_percent !== undefined ? country.tax_rate_percent : "N/A") + "%" },
           { label: "Cost of Living Score", value: (country.cost_of_living_score || "N/A") + "/100" },
-          { label: "Monthly Rent (Avg)", value: country.rent || (countryMetrics[countryName]?.rent || "N/A") },
+          { 
+            label: "Monthly Rent (Avg)", 
+            value: (() => {
+              const r = country.rent || (countryMetrics[countryName]?.rent || "N/A");
+              if (r === "N/A") return r;
+              const formatted = formatCurrency(r);
+              const isMonthly = String(r).toLowerCase().includes("mo");
+              return formatted + (isMonthly ? " / mo" : "");
+            })()
+          },
           { label: "Healthcare Rating", value: country.healthcare ? `${country.healthcare}/100` : (countryMetrics[countryName]?.healthcare || "N/A") },
           { label: "Safety Rating", value: country.safety ? `${country.safety}/100` : (countryMetrics[countryName]?.safety || "N/A") },
           { label: "Digital Connectivity", value: country.internet ? `${country.internet} Mbps` : (countryMetrics[countryName]?.internet || "N/A") },
@@ -668,7 +690,15 @@ export default function App() {
     if (val === undefined || val === null || val === "") return "N/A";
     const num = typeof val === "number" ? val : parseFloat(String(val).replace(/[^0-9.]/g, ''));
     if (isNaN(num)) return String(val);
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
+    
+    const config = CONVERSION_RATES[selectedCurrency];
+    const converted = num * config.rate;
+    
+    return new Intl.NumberFormat('en-US', { 
+      style: 'currency', 
+      currency: selectedCurrency, 
+      maximumFractionDigits: 0 
+    }).format(converted);
   };
 
   return (
@@ -800,7 +830,25 @@ export default function App() {
                 </button>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+              <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                {/* Dynamic Currency Picker - Enhanced Luxury Styling */}
+                <div className="flex items-center gap-3 bg-[#111111]/80 backdrop-blur-md px-4 py-2 rounded-xl border border-[#d4af37]/40 hover:border-[#d4af37] transition-all group shadow-lg shadow-black/40">
+                  <div className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.15em] shrink-0">Base Currency:</div>
+                  <select 
+                    value={selectedCurrency}
+                    onChange={(e) => setSelectedCurrency(e.target.value as any)}
+                    className="bg-transparent border-none text-xs font-bold text-white focus:outline-none cursor-pointer tracking-wider min-w-[90px] appearance-none"
+                    style={{ backgroundImage: 'none' }}
+                  >
+                    <option value="USD" className="bg-[#111111] text-white">USD ($)</option>
+                    <option value="EUR" className="bg-[#111111] text-white">EUR (€)</option>
+                    <option value="INR" className="bg-[#111111] text-white">INR (₹)</option>
+                    <option value="AED" className="bg-[#111111] text-white">AED (د.إ)</option>
+                  </select>
+                  {/* Custom Arrow Accent */}
+                  <div className="w-2 h-2 border-r border-b border-[#d4af37]/60 rotate-45 transform -translate-y-0.5 group-hover:border-[#d4af37] transition-colors" />
+                </div>
+
                 <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase transition-all duration-500 ${isLive ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-brand-gold/10 text-amber-600 border border-brand-gold/20'}`}>
                   <div className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-emerald-500 animate-pulse' : 'bg-amber-600'}`} />
                   {isLive ? 'Neural Live Engine' : 'Neural Simulation Mode'}
