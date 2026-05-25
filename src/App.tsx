@@ -120,6 +120,153 @@ interface CountryData {
 }
 
 export default function App() {
+  const GLOBAL_COUNTRY_DICTIONARY: Record<string, any> = {
+    "Monaco": {
+      annual_growth: "+1.2%",
+      stability_score: "Ultra-High",
+      compass_index: 98,
+      strategic_status: "Tax Sovereign",
+      average_salary_usd: 180000,
+      tax_rate_percent: 0,
+      rent: "$8,500 / mo",
+      healthcare: 96,
+      safety: 99,
+      internet: "1 Gbps"
+    },
+    "Japan": {
+      annual_growth: "+0.5%",
+      stability_score: "Exceptional",
+      compass_index: 92,
+      strategic_status: "Safe Haven",
+      average_salary_usd: 48000,
+      tax_rate_percent: 25,
+      rent: "$1,800 / mo",
+      healthcare: 94,
+      safety: 97,
+      internet: "1 Gbps"
+    },
+    "Canada": {
+      annual_growth: "+1.8%",
+      stability_score: "Stable",
+      compass_index: 85,
+      strategic_status: "Neutral",
+      average_salary_usd: 55000,
+      tax_rate_percent: 28,
+      rent: "$2,200 / mo",
+      healthcare: 88,
+      safety: 90,
+      internet: "300 Mbps"
+    },
+    "United Kingdom": {
+      annual_growth: "+1.1%",
+      stability_score: "High",
+      compass_index: 82,
+      strategic_status: "Global Hub",
+      average_salary_usd: 52000,
+      tax_rate_percent: 32,
+      rent: "$2,500 / mo",
+      healthcare: 85,
+      safety: 85,
+      internet: "200 Mbps"
+    },
+    "United States": {
+      annual_growth: "+2.5%",
+      stability_score: "Maximum",
+      compass_index: 94,
+      strategic_status: "Hegemon",
+      average_salary_usd: 75000,
+      tax_rate_percent: 24,
+      rent: "$2,800 / mo",
+      healthcare: 82,
+      safety: 82,
+      internet: "500 Mbps"
+    },
+    "Germany": {
+      annual_growth: "+0.9%",
+      stability_score: "Solid",
+      compass_index: 88,
+      strategic_status: "EU Core",
+      average_salary_usd: 62000,
+      tax_rate_percent: 35,
+      rent: "$1,600 / mo",
+      healthcare: 92,
+      safety: 91,
+      internet: "250 Mbps"
+    },
+    "France": {
+      annual_growth: "+1.3%",
+      stability_score: "Stable",
+      compass_index: 84,
+      strategic_status: "Strategic Hub",
+      average_salary_usd: 58000,
+      tax_rate_percent: 38,
+      rent: "$1,900 / mo",
+      healthcare: 95,
+      safety: 88,
+      internet: "400 Mbps"
+    },
+    "Australia": {
+      annual_growth: "+2.1%",
+      stability_score: "High",
+      compass_index: 87,
+      strategic_status: "Commodity Power",
+      average_salary_usd: 68000,
+      tax_rate_percent: 30,
+      rent: "$2,400 / mo",
+      healthcare: 91,
+      safety: 93,
+      internet: "150 Mbps"
+    },
+    "New Zealand": {
+      annual_growth: "+1.9%",
+      stability_score: "Ultra-High",
+      compass_index: 90,
+      strategic_status: "Isolated Alpha",
+      average_salary_usd: 60000,
+      tax_rate_percent: 28,
+      rent: "$2,100 / mo",
+      healthcare: 90,
+      safety: 98,
+      internet: "300 Mbps"
+    },
+    "UAE": {
+      annual_growth: "+3.8%",
+      stability_score: "Dynamic",
+      compass_index: 96,
+      strategic_status: "Emerging Core",
+      average_salary_usd: 85000,
+      tax_rate_percent: 0,
+      rent: "$3,500 / mo",
+      healthcare: 89,
+      safety: 95,
+      internet: "800 Mbps"
+    },
+    "Singapore": {
+      annual_growth: "+2.4%",
+      stability_score: "Maximum",
+      compass_index: 97,
+      strategic_status: "Financial Citadel",
+      average_salary_usd: 90000,
+      tax_rate_percent: 15,
+      rent: "$4,200 / mo",
+      healthcare: 98,
+      safety: 99,
+      internet: "1 Gbps"
+    },
+    "Switzerland": {
+      annual_growth: "+1.5%",
+      stability_score: "Neutral",
+      compass_index: 95,
+      strategic_status: "Safe Fortress",
+      average_salary_usd: 110000,
+      tax_rate_percent: 18,
+      rent: "$3,800 / mo",
+      healthcare: 97,
+      safety: 98,
+      internet: "600 Mbps"
+    }
+  };
+
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLive, setIsLive] = useState(false);
@@ -188,8 +335,10 @@ export default function App() {
       return;
     }
 
-    // Robust case-insensitive lookup
-    const existing = countries.find(c => c.country_name?.toLowerCase() === newName.trim().toLowerCase());
+    const cleanName = newName.trim().toLowerCase();
+
+    // 1. Search Database First
+    const existing = countries.find(c => c.country_name?.toLowerCase() === cleanName);
     
     if (existing) {
       // Total Hydration of all metrics from database
@@ -203,6 +352,22 @@ export default function App() {
       setAdminHealthcare(String(existing.healthcare || ""));
       setAdminSafety(String(existing.safety || ""));
       setAdminInternet(String(existing.internet || ""));
+    } else {
+      // 2. Search Global Dictionary Fallback
+      const dictKey = Object.keys(GLOBAL_COUNTRY_DICTIONARY).find(k => k.toLowerCase() === cleanName);
+      if (dictKey) {
+        const data = GLOBAL_COUNTRY_DICTIONARY[dictKey];
+        setAdminAnnualGrowth(data.annual_growth || "");
+        setAdminStabilityScore(data.stability_score || "");
+        setAdminCompassIndex(String(data.compass_index || ""));
+        setAdminStrategicStatus(data.strategic_status || "");
+        setAdminSalary(String(data.average_salary_usd || ""));
+        setAdminTax(String(data.tax_rate_percent || ""));
+        setAdminRent(String(data.rent || ""));
+        setAdminHealthcare(String(data.healthcare || ""));
+        setAdminSafety(String(data.safety || ""));
+        setAdminInternet(String(data.internet || ""));
+      }
     }
   };
 
