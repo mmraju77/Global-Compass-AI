@@ -10,63 +10,63 @@ import React, { useEffect, useState } from "react";
 
 const MOCK_DATA: CountryData[] = [
   { 
-    country_name: "Switzerland", annual_growth: "+2.4%", stability_score: "Maximum", compass_index: 97, strategic_status: "Stable",
+    country_name: "Switzerland", annual_growth: "+2.4%", stability_score: "Maximum", compass_index: 97, strategic_status: "Stable", cost_of_living_score: 92,
     average_salary_usd: 95000, tax_rate_percent: 18, rent: 2800, healthcare: 89, safety: 91, internet: 145
   },
   { 
-    country_name: "Singapore", annual_growth: "+3.8%", stability_score: "Very High", compass_index: 95, strategic_status: "Premium",
+    country_name: "Singapore", annual_growth: "+3.8%", stability_score: "Very High", compass_index: 95, strategic_status: "Premium", cost_of_living_score: 88,
     average_salary_usd: 72000, tax_rate_percent: 15, rent: 3200, healthcare: 92, safety: 93, internet: 210
   },
   { 
-    country_name: "UAE", annual_growth: "+5.1%", stability_score: "High", compass_index: 88, strategic_status: "Emerging",
+    country_name: "UAE", annual_growth: "+5.1%", stability_score: "High", compass_index: 88, strategic_status: "Emerging", cost_of_living_score: 75,
     average_salary_usd: 68000, tax_rate_percent: 0, rent: 2100, healthcare: 78, safety: 88, internet: 120
   },
   { 
-    country_name: "Germany", annual_growth: "+1.8%", stability_score: "High", compass_index: 91, strategic_status: "Optimal",
+    country_name: "Germany", annual_growth: "+1.8%", stability_score: "High", compass_index: 91, strategic_status: "Optimal", cost_of_living_score: 70,
     average_salary_usd: 62000, tax_rate_percent: 32, rent: 1400, healthcare: 85, safety: 82, internet: 95
   },
   { 
-    country_name: "Luxembourg", annual_growth: "+2.1%", stability_score: "Maximum", compass_index: 94, strategic_status: "Premium",
+    country_name: "Luxembourg", annual_growth: "+2.1%", stability_score: "Maximum", compass_index: 94, strategic_status: "Premium", cost_of_living_score: 82,
     average_salary_usd: 88000, tax_rate_percent: 24, rent: 2300, healthcare: 86, safety: 85, internet: 135
   },
   { 
-    country_name: "United States", annual_growth: "+4.2%", stability_score: "High", compass_index: 92, strategic_status: "Optimal",
+    country_name: "United States", annual_growth: "+4.2%", stability_score: "High", compass_index: 92, strategic_status: "Optimal", cost_of_living_score: 76,
     average_salary_usd: 85000, tax_rate_percent: 25, rent: 2100, healthcare: 76, safety: 71, internet: 185
   },
   { 
-    country_name: "Norway", annual_growth: "+1.5%", stability_score: "Maximum", compass_index: 93, strategic_status: "Stable",
+    country_name: "Norway", annual_growth: "+1.5%", stability_score: "Maximum", compass_index: 93, strategic_status: "Stable", cost_of_living_score: 84,
     average_salary_usd: 78000, tax_rate_percent: 28, rent: 1550, healthcare: 88, safety: 89, internet: 160
   },
   { 
-    country_name: "Denmark", annual_growth: "+1.6%", stability_score: "Very High", compass_index: 92, strategic_status: "Stable",
+    country_name: "Denmark", annual_growth: "+1.6%", stability_score: "Very High", compass_index: 92, strategic_status: "Stable", cost_of_living_score: 80,
     average_salary_usd: 75000, tax_rate_percent: 35, rent: 1600, healthcare: 87, safety: 88, internet: 150
   },
   { 
-    country_name: "Australia", annual_growth: "+2.8%", stability_score: "High", compass_index: 89, strategic_status: "Stable",
+    country_name: "Australia", annual_growth: "+2.8%", stability_score: "High", compass_index: 89, strategic_status: "Stable", cost_of_living_score: 77,
     average_salary_usd: 70000, tax_rate_percent: 32, rent: 1850, healthcare: 84, safety: 83, internet: 125
   },
   { 
-    country_name: "Sweden", annual_growth: "+1.9%", stability_score: "High", compass_index: 90, strategic_status: "Stable",
+    country_name: "Sweden", annual_growth: "+1.9%", stability_score: "High", compass_index: 90, strategic_status: "Stable", cost_of_living_score: 74,
     average_salary_usd: 65000, tax_rate_percent: 30, rent: 1350, healthcare: 83, safety: 79, internet: 155
   },
   { 
-    country_name: "Netherlands", annual_growth: "+2.2%", stability_score: "High", compass_index: 91, strategic_status: "Optimal",
+    country_name: "Netherlands", annual_growth: "+2.2%", stability_score: "High", compass_index: 91, strategic_status: "Optimal", cost_of_living_score: 79,
     average_salary_usd: 68000, tax_rate_percent: 37, rent: 1800, healthcare: 86, safety: 84, internet: 170
   },
   { 
-    country_name: "Canada", annual_growth: "+2.0%", stability_score: "High", compass_index: 88, strategic_status: "Stable",
+    country_name: "Canada", annual_growth: "+2.0%", stability_score: "High", compass_index: 88, strategic_status: "Stable", cost_of_living_score: 72,
     average_salary_usd: 64000, tax_rate_percent: 28, rent: 1700, healthcare: 81, safety: 82, internet: 140
   },
   { 
-    country_name: "Ireland", annual_growth: "+5.8%", stability_score: "High", compass_index: 86, strategic_status: "Emerging",
+    country_name: "Ireland", annual_growth: "+5.8%", stability_score: "High", compass_index: 86, strategic_status: "Emerging", cost_of_living_score: 75,
     average_salary_usd: 72000, tax_rate_percent: 20, rent: 2200, healthcare: 75, safety: 81, internet: 130
   },
   { 
-    country_name: "United Kingdom", annual_growth: "+1.2%", stability_score: "High", compass_index: 84, strategic_status: "Stable",
+    country_name: "United Kingdom", annual_growth: "+1.2%", stability_score: "High", compass_index: 84, strategic_status: "Stable", cost_of_living_score: 75,
     average_salary_usd: 60000, tax_rate_percent: 20, rent: 1750, healthcare: 79, safety: 75, internet: 120
   },
   { 
-    country_name: "India", annual_growth: "+7.2%", stability_score: "Moderate", compass_index: 78, strategic_status: "High Potential",
+    country_name: "India", annual_growth: "+7.2%", stability_score: "Moderate", compass_index: 78, strategic_status: "High Potential", cost_of_living_score: 40,
     average_salary_usd: 32000, tax_rate_percent: 22, rent: 450, healthcare: 68, safety: 72, internet: 85
   },
 ];
@@ -111,6 +111,7 @@ interface CountryData {
   stability_score: string;
   compass_index: number | string;
   strategic_status: string;
+  cost_of_living_score: number | string;
   average_salary_usd?: number | string;
   tax_rate_percent?: number | string;
   rent?: number | string;
@@ -120,12 +121,13 @@ interface CountryData {
 }
 
 export default function App() {
-  const GLOBAL_COUNTRY_DICTIONARY: Record<string, any> = {
+  const GLOBAL_COUNTRY_DATA: Record<string, any> = {
     "Monaco": {
       annual_growth: "+1.2%",
       stability_score: "Ultra-High",
       compass_index: 98,
       strategic_status: "Tax Sovereign",
+      cost_of_living_score: 99,
       average_salary_usd: 180000,
       tax_rate_percent: 0,
       rent: "$8,500 / mo",
@@ -138,6 +140,7 @@ export default function App() {
       stability_score: "Exceptional",
       compass_index: 92,
       strategic_status: "Safe Haven",
+      cost_of_living_score: 78,
       average_salary_usd: 48000,
       tax_rate_percent: 25,
       rent: "$1,800 / mo",
@@ -150,6 +153,7 @@ export default function App() {
       stability_score: "Stable",
       compass_index: 85,
       strategic_status: "Neutral",
+      cost_of_living_score: 72,
       average_salary_usd: 55000,
       tax_rate_percent: 28,
       rent: "$2,200 / mo",
@@ -162,6 +166,7 @@ export default function App() {
       stability_score: "High",
       compass_index: 82,
       strategic_status: "Global Hub",
+      cost_of_living_score: 75,
       average_salary_usd: 52000,
       tax_rate_percent: 32,
       rent: "$2,500 / mo",
@@ -174,6 +179,7 @@ export default function App() {
       stability_score: "Maximum",
       compass_index: 94,
       strategic_status: "Hegemon",
+      cost_of_living_score: 76,
       average_salary_usd: 75000,
       tax_rate_percent: 24,
       rent: "$2,800 / mo",
@@ -186,6 +192,7 @@ export default function App() {
       stability_score: "Solid",
       compass_index: 88,
       strategic_status: "EU Core",
+      cost_of_living_score: 70,
       average_salary_usd: 62000,
       tax_rate_percent: 35,
       rent: "$1,600 / mo",
@@ -198,6 +205,7 @@ export default function App() {
       stability_score: "Stable",
       compass_index: 84,
       strategic_status: "Strategic Hub",
+      cost_of_living_score: 74,
       average_salary_usd: 58000,
       tax_rate_percent: 38,
       rent: "$1,900 / mo",
@@ -210,6 +218,7 @@ export default function App() {
       stability_score: "High",
       compass_index: 87,
       strategic_status: "Commodity Power",
+      cost_of_living_score: 77,
       average_salary_usd: 68000,
       tax_rate_percent: 30,
       rent: "$2,400 / mo",
@@ -222,6 +231,7 @@ export default function App() {
       stability_score: "Ultra-High",
       compass_index: 90,
       strategic_status: "Isolated Alpha",
+      cost_of_living_score: 73,
       average_salary_usd: 60000,
       tax_rate_percent: 28,
       rent: "$2,100 / mo",
@@ -234,6 +244,7 @@ export default function App() {
       stability_score: "Dynamic",
       compass_index: 96,
       strategic_status: "Emerging Core",
+      cost_of_living_score: 75,
       average_salary_usd: 85000,
       tax_rate_percent: 0,
       rent: "$3,500 / mo",
@@ -246,6 +257,7 @@ export default function App() {
       stability_score: "Maximum",
       compass_index: 97,
       strategic_status: "Financial Citadel",
+      cost_of_living_score: 88,
       average_salary_usd: 90000,
       tax_rate_percent: 15,
       rent: "$4,200 / mo",
@@ -258,6 +270,7 @@ export default function App() {
       stability_score: "Neutral",
       compass_index: 95,
       strategic_status: "Safe Fortress",
+      cost_of_living_score: 92,
       average_salary_usd: 110000,
       tax_rate_percent: 18,
       rent: "$3,800 / mo",
@@ -318,6 +331,7 @@ export default function App() {
   const [adminStabilityScore, setAdminStabilityScore] = useState("");
   const [adminCompassIndex, setAdminCompassIndex] = useState("");
   const [adminStrategicStatus, setAdminStrategicStatus] = useState("");
+  const [adminCostOfLiving, setAdminCostOfLiving] = useState("");
   const [adminSalary, setAdminSalary] = useState("");
   const [adminTax, setAdminTax] = useState("");
   const [adminRent, setAdminRent] = useState("");
@@ -346,6 +360,7 @@ export default function App() {
       setAdminStabilityScore(existing.stability_score || "");
       setAdminCompassIndex(String(existing.compass_index || ""));
       setAdminStrategicStatus(existing.strategic_status || "");
+      setAdminCostOfLiving(String(existing.cost_of_living_score || ""));
       setAdminSalary(String(existing.average_salary_usd || ""));
       setAdminTax(String(existing.tax_rate_percent || ""));
       setAdminRent(String(existing.rent || ""));
@@ -354,13 +369,14 @@ export default function App() {
       setAdminInternet(String(existing.internet || ""));
     } else {
       // 2. Search Global Dictionary Fallback
-      const dictKey = Object.keys(GLOBAL_COUNTRY_DICTIONARY).find(k => k.toLowerCase() === cleanName);
+      const dictKey = Object.keys(GLOBAL_COUNTRY_DATA).find(k => k.toLowerCase() === cleanName);
       if (dictKey) {
-        const data = GLOBAL_COUNTRY_DICTIONARY[dictKey];
+        const data = GLOBAL_COUNTRY_DATA[dictKey];
         setAdminAnnualGrowth(data.annual_growth || "");
         setAdminStabilityScore(data.stability_score || "");
         setAdminCompassIndex(String(data.compass_index || ""));
         setAdminStrategicStatus(data.strategic_status || "");
+        setAdminCostOfLiving(String(data.cost_of_living_score || ""));
         setAdminSalary(String(data.average_salary_usd || ""));
         setAdminTax(String(data.tax_rate_percent || ""));
         setAdminRent(String(data.rent || ""));
@@ -377,6 +393,7 @@ export default function App() {
     setAdminStabilityScore("");
     setAdminCompassIndex("");
     setAdminStrategicStatus("");
+    setAdminCostOfLiving("");
     setAdminSalary("");
     setAdminTax("");
     setAdminRent("");
@@ -403,13 +420,13 @@ export default function App() {
         stability_score: adminStabilityScore || (existingRef?.stability_score) || "Stable",
         compass_index: adminCompassIndex || (existingRef?.compass_index) || 50,
         strategic_status: adminStrategicStatus || (existingRef?.strategic_status) || "Neutral",
+        cost_of_living_score: adminCostOfLiving || (existingRef?.cost_of_living_score) || 70,
         average_salary_usd: adminSalary || (existingRef?.average_salary_usd) || 0,
         tax_rate_percent: adminTax || (existingRef?.tax_rate_percent) || 0,
         rent: adminRent || (existingRef?.rent) || "",
         healthcare: adminHealthcare || (existingRef?.healthcare) || "",
         safety: adminSafety || (existingRef?.safety) || "",
-        internet: adminInternet || (existingRef?.internet) || "",
-        cost_of_living_score: 70
+        internet: adminInternet || (existingRef?.internet) || ""
       };
 
       const { error } = await supabase
@@ -1548,6 +1565,16 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                             placeholder="Premium"
                           />
                         </div>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Cost of Living Score (0-100)</label>
+                        <input 
+                          type="text"
+                          value={adminCostOfLiving}
+                          onChange={(e) => setAdminCostOfLiving(e.target.value)}
+                          className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                          placeholder="e.g., 75"
+                        />
                       </div>
                     </div>
 
