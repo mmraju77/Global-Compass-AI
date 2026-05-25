@@ -4,9 +4,10 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale } from "lucide-react";
+import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
+import html2pdf from 'html2pdf.js';
 
 const MOCK_DATA: CountryData[] = [
   { 
@@ -549,39 +550,24 @@ export default function App() {
   };
 
   const handleDownloadReport = (country: CountryData) => {
-    const reportContent = `
-GLOBAL COMPASS AI - STRATEGIC INTELLIGENCE REPORT
---------------------------------------------------
-DATE: ${new Date().toLocaleDateString()}
-COUNTRY: ${country.country_name}
-STRATEGIC STATUS: ${country.strategic_status}
---------------------------------------------------
+    const element = document.getElementById('report-modal-content');
+    if (!element) return;
 
-METRICS:
-- Compass Index: ${country.compass_index}/100
-- Annual GDP Growth: ${country.annual_growth}
-- Stability Score: ${country.stability_score}
-- Average Salary: ${formatCurrency(country.average_salary_usd)}
-- Personal Tax Rate: ${country.tax_rate_percent !== undefined ? `${country.tax_rate_percent}%` : 'N/A'}
+    const opt = {
+      margin:       15,
+      filename:     `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.pdf`,
+      image:        { type: 'jpeg' as const, quality: 1.0 },
+      html2canvas:  { 
+        scale: 2, 
+        backgroundColor: '#020617', 
+        useCORS: true,
+        letterRendering: true
+      },
+      jsPDF:        { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
+    };
 
-ANALYSIS:
-This report confirms ${country.country_name} as a ${country.strategic_status.toLowerCase()} zone 
-for strategic growth. Our neural engine indicates a ${Number(country.compass_index) >= 90 ? 'prime' : 'stable'} 
-window for resource allocation.
-
---------------------------------------------------
-CONFIDENTIAL - GLOBAL COMPASS LABS
-    `.trim();
-
-    const blob = new Blob([reportContent], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    triggerNotification(`Generating ${country.country_name} Executive Briefing...`);
+    html2pdf().set(opt).from(element).save();
   };
 
   const formatCurrency = (val?: number | string) => {
@@ -1578,7 +1564,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="relative z-10 p-8 md:p-12">
+              <div id="report-modal-content" className="relative z-10 p-8 md:p-12">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 bg-brand-gold/10 rounded-xl flex items-center justify-center border border-brand-gold/20">
                     <Globe className="text-amber-600 w-6 h-6" />
@@ -1661,15 +1647,16 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 <div className="mt-10 pt-8 border-t border-white/5 flex flex-col sm:flex-row gap-4">
                   <button 
                     onClick={() => handleDownloadReport(selectedCountry)}
-                    className="flex-1 px-6 py-4 bg-gradient-to-r from-terracotta-start to-terracotta-end text-slate-400 font-bold rounded-xl shadow-xl shadow-terracotta-start/20 hover:scale-[1.02] active:scale-95 transition-all"
+                    className="flex-1 px-6 py-4 bg-amber-600 text-brand-midnight font-bold rounded-xl shadow-xl shadow-amber-600/20 hover:bg-white transition-all uppercase tracking-widest text-[11px] flex items-center justify-center gap-2"
                   >
-                    DOWNLOAD FULL REPORT
+                    <Download className="w-4 h-4" />
+                    Download Executive Dossier (PDF)
                   </button>
                   <button 
                     onClick={() => setSelectedCountry(null)}
-                    className="px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 font-medium rounded-xl transition-all"
+                    className="px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 font-medium rounded-xl transition-all uppercase tracking-widest text-[11px]"
                   >
-                    CLOSE
+                    Close
                   </button>
                 </div>
               </div>
