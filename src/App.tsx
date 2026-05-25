@@ -550,24 +550,45 @@ export default function App() {
   };
 
   const handleDownloadReport = (country: CountryData) => {
-    const element = document.getElementById('report-modal-content');
-    if (!element) return;
+    // 1. Non-Blocking Async Execution via decoupled macro-task
+    // This guarantees clicking the button never freezes the main thread or crashes the tab
+    setTimeout(() => {
+      try {
+        const element = document.getElementById('report-modal-content');
+        if (!element) {
+          throw new Error("Neural content wrapper not accessible in the current DOM branch.");
+        }
 
-    const opt = {
-      margin:       15,
-      filename:     `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.pdf`,
-      image:        { type: 'jpeg' as const, quality: 1.0 },
-      html2canvas:  { 
-        scale: 2, 
-        backgroundColor: '#020617', 
-        useCORS: true,
-        letterRendering: true
-      },
-      jsPDF:        { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
-    };
+        const opt = {
+          margin:       15,
+          filename:     `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.pdf`,
+          image:        { type: 'jpeg' as const, quality: 1.0 },
+          html2canvas:  { 
+            scale: 2, 
+            backgroundColor: '#020617', 
+            useCORS: true,
+            letterRendering: true,
+            logging: false
+          },
+          jsPDF:        { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
+        };
 
-    triggerNotification(`Generating ${country.country_name} Executive Briefing...`);
-    html2pdf().set(opt).from(element).save();
+        triggerNotification(`Generating ${country.country_name} Executive Briefing...`);
+        
+        // 3. Bulletproof isolated async workflow
+        html2pdf()
+          .set(opt)
+          .from(element)
+          .save()
+          .catch((err: any) => {
+            alert("PDF Generation Error: " + err.message);
+          });
+
+      } catch (error: any) {
+        // 3. Standard browser alert fallback instead of silent failure
+        alert("PDF Generation Error: " + error.message);
+      }
+    }, 0);
   };
 
   const formatCurrency = (val?: number | string) => {
@@ -1088,7 +1109,7 @@ export default function App() {
                   Chief AI Architect
                 </div>
                 <h2 className="text-6xl md:text-7xl lg:text-8xl font-display font-extrabold text-white mb-8 tracking-tighter leading-[0.95] uppercase">
-                  M M RAJU
+                  Munchangi Matyaraju (mm Raju)
                 </h2>
                 
                 <div className="space-y-6 text-xl text-slate-400 font-light leading-relaxed max-w-xl">
@@ -1135,7 +1156,7 @@ export default function App() {
                   <div className="relative w-80 h-96 md:w-[450px] md:h-[550px] overflow-hidden rounded-[4rem] border border-white/10 group">
                     <img 
                       src="/founder.jpg.jpeg" 
-                      alt="mm Raju" 
+                      alt="Munchangi Matyaraju (mm Raju)" 
                       className="w-full h-full object-cover grayscale brightness-110 contrast-125 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B0D] via-transparent to-transparent opacity-80" />
@@ -1318,6 +1339,10 @@ export default function App() {
                     <p>
                       <span className="text-amber-600/80 font-bold block mb-2">IV. SANCTIONS & ELIGIBILITY</span>
                       ACCESS TO ARCHIVED INTELLIGENCE REPORTS MAY BE RESTRICTED OR REVOKED FOR INDIVIDUALS SUBJECT TO INTERNATIONAL SANCTIONS LISTS (OFAC/EU/UN) OR THOSE LOCATED IN HIGH-RISK JURISDICTIONS AS DEFINED BY THE FATF.
+                    </p>
+                    <p>
+                      <span className="text-amber-600/80 font-bold block mb-2">V. JURISDICTIONAL LIMITATIONS</span>
+                      GLOBAL COMPASS DOES NOT SOLICIT OR OFFER SERVICES TO NATIONS SUBJECT TO TOTAL EMBARGO OR COMPREHENSIVE SANCTIONS. ALL ARCHITECTURAL FRAMEWORKS ARE PROTECTED UNDER INTERNATIONAL INTELLECTUAL PROPERTY STATUTES.
                     </p>
                   </div>
                 </div>
