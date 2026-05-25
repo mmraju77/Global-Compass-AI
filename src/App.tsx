@@ -121,162 +121,45 @@ interface CountryData {
 }
 
 export default function App() {
-  const GLOBAL_COUNTRY_DATA: Record<string, any> = {
-    "Monaco": {
-      annual_growth: "+1.2%",
-      stability_score: "Ultra-High",
-      compass_index: 98,
-      strategic_status: "Tax Sovereign",
-      cost_of_living_score: 99,
-      average_salary_usd: 180000,
-      tax_rate_percent: 0,
-      rent: "$8,500 / mo",
-      healthcare: 96,
-      safety: 99,
-      internet: "1 Gbps"
+  const CORE_DICTIONARY: Record<string, any> = {
+    "monaco": { 
+      average_salary_usd: 120000, 
+      tax_rate_percent: 0, 
+      rent: "$4,200 / mo", 
+      healthcare: "88 / 100", 
+      safety: "95 / 100", 
+      internet: "220 Mbps", 
+      annual_growth: "+2.8%", 
+      stability_score: "Maximum", 
+      strategic_status: "Premium", 
+      compass_index: 94, 
+      cost_of_living_score: 90 
     },
-    "Japan": {
-      annual_growth: "+0.5%",
-      stability_score: "Exceptional",
-      compass_index: 92,
-      strategic_status: "Safe Haven",
-      cost_of_living_score: 78,
-      average_salary_usd: 48000,
-      tax_rate_percent: 25,
-      rent: "$1,800 / mo",
-      healthcare: 94,
-      safety: 97,
-      internet: "1 Gbps"
+    "canada": { 
+      average_salary_usd: 62000, 
+      tax_rate_percent: 25, 
+      rent: "$1,700 / mo", 
+      healthcare: "82 / 100", 
+      safety: "83 / 100", 
+      internet: "140 Mbps", 
+      annual_growth: "+2.1%", 
+      stability_score: "High", 
+      strategic_status: "Stable", 
+      compass_index: 80, 
+      cost_of_living_score: 72 
     },
-    "Canada": {
-      annual_growth: "+1.8%",
-      stability_score: "Stable",
-      compass_index: 85,
-      strategic_status: "Neutral",
-      cost_of_living_score: 72,
-      average_salary_usd: 55000,
-      tax_rate_percent: 28,
-      rent: "$2,200 / mo",
-      healthcare: 88,
-      safety: 90,
-      internet: "300 Mbps"
-    },
-    "United Kingdom": {
-      annual_growth: "+1.1%",
-      stability_score: "High",
-      compass_index: 82,
-      strategic_status: "Global Hub",
-      cost_of_living_score: 75,
-      average_salary_usd: 52000,
-      tax_rate_percent: 32,
-      rent: "$2,500 / mo",
-      healthcare: 85,
-      safety: 85,
-      internet: "200 Mbps"
-    },
-    "United States": {
-      annual_growth: "+2.5%",
-      stability_score: "Maximum",
-      compass_index: 94,
-      strategic_status: "Hegemon",
-      cost_of_living_score: 76,
-      average_salary_usd: 75000,
-      tax_rate_percent: 24,
-      rent: "$2,800 / mo",
-      healthcare: 82,
-      safety: 82,
-      internet: "500 Mbps"
-    },
-    "Germany": {
-      annual_growth: "+0.9%",
-      stability_score: "Solid",
-      compass_index: 88,
-      strategic_status: "EU Core",
-      cost_of_living_score: 70,
-      average_salary_usd: 62000,
-      tax_rate_percent: 35,
-      rent: "$1,600 / mo",
-      healthcare: 92,
-      safety: 91,
-      internet: "250 Mbps"
-    },
-    "France": {
-      annual_growth: "+1.3%",
-      stability_score: "Stable",
-      compass_index: 84,
-      strategic_status: "Strategic Hub",
-      cost_of_living_score: 74,
-      average_salary_usd: 58000,
-      tax_rate_percent: 38,
-      rent: "$1,900 / mo",
-      healthcare: 95,
-      safety: 88,
-      internet: "400 Mbps"
-    },
-    "Australia": {
-      annual_growth: "+2.1%",
-      stability_score: "High",
-      compass_index: 87,
-      strategic_status: "Commodity Power",
-      cost_of_living_score: 77,
-      average_salary_usd: 68000,
-      tax_rate_percent: 30,
-      rent: "$2,400 / mo",
-      healthcare: 91,
-      safety: 93,
-      internet: "150 Mbps"
-    },
-    "New Zealand": {
-      annual_growth: "+1.9%",
-      stability_score: "Ultra-High",
-      compass_index: 90,
-      strategic_status: "Isolated Alpha",
-      cost_of_living_score: 73,
-      average_salary_usd: 60000,
-      tax_rate_percent: 28,
-      rent: "$2,100 / mo",
-      healthcare: 90,
-      safety: 98,
-      internet: "300 Mbps"
-    },
-    "UAE": {
-      annual_growth: "+3.8%",
-      stability_score: "Dynamic",
-      compass_index: 96,
-      strategic_status: "Emerging Core",
-      cost_of_living_score: 75,
-      average_salary_usd: 85000,
-      tax_rate_percent: 0,
-      rent: "$3,500 / mo",
-      healthcare: 89,
-      safety: 95,
-      internet: "800 Mbps"
-    },
-    "Singapore": {
-      annual_growth: "+2.4%",
-      stability_score: "Maximum",
-      compass_index: 97,
-      strategic_status: "Financial Citadel",
-      cost_of_living_score: 88,
-      average_salary_usd: 90000,
-      tax_rate_percent: 15,
-      rent: "$4,200 / mo",
-      healthcare: 98,
-      safety: 99,
-      internet: "1 Gbps"
-    },
-    "Switzerland": {
-      annual_growth: "+1.5%",
-      stability_score: "Neutral",
-      compass_index: 95,
-      strategic_status: "Safe Fortress",
-      cost_of_living_score: 92,
-      average_salary_usd: 110000,
-      tax_rate_percent: 18,
-      rent: "$3,800 / mo",
-      healthcare: 97,
-      safety: 98,
-      internet: "600 Mbps"
+    "japan": { 
+      average_salary_usd: 52000, 
+      tax_rate_percent: 30, 
+      rent: "$1,200 / mo", 
+      healthcare: "91 / 100", 
+      safety: "89 / 100", 
+      internet: "180 Mbps", 
+      annual_growth: "+1.4%", 
+      stability_score: "High", 
+      strategic_status: "Stable", 
+      compass_index: 85, 
+      cost_of_living_score: 75 
     }
   };
 
@@ -342,20 +225,28 @@ export default function App() {
   // Intelligent Auto-Populate on Type
   const handleCountryNameChange = (newName: string) => {
     setAdminCountryName(newName);
+    const searchKey = newName.toLowerCase().trim();
     
-    // If empty, reset all fields
-    if (!newName.trim()) {
-      resetAdminForm();
+    // 1. Instant Search in CORE_DICTIONARY
+    if (CORE_DICTIONARY[searchKey]) {
+      const data = CORE_DICTIONARY[searchKey];
+      setAdminAnnualGrowth(data.annual_growth);
+      setAdminStabilityScore(data.stability_score);
+      setAdminCompassIndex(String(data.compass_index));
+      setAdminStrategicStatus(data.strategic_status);
+      setAdminCostOfLiving(String(data.cost_of_living_score));
+      setAdminSalary(String(data.average_salary_usd));
+      setAdminTax(String(data.tax_rate_percent));
+      setAdminRent(data.rent);
+      setAdminHealthcare(data.healthcare);
+      setAdminSafety(data.safety);
+      setAdminInternet(data.internet);
       return;
     }
 
-    const cleanName = newName.trim().toLowerCase();
-
-    // 1. Search Database First
-    const existing = countries.find(c => c.country_name?.toLowerCase() === cleanName);
-    
+    // 2. Search Database Collection
+    const existing = countries.find(c => c.country_name?.toLowerCase() === searchKey);
     if (existing) {
-      // Total Hydration of all metrics from database
       setAdminAnnualGrowth(existing.annual_growth || "");
       setAdminStabilityScore(existing.stability_score || "");
       setAdminCompassIndex(String(existing.compass_index || ""));
@@ -367,23 +258,8 @@ export default function App() {
       setAdminHealthcare(String(existing.healthcare || ""));
       setAdminSafety(String(existing.safety || ""));
       setAdminInternet(String(existing.internet || ""));
-    } else {
-      // 2. Search Global Dictionary Fallback
-      const dictKey = Object.keys(GLOBAL_COUNTRY_DATA).find(k => k.toLowerCase() === cleanName);
-      if (dictKey) {
-        const data = GLOBAL_COUNTRY_DATA[dictKey];
-        setAdminAnnualGrowth(data.annual_growth || "");
-        setAdminStabilityScore(data.stability_score || "");
-        setAdminCompassIndex(String(data.compass_index || ""));
-        setAdminStrategicStatus(data.strategic_status || "");
-        setAdminCostOfLiving(String(data.cost_of_living_score || ""));
-        setAdminSalary(String(data.average_salary_usd || ""));
-        setAdminTax(String(data.tax_rate_percent || ""));
-        setAdminRent(String(data.rent || ""));
-        setAdminHealthcare(String(data.healthcare || ""));
-        setAdminSafety(String(data.safety || ""));
-        setAdminInternet(String(data.internet || ""));
-      }
+    } else if (searchKey === "") {
+      resetAdminForm();
     }
   };
 
@@ -439,8 +315,7 @@ export default function App() {
       triggerNotification("Jurisdiction Matrix Successfully Synchronized.");
       
       // Immediate Live State Refresh
-      const { data: freshData } = await supabase.from('countries').select('*').order('compass_index', { ascending: false });
-      if (freshData) setCountries(freshData);
+      await fetchCountries();
       
       setIsAdminPanelOpen(false);
       resetAdminForm();
@@ -547,42 +422,42 @@ export default function App() {
 
   const particles = Array.from({ length: 30 });
 
-  useEffect(() => {
-    async function fetchCountries() {
-      try {
-        setLoading(true);
-        const supabase = getSupabase();
-        
-        if (!supabase) {
-          setCountries(MOCK_DATA);
-          setIsLive(false);
-          setLoading(false);
-          return;
-        }
-
-        const { data, error } = await supabase
-          .from('countries')
-          .select('*')
-          .order('compass_index', { ascending: false });
-
-        if (error) throw error;
-        
-        if (data && data.length > 0) {
-          setCountries(data);
-          setIsLive(true);
-        } else {
-          setCountries(MOCK_DATA);
-          setIsLive(false);
-        }
-      } catch (err: any) {
-        console.warn("Supabase fetch failed, falling back to neural simulations:", err.message);
+  const fetchCountries = async () => {
+    try {
+      setLoading(true);
+      const supabase = getSupabase();
+      
+      if (!supabase) {
         setCountries(MOCK_DATA);
         setIsLive(false);
-      } finally {
         setLoading(false);
+        return;
       }
-    }
 
+      const { data, error } = await supabase
+        .from('countries')
+        .select('*')
+        .order('compass_index', { ascending: false });
+
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        setCountries(data);
+        setIsLive(true);
+      } else {
+        setCountries(MOCK_DATA);
+        setIsLive(false);
+      }
+    } catch (err: any) {
+      console.warn("Supabase fetch failed, falling back to neural simulations:", err.message);
+      setCountries(MOCK_DATA);
+      setIsLive(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchCountries();
 
     // Set up Auth listener
