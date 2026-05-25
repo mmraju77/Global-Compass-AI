@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark } from "lucide-react";
+import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 
@@ -152,48 +152,43 @@ export default function App() {
     return metric.format ? metric.format((country as any)[metric.key] || 0) : `${(country as any)[metric.key] || 0}${metric.suffix || ""}`;
   };
 
-  // Admin State
-  const isAdmin = user?.email === "MooVi7g@gmail.com";
+  // Admin State - Individual Hooks for build stability
+  const isAdmin = user?.email?.toLowerCase() === "moovi7g@gmail.com";
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const [isUpserting, setIsUpserting] = useState(false);
-  const [adminFormData, setAdminFormData] = useState<Partial<CountryData>>({
-    country_name: "",
-    annual_growth: "+0.0%",
-    stability_score: "Stable",
-    compass_index: 50,
-    strategic_status: "Neutral",
-    average_salary_usd: 50000,
-    tax_rate_percent: 20,
-    rent: 1500,
-    healthcare: 70,
-    safety: 70,
-    internet: 100
-  });
 
-  // Admin Auto-Populate Effect
-  useEffect(() => {
-    const countryName = adminFormData.country_name;
-    if (!isAdminPanelOpen || !countryName || countryName.trim() === "") return;
-    
-    // Case-insensitive matching logic with robust null-safe check
-    const existing = countries.find(c => c.country_name?.toLowerCase() === countryName.trim().toLowerCase());
-    
-    if (existing) {
-      setAdminFormData({
-        country_name: existing.country_name,
-        annual_growth: existing.annual_growth,
-        stability_score: existing.stability_score,
-        compass_index: existing.compass_index,
-        strategic_status: existing.strategic_status,
-        average_salary_usd: existing.average_salary_usd,
-        tax_rate_percent: existing.tax_rate_percent,
-        rent: existing.rent,
-        healthcare: existing.healthcare,
-        safety: existing.safety,
-        internet: existing.internet
-      });
+  // Individual Form States
+  const [adminCountryName, setAdminCountryName] = useState("");
+  const [adminAnnualGrowth, setAdminAnnualGrowth] = useState("+0.0%");
+  const [adminStabilityScore, setAdminStabilityScore] = useState("Stable");
+  const [adminCompassIndex, setAdminCompassIndex] = useState(50);
+  const [adminStrategicStatus, setAdminStrategicStatus] = useState("Neutral");
+  const [adminSalary, setAdminSalary] = useState(50000);
+  const [adminTax, setAdminTax] = useState(20);
+  const [adminRent, setAdminRent] = useState(1500);
+  const [adminHealthcare, setAdminHealthcare] = useState(70);
+  const [adminSafety, setAdminSafety] = useState(70);
+  const [adminInternet, setAdminInternet] = useState(100);
+
+  // Intelligent Auto-Populate on Type
+  const handleCountryNameChange = (newName: string) => {
+    setAdminCountryName(newName);
+    if (!newName.trim()) return;
+
+    const found = countries.find(c => c.country_name?.toLowerCase() === newName.trim().toLowerCase());
+    if (found) {
+      setAdminAnnualGrowth(found.annual_growth || "+0.0%");
+      setAdminStabilityScore(found.stability_score || "Stable");
+      setAdminCompassIndex(found.compass_index || 50);
+      setAdminStrategicStatus(found.strategic_status || "Neutral");
+      setAdminSalary(found.average_salary_usd || 0);
+      setAdminTax(found.tax_rate_percent || 0);
+      setAdminRent(found.rent || 0);
+      setAdminHealthcare(found.healthcare || 0);
+      setAdminSafety(found.safety || 0);
+      setAdminInternet(found.internet || 0);
     }
-  }, [adminFormData.country_name, countries, isAdminPanelOpen]);
+  };
 
   const handleAdminUpsert = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -203,20 +198,20 @@ export default function App() {
     try {
       setIsUpserting(true);
       
-      // Sanitize numeric inputs precisely for database compatibility
+      // Sanitized Payload Construction
       const payload = {
-        country_name: adminFormData.country_name?.trim(),
-        annual_growth: adminFormData.annual_growth || "+0.0%",
-        stability_score: adminFormData.stability_score || "Stable",
-        compass_index: Number(adminFormData.compass_index) || 50,
-        strategic_status: adminFormData.strategic_status || "Neutral",
-        average_salary_usd: Number(adminFormData.average_salary_usd) || 0,
-        tax_rate_percent: Number(adminFormData.tax_rate_percent) || 0,
-        rent: Number(adminFormData.rent) || 0,
-        healthcare: Number(adminFormData.healthcare) || 0,
-        safety: Number(adminFormData.safety) || 0,
-        internet: Number(adminFormData.internet) || 0,
-        cost_of_living_score: 70 // Fallback for schema constraint safety
+        country_name: adminCountryName.trim(),
+        annual_growth: adminAnnualGrowth || "+0.0%",
+        stability_score: adminStabilityScore || "Stable",
+        compass_index: Number(adminCompassIndex) || 50,
+        strategic_status: adminStrategicStatus || "Neutral",
+        average_salary_usd: Number(adminSalary) || 0,
+        tax_rate_percent: Number(adminTax) || 0,
+        rent: Number(adminRent) || 0,
+        healthcare: Number(adminHealthcare) || 0,
+        safety: Number(adminSafety) || 0,
+        internet: Number(adminInternet) || 0,
+        cost_of_living_score: 70 // Database schema safety fallback
       };
 
       const { error } = await supabase
@@ -229,12 +224,11 @@ export default function App() {
       triggerNotification("Jurisdiction Matrix Successfully Synchronized.");
       setIsAdminPanelOpen(false);
       
-      // Refresh local state instantly
+      // Immediate Live State Refresh
       const { data } = await supabase.from('countries').select('*').order('compass_index', { ascending: false });
       if (data) setCountries(data);
     } catch (err: any) {
-      // Explicit error tracking as requested
-      alert("Database Error: " + err.message);
+      alert("Database Error: " + (err.message || "Unknown synchronization failure."));
       triggerNotification(err.message || "Matrix Synchronization Failure.");
     } finally {
       setIsUpserting(false);
@@ -992,72 +986,91 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
           </section>
         )}
 
-        {/* Leadership Profile */}
-        <section id="about" className="py-24 relative overflow-hidden">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16 px-4">
-              <h2 className="text-amber-600 text-sm font-bold tracking-[0.3em] uppercase mb-4 opacity-70">Leadership Intelligence</h2>
-              <h3 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-400">The Architect of Global Strategy</h3>
-            </div>
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="max-w-4xl mx-auto rounded-[2.5rem] p-1 bg-gradient-to-br from-amber-600/30 via-transparent to-terracotta-start/30 shadow-2xl shadow-amber-600/5"
-            >
-              <div className="bg-brand-midnight/90 backdrop-blur-3xl rounded-[calc(2.5rem-4px)] p-8 md:p-16 border border-white/5 flex flex-col md:flex-row items-center gap-12 text-center md:text-left">
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-amber-600 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity" />
-                  <div className="w-48 h-48 rounded-full border-2 border-amber-600 p-1 shadow-2xl shadow-amber-600/30 relative z-10 transition-transform duration-500 group-hover:scale-[1.02]">
-                    <img 
-                      src="/founder.jpg.jpeg" 
-                      alt="Founder" 
-                      className="w-full h-full rounded-full object-cover grayscale brightness-110 hover:grayscale-0 transition-all duration-700"
-                    />
-                  </div>
-                  <div className="absolute -bottom-2 -right-2 bg-brand-gold text-brand-midnight p-2.5 rounded-full shadow-lg border-4 border-brand-midnight">
-                    <Shield className="w-5 h-5" />
-                  </div>
-                </div>
-                
-                <div className="flex-1">
-                  <div className="inline-block px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-amber-600 text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Chief AI Architect</div>
-                  <h3 className="text-3xl md:text-4xl font-display font-bold mb-4 tracking-tight text-slate-400">Munchangi Matyaraju <span className="text-amber-600/80 block md:inline mt-2 md:mt-0">(mm Raju)</span></h3>
-                  <div className="space-y-4 text-gray-400 text-lg leading-relaxed mb-8 font-light max-w-sm mx-auto md:mx-0">
-                    <p className="italic">
-                      "Visionary behind Global Compass AI, focused on strategic global intelligence and neural economic forecasting."
-                    </p>
-                    <p className="text-sm not-italic opacity-80">
-                      Pioneering the integration of quantitative models to navigate the future of global wealth with mathematical precision.
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap justify-center md:justify-start gap-4">
-                    <a 
-                      href="https://www.linkedin.com/in/munchingi-matya-raju-52baa71bb/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="px-8 py-3 rounded-xl bg-brand-gold text-brand-midnight text-xs font-bold hover:bg-white transition-all shadow-lg shadow-brand-gold/20 active:scale-95 flex items-center gap-2"
-                    >
-                      <Linkedin className="w-4 h-4" />
-                      CONNECT VIA LINKEDIN
-                    </a>
-                    <a 
-                      href="https://x.com/mmraju77" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="px-8 py-3 rounded-xl border border-white/10 text-slate-400 text-xs font-bold hover:border-amber-600/50 hover:text-amber-600 transition-all flex items-center gap-2"
-                    >
-                      <Twitter className="w-4 h-4" />
-                      FOLLOW ON X
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+        {/* About: Leadership Profile */}
+        <section id="about" className="py-24 relative overflow-hidden bg-brand-midnight">
+          <div className="absolute inset-0">
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-600/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-terracotta-start/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
           </div>
           
-          {/* Section Decoration */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[600px] bg-brand-gold/5 blur-[150px] rounded-full pointer-events-none -z-10" />
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="flex flex-col lg:flex-row items-center gap-16 md:gap-24">
+              <motion.div 
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="w-full lg:w-1/2 order-2 lg:order-1"
+              >
+                <div className="inline-block px-4 py-1.5 rounded-full bg-amber-600/10 border border-amber-600/20 text-amber-600 text-[10px] font-bold tracking-[0.3em] uppercase mb-6">
+                  Chief AI Architect
+                </div>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-slate-200 mb-8 tracking-tight leading-[1.1]">
+                  Munchangi Matyaraju <span className="text-slate-500 whitespace-nowrap">(mm Raju)</span>
+                </h2>
+                
+                <div className="space-y-6 text-lg text-slate-400 font-light leading-relaxed max-w-xl">
+                  <p>
+                    As the architect behind the <span className="text-slate-200 font-medium">Neural Intelligence Framework</span>, mm Raju leads the strategic vision for Global Compass. 
+                  </p>
+                  <p>
+                    With deep expertise in quantitative modeling and jurisdictional arbitrage, he has pioneered the use of predictive AI to navigate the increasingly complex patterns of global economic mobility and wealth preservation.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-8 pt-10 mt-10 border-t border-white/5">
+                  <div>
+                    <div className="text-2xl font-display font-bold text-slate-200">15+</div>
+                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Strategic Markets</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-display font-bold text-slate-200">98%</div>
+                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Matrix Accuracy</div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-4 mt-12">
+                  <a href="https://www.linkedin.com/in/munchingi-matya-raju-52baa71bb/" target="_blank" rel="noopener noreferrer" className="px-8 py-3.5 rounded-xl bg-amber-600 text-brand-midnight text-[11px] font-bold tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-amber-600/20 uppercase flex items-center gap-2">
+                    <Linkedin className="w-4 h-4" /> Connect with mm Raju
+                  </a>
+                  <a href="https://x.com/mmraju77" target="_blank" rel="noopener noreferrer" className="px-8 py-3.5 rounded-xl border border-white/10 text-slate-400 text-[11px] font-bold tracking-widest hover:border-amber-600 hover:text-amber-600 transition-all uppercase flex items-center gap-2">
+                    <Twitter className="w-4 h-4" /> Intelligence Feed
+                  </a>
+                </div>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="w-full lg:w-1/2 order-1 lg:order-2 flex justify-center lg:justify-end"
+              >
+                <div className="relative group">
+                  <div className="absolute -inset-10 bg-amber-600/10 blur-[100px] rounded-full opacity-40 group-hover:opacity-60 transition-opacity" />
+                  <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-[3rem] p-1.5 bg-gradient-to-br from-white/20 via-white/5 to-transparent shadow-2xl backdrop-blur-3xl overflow-hidden">
+                    <div className="w-full h-full rounded-[2.8rem] bg-brand-midnight relative overflow-hidden group">
+                      <img 
+                        src="/founder.jpg.jpeg" 
+                        alt="Founder" 
+                        className="w-full h-full object-cover grayscale brightness-125 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-midnight via-transparent to-transparent opacity-60" />
+                      <div className="absolute bottom-8 left-8 right-8">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-amber-600/20 border border-amber-600/30 flex items-center justify-center">
+                            <Shield className="w-5 h-5 text-amber-600" />
+                          </div>
+                          <div>
+                            <div className="text-white font-bold text-xs">Architect Signature</div>
+                            <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-0.5">Verified Institutional Grade</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
         </section>
 
         {/* Global Registration Section */}
@@ -1147,86 +1160,73 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="pt-24 pb-12 border-t border-white/5 bg-black/60">
+        {/* Footer: Institutional Compliance */}
+        <footer className="pt-24 pb-12 bg-black border-t border-white/5">
           <div className="container mx-auto px-6">
-            <div className="grid md:grid-cols-4 gap-12 mb-20">
+            <div className="grid md:grid-cols-4 gap-16 mb-24">
               <div className="col-span-1 md:col-span-2">
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-8 h-8 bg-brand-gold rounded flex items-center justify-center">
-                    <Zap className="text-brand-midnight w-5 h-5" />
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-10 h-10 rounded-xl bg-amber-600/10 border border-amber-600/20 flex items-center justify-center">
+                    <Globe className="w-6 h-6 text-amber-600" />
                   </div>
-                  <span className="font-display text-xl font-bold tracking-tight text-slate-400">GLOBAL COMPASS AI</span>
+                  <span className="font-display text-2xl font-bold tracking-tighter text-slate-300">
+                    GLOBAL COMPASS<span className="text-amber-600">.</span>
+                  </span>
                 </div>
-                <p className="text-gray-400 max-w-sm mb-8">
-                  The world's premier neural-intelligence platform for strategic wealth relocation 
-                  and global economic navigation.
+                <p className="text-slate-500 text-lg max-w-sm mb-10 font-light leading-relaxed">
+                  Strategic intelligence for wealth sovereignty and institutional cross-border migration.
                 </p>
                 <div className="flex gap-4">
-                  <a 
-                    href="https://www.linkedin.com/in/munchingi-matya-raju-52baa71bb/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-amber-600 hover:border-amber-600/50 transition-all"
-                  >
-                    <Linkedin className="w-5 h-5" />
-                  </a>
-                  <a 
-                    href="https://x.com/mmraju77" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-amber-600 hover:border-amber-600/50 transition-all"
-                  >
-                    <Twitter className="w-5 h-5" />
-                  </a>
+                  {[Linkedin, Twitter].map((Icon, idx) => (
+                    <a key={idx} href="#" className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-slate-500 hover:text-amber-600 hover:border-amber-600/30 transition-all">
+                      <Icon className="w-5 h-5" />
+                    </a>
+                  ))}
                 </div>
               </div>
+
               <div>
-                <h4 className="font-bold mb-6 text-slate-400 text-sm uppercase tracking-widest">Solutions</h4>
-                <ul className="space-y-4 text-gray-400 text-sm">
-                  <li><a href="#" className="hover:text-amber-600 flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-amber-600 opacity-0 group-hover:opacity-100 transition-all" /> Wealth Migration</a></li>
-                  <li><a href="#" className="hover:text-amber-600 flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-amber-600 opacity-0 group-hover:opacity-100 transition-all" /> Jurisdiction Audits</a></li>
-                  <li><a href="#" className="hover:text-amber-600 flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-amber-600 opacity-0 group-hover:opacity-100 transition-all" /> AI Portfolio Guard</a></li>
-                  <li><a href="#" className="hover:text-amber-600 flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-amber-600 opacity-0 group-hover:opacity-100 transition-all" /> Global Concierge</a></li>
+                <h4 className="text-white text-xs font-bold uppercase tracking-[0.3em] mb-8">Ecosystem</h4>
+                <ul className="space-y-4 text-slate-500 text-sm font-medium">
+                  <li><a href="#" className="hover:text-amber-600 transition-colors">Jurisdiction Matrix</a></li>
+                  <li><a href="#" className="hover:text-amber-600 transition-colors">AI Forecasting</a></li>
+                  <li><a href="#" className="hover:text-amber-600 transition-colors">Wealth Vaults</a></li>
                 </ul>
               </div>
+
               <div>
-                <h4 className="font-bold mb-6 text-slate-400 text-sm uppercase tracking-widest">Company</h4>
-                <ul className="space-y-4 text-gray-400 text-sm">
-                  <li><a href="#" className="hover:text-amber-600 flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-amber-600 opacity-0 group-hover:opacity-100 transition-all" /> Privacy Policy</a></li>
-                  <li><a href="#" className="hover:text-amber-600 flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-amber-600 opacity-0 group-hover:opacity-100 transition-all" /> Security Standards</a></li>
-                  <li><a href="#" className="hover:text-amber-600 flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-amber-600 opacity-0 group-hover:opacity-100 transition-all" /> Press Room</a></li>
-                  <li><a href="#" className="hover:text-amber-600 flex items-center gap-2 group"><ChevronRight className="w-3 h-3 text-amber-600 opacity-0 group-hover:opacity-100 transition-all" /> Global Status</a></li>
+                <h4 className="text-white text-xs font-bold uppercase tracking-[0.3em] mb-8">Governance</h4>
+                <ul className="space-y-4 text-slate-500 text-sm font-medium">
+                  <li><a href="#" className="hover:text-amber-600 transition-colors">Privacy Sovereignty</a></li>
+                  <li><a href="#" className="hover:text-amber-600 transition-colors">Regulatory Policy</a></li>
+                  <li><a href="#" className="hover:text-amber-600 transition-colors">Security Audit</a></li>
                 </ul>
               </div>
             </div>
 
-            <div className="pt-12 border-t border-white/10">
-              <div className="flex flex-col gap-8">
-                {/* Strict Regulatory Disclaimer */}
-                <div className="p-8 rounded-xl bg-white/[0.02] border border-white/5">
-                  <div className="flex items-start gap-4 mb-4">
-                    <Shield className="w-5 h-5 text-amber-600 flex-shrink-0" />
-                    <h5 className="font-bold text-xs uppercase tracking-widest text-slate-400">Regulatory & Financial Disclaimer</h5>
-                  </div>
-                  <div className="space-y-4 text-[11px] text-gray-500 leading-relaxed uppercase">
-                    <p>
-                      GLOBAL COMPASS AI (THE "PLATFORM") PROVIDES STRATEGIC DATA ANALYSIS AND AI-GENERATED INSIGHTS FOR INFORMATIONAL PURPOSES ONLY. THE CONTENTS DO NOT CONSTITUTE FINANCIAL, INVESTMENT, TAX, OR LEGAL ADVICE. USERS SHOULD CONSULT WITH PROFESSIONAL ADVISORS BEFORE MAKING ANY FINANCIAL DECISIONS OR CROSS-BORDER ASSET TRANSFERS. 
-                    </p>
-                    <p>
-                      PAST PERFORMANCE IS NOT INDICATIVE OF FUTURE RESULTS. JURISDICTION ANALYSIS AND GROWTH FORECASTS ARE SUBJECT TO MARKET VOLATILITY, GEOPOLITICAL SHIFTS, AND REGULATORY CHANGES IN GLOBAL TERRITORIES. THE PLATFORM DISCLAIMS ALL LIABILITY FOR ANY FINANCIAL LOSSES OR REGULATORY MISSTEPS ARISING FROM THE USE OF ITS DATA. 
-                    </p>
-                    <p>
-                      CERTAIN SERVICES MAY NOT BE AVAILABLE IN ALL JURISDICTIONS DUE TO LOCAL FINANCIAL REGULATIONS (INCLUDING BUT NOT LIMITED TO SEC, FCA, AND ESMA DIRECTIVES). BY USING THIS PLATFORM, YOU ACKNOWLEDGE AND ACCEPT THE RISKS INHERENT IN GLOBAL ASSET MANAGEMENT.
-                    </p>
-                  </div>
+            <div className="mb-16">
+              <div className="p-10 rounded-2xl bg-white/[0.01] border border-white/5">
+                <div className="flex items-center gap-3 mb-6">
+                  <ShieldCheck className="w-5 h-5 text-amber-600" />
+                  <h4 className="text-white text-xs font-bold uppercase tracking-[0.3em]">Global Financial & Regulatory Disclaimer</h4>
                 </div>
-                
-                <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400 font-medium">
-                  <p>© 2026 Global Compass AI. All Strategic Rights Reserved.</p>
-                  <p>Design by Global Compass Labs • mm Raju Signature Series</p>
+                <div className="space-y-6 text-[11px] text-slate-600 leading-relaxed uppercase tracking-[0.05em]">
+                  <p>
+                    GLOBAL COMPASS (THE "PLATFORM") IS AN ANALYTICAL INTELLIGENCE SUITE OPERATED BY GLOBAL STRATEGY LABS. THE DATA, INSIGHTS, AND AI-GENERATED MODELS PROVIDED ARE STRICTLY FOR INFORMATIONAL AND EDUCATIONAL PURPOSES. THESE DO NOT CONSTITUTE, NOR SHOULD THEY BE INTERPRETED AS, FINANCIAL, INVESTMENT, LEGAL, OR TAX ADVICE.
+                  </p>
+                  <p>
+                    WEALTH MIGRATION AND JURISDICTIONAL ARBITRAGE CARRY SIGNIFICANT RISKS. PAST PERFORMANCE OF ANY TERRITORY OR ASSET CLASS IS NOT INDICATIVE OF FUTURE STABILITY. USERS MUST COMPLY WITH ALL LOCAL TAX AND REPORTING LAWS IN THEIR HOME AND TARGET JURISDICTIONS (INCLUDING CRS AND FATCA REQUIREMENTS). 
+                  </p>
+                  <p>
+                    THE PLATFORM AND ITS ARCHITECTS DISCLAIM ALL LIABILITY FOR FISCAL OR REGULATORY CONSEQUENCES ARISING FROM THE USE OF THESE INSIGHTS. SERVICES MAY BE RESTRICTED IN CERTAIN SANCTIONED JURISDICTIONS BY DEFAULT. BY ENGAGING WITH THIS INTERFACE, YOU ACKNOWLEDGE RECIPIENT RESPONSIBILITY FOR INDEPENDENT VERIFICATION OF ALL GLOBAL ECONOMIC DATA.
+                  </p>
                 </div>
               </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/5 text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">
+              <p>© {new Date().getFullYear()} Global Strategy Labs • All Strategic Rights Reserved.</p>
+              <p className="text-amber-600/50">Munchangi Matyaraju Signature Architecture Series</p>
             </div>
           </div>
         </footer>
@@ -1276,8 +1276,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <input 
                           type="text"
                           required
-                          value={adminFormData.country_name}
-                          onChange={(e) => setAdminFormData({...adminFormData, country_name: e.target.value})}
+                          value={adminCountryName}
+                          onChange={(e) => handleCountryNameChange(e.target.value)}
                           className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
                           placeholder="e.g., Switzerland"
                         />
@@ -1287,8 +1287,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Annual Growth</label>
                           <input 
                             type="text"
-                            value={adminFormData.annual_growth}
-                            onChange={(e) => setAdminFormData({...adminFormData, annual_growth: e.target.value})}
+                            value={adminAnnualGrowth}
+                            onChange={(e) => setAdminAnnualGrowth(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
                             placeholder="+2.4%"
                           />
@@ -1297,8 +1297,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Stability Score</label>
                           <input 
                             type="text"
-                            value={adminFormData.stability_score}
-                            onChange={(e) => setAdminFormData({...adminFormData, stability_score: e.target.value})}
+                            value={adminStabilityScore}
+                            onChange={(e) => setAdminStabilityScore(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
                             placeholder="Maximum"
                           />
@@ -1309,8 +1309,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Compass Index (0-100)</label>
                           <input 
                             type="number"
-                            value={adminFormData.compass_index}
-                            onChange={(e) => setAdminFormData({...adminFormData, compass_index: parseInt(e.target.value)})}
+                            value={adminCompassIndex}
+                            onChange={(e) => setAdminCompassIndex(parseInt(e.target.value) || 0)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1318,8 +1318,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Strategic Status</label>
                           <input 
                             type="text"
-                            value={adminFormData.strategic_status}
-                            onChange={(e) => setAdminFormData({...adminFormData, strategic_status: e.target.value})}
+                            value={adminStrategicStatus}
+                            onChange={(e) => setAdminStrategicStatus(e.target.value)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
                             placeholder="Premium"
                           />
@@ -1334,8 +1334,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Avg Annual Salary ($)</label>
                           <input 
                             type="number"
-                            value={adminFormData.average_salary_usd}
-                            onChange={(e) => setAdminFormData({...adminFormData, average_salary_usd: parseInt(e.target.value)})}
+                            value={adminSalary}
+                            onChange={(e) => setAdminSalary(parseInt(e.target.value) || 0)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1343,8 +1343,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Tax Rate (%)</label>
                           <input 
                             type="number"
-                            value={adminFormData.tax_rate_percent}
-                            onChange={(e) => setAdminFormData({...adminFormData, tax_rate_percent: parseInt(e.target.value)})}
+                            value={adminTax}
+                            onChange={(e) => setAdminTax(parseInt(e.target.value) || 0)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1354,8 +1354,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Monthly Rent ($)</label>
                           <input 
                             type="number"
-                            value={adminFormData.rent}
-                            onChange={(e) => setAdminFormData({...adminFormData, rent: parseInt(e.target.value)})}
+                            value={adminRent}
+                            onChange={(e) => setAdminRent(parseInt(e.target.value) || 0)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1363,8 +1363,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Healthcare Score (0-100)</label>
                           <input 
                             type="number"
-                            value={adminFormData.healthcare}
-                            onChange={(e) => setAdminFormData({...adminFormData, healthcare: parseInt(e.target.value)})}
+                            value={adminHealthcare}
+                            onChange={(e) => setAdminHealthcare(parseInt(e.target.value) || 0)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1374,8 +1374,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Safety Rating (0-100)</label>
                           <input 
                             type="number"
-                            value={adminFormData.safety}
-                            onChange={(e) => setAdminFormData({...adminFormData, safety: parseInt(e.target.value)})}
+                            value={adminSafety}
+                            onChange={(e) => setAdminSafety(parseInt(e.target.value) || 0)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1383,8 +1383,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Internet Speed (Mbps)</label>
                           <input 
                             type="number"
-                            value={adminFormData.internet}
-                            onChange={(e) => setAdminFormData({...adminFormData, internet: parseInt(e.target.value)})}
+                            value={adminInternet}
+                            onChange={(e) => setAdminInternet(parseInt(e.target.value) || 0)}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
