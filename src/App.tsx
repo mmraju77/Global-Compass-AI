@@ -174,6 +174,7 @@ export default function App() {
   useEffect(() => {
     if (!isAdminPanelOpen || !adminFormData.country_name) return;
     
+    // Case-insensitive matching logic
     const searchName = adminFormData.country_name.trim().toLowerCase();
     const existing = countries.find(c => c.country_name.toLowerCase() === searchName);
     
@@ -213,7 +214,8 @@ export default function App() {
         rent: adminFormData.rent,
         healthcare: adminFormData.healthcare,
         safety: adminFormData.safety,
-        internet: adminFormData.internet
+        internet: adminFormData.internet,
+        cost_of_living_score: 70 // Fallback for schema constraint safety
       };
 
       const { error } = await supabase
@@ -228,6 +230,8 @@ export default function App() {
       const { data } = await supabase.from('countries').select('*').order('compass_index', { ascending: false });
       if (data) setCountries(data);
     } catch (err: any) {
+      // Explicit error tracking as requested
+      alert(`Database Synchronization Failure: ${err.message}`);
       triggerNotification(err.message || "Matrix Synchronization Failure.");
     } finally {
       setIsUpserting(false);
