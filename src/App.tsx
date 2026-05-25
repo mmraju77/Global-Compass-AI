@@ -810,6 +810,39 @@ export default function App() {
         {/* Global Hub: Comparison Tool & Index Table */}
         <section id="compare" className="py-20 bg-black/40 border-y border-white/5">
           <div className="container mx-auto px-6 flex flex-col gap-10">
+            {/* Global Currency Control Toolbar */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-5 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl shadow-black/60 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                  <DollarSign className="w-5 h-5 text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold tracking-tight">GLOBAL DATA LOCALIZATION</h3>
+                  <div className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                    <span className="animate-pulse">✨</span> PLATFORM DISPLAY CURRENCY:
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 bg-[#111111]/90 backdrop-blur-xl px-5 py-3 rounded-xl border border-[#d4af37]/40 hover:border-[#d4af37] transition-all group/select shadow-inner shadow-black">
+                  <select 
+                    value={selectedCurrency}
+                    onChange={(e) => setSelectedCurrency(e.target.value as any)}
+                    className="bg-transparent border-none text-sm font-bold text-white focus:outline-none cursor-pointer tracking-wider min-w-[140px] appearance-none"
+                    style={{ backgroundImage: 'none' }}
+                  >
+                    <option value="USD" className="bg-[#111111] text-white text-base">USD ($)</option>
+                    <option value="EUR" className="bg-[#111111] text-white text-base">EUR (€)</option>
+                    <option value="INR" className="bg-[#111111] text-white text-base">INR (₹)</option>
+                    <option value="AED" className="bg-[#111111] text-white text-base">AED (د.إ)</option>
+                  </select>
+                  <div className="w-2.5 h-2.5 border-r-2 border-b-2 border-[#d4af37]/60 rotate-45 transform -translate-y-0.5 group-hover/select:border-[#d4af37] transition-all" />
+                </div>
+              </div>
+            </div>
+
             {/* Headline */}
             <div className="flex flex-col md:flex-row justify-between items-end gap-8 font-display relative">
               <div className="max-w-xl">
@@ -831,24 +864,6 @@ export default function App() {
               )}
 
               <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                {/* Dynamic Currency Picker - Enhanced Luxury Styling */}
-                <div className="flex items-center gap-3 bg-[#111111]/80 backdrop-blur-md px-4 py-2 rounded-xl border border-[#d4af37]/40 hover:border-[#d4af37] transition-all group shadow-lg shadow-black/40">
-                  <div className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.15em] shrink-0">Base Currency:</div>
-                  <select 
-                    value={selectedCurrency}
-                    onChange={(e) => setSelectedCurrency(e.target.value as any)}
-                    className="bg-transparent border-none text-xs font-bold text-white focus:outline-none cursor-pointer tracking-wider min-w-[90px] appearance-none"
-                    style={{ backgroundImage: 'none' }}
-                  >
-                    <option value="USD" className="bg-[#111111] text-white">USD ($)</option>
-                    <option value="EUR" className="bg-[#111111] text-white">EUR (€)</option>
-                    <option value="INR" className="bg-[#111111] text-white">INR (₹)</option>
-                    <option value="AED" className="bg-[#111111] text-white">AED (د.إ)</option>
-                  </select>
-                  {/* Custom Arrow Accent */}
-                  <div className="w-2 h-2 border-r border-b border-[#d4af37]/60 rotate-45 transform -translate-y-0.5 group-hover:border-[#d4af37] transition-colors" />
-                </div>
-
                 <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase transition-all duration-500 ${isLive ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-brand-gold/10 text-amber-600 border border-brand-gold/20'}`}>
                   <div className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-emerald-500 animate-pulse' : 'bg-amber-600'}`} />
                   {isLive ? 'Neural Live Engine' : 'Neural Simulation Mode'}
