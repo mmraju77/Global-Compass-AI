@@ -647,7 +647,7 @@ export default function App() {
         
         doc.setFont("helvetica", "normal");
         doc.setTextColor("#64748b");
-        doc.text("Munchangi Matyaraju Signature Architecture Series", 60, 275);
+        doc.text("M M RAJU Signature Architecture Series", 60, 275);
         
         doc.setDrawColor("#1e293b");
         doc.setLineWidth(0.2);
@@ -1203,12 +1203,12 @@ export default function App() {
                   Chief AI Architect
                 </div>
                 <h2 className="text-6xl md:text-7xl lg:text-8xl font-display font-extrabold text-white mb-8 tracking-tighter leading-[0.95] uppercase">
-                  Munchangi Matyaraju (mm Raju)
+                  M M RAJU
                 </h2>
                 
                 <div className="space-y-6 text-xl text-slate-400 font-light leading-relaxed max-w-xl">
                   <p>
-                    As the visionary architect behind our <span className="text-white font-medium">Proprietary Neural Intelligence Framework</span>, mm Raju spearheads the strategic technological evolution of Global Compass. 
+                    As the visionary architect behind our <span className="text-white font-medium">Proprietary Neural Intelligence Framework</span>, M M RAJU spearheads the strategic technological evolution of Global Compass. 
                   </p>
                   <p>
                     Specializing in high-frequency quantitative jurisdictional modeling and decentralized asset optimization, he has pioneered the synthesis of AI with global economic mobility for institutional-grade wealth preservation.
@@ -1250,7 +1250,7 @@ export default function App() {
                   <div className="relative w-80 h-96 md:w-[450px] md:h-[550px] overflow-hidden rounded-[4rem] border border-white/10 group">
                     <img 
                       src="/founder.jpg.jpeg" 
-                      alt="Munchangi Matyaraju (mm Raju)" 
+                      alt="M M RAJU" 
                       className="w-full h-full object-cover grayscale brightness-110 contrast-125 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B0D] via-transparent to-transparent opacity-80" />
@@ -1445,7 +1445,7 @@ export default function App() {
 
             <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/5 text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">
               <p>© {new Date().getFullYear()} Global Strategy Labs • All Strategic Rights Reserved.</p>
-              <p className="text-amber-600/50">Munchangi Matyaraju Signature Architecture Series</p>
+              <p className="text-amber-600/50">M M RAJU Signature Architecture Series</p>
             </div>
           </div>
         </footer>
