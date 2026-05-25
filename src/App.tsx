@@ -172,11 +172,11 @@ export default function App() {
 
   // Admin Auto-Populate Effect
   useEffect(() => {
-    if (!isAdminPanelOpen || !adminFormData.country_name) return;
+    const countryName = adminFormData.country_name;
+    if (!isAdminPanelOpen || !countryName || countryName.trim() === "") return;
     
-    // Case-insensitive matching logic
-    const searchName = adminFormData.country_name.trim().toLowerCase();
-    const existing = countries.find(c => c.country_name.toLowerCase() === searchName);
+    // Case-insensitive matching logic with robust null-safe check
+    const existing = countries.find(c => c.country_name?.toLowerCase() === countryName.trim().toLowerCase());
     
     if (existing) {
       setAdminFormData({
@@ -203,18 +203,19 @@ export default function App() {
     try {
       setIsUpserting(true);
       
+      // Sanitize numeric inputs precisely for database compatibility
       const payload = {
-        country_name: adminFormData.country_name,
-        annual_growth: adminFormData.annual_growth,
-        stability_score: adminFormData.stability_score,
-        compass_index: adminFormData.compass_index,
-        strategic_status: adminFormData.strategic_status,
-        average_salary_usd: adminFormData.average_salary_usd,
-        tax_rate_percent: adminFormData.tax_rate_percent,
-        rent: adminFormData.rent,
-        healthcare: adminFormData.healthcare,
-        safety: adminFormData.safety,
-        internet: adminFormData.internet,
+        country_name: adminFormData.country_name?.trim(),
+        annual_growth: adminFormData.annual_growth || "+0.0%",
+        stability_score: adminFormData.stability_score || "Stable",
+        compass_index: Number(adminFormData.compass_index) || 50,
+        strategic_status: adminFormData.strategic_status || "Neutral",
+        average_salary_usd: Number(adminFormData.average_salary_usd) || 0,
+        tax_rate_percent: Number(adminFormData.tax_rate_percent) || 0,
+        rent: Number(adminFormData.rent) || 0,
+        healthcare: Number(adminFormData.healthcare) || 0,
+        safety: Number(adminFormData.safety) || 0,
+        internet: Number(adminFormData.internet) || 0,
         cost_of_living_score: 70 // Fallback for schema constraint safety
       };
 
@@ -223,6 +224,8 @@ export default function App() {
         .upsert([payload], { onConflict: 'country_name' });
 
       if (error) throw error;
+      
+      alert("Data Saved Successfully!");
       triggerNotification("Jurisdiction Matrix Successfully Synchronized.");
       setIsAdminPanelOpen(false);
       
@@ -231,7 +234,7 @@ export default function App() {
       if (data) setCountries(data);
     } catch (err: any) {
       // Explicit error tracking as requested
-      alert(`Database Synchronization Failure: ${err.message}`);
+      alert("Database Error: " + err.message);
       triggerNotification(err.message || "Matrix Synchronization Failure.");
     } finally {
       setIsUpserting(false);
