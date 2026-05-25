@@ -1101,9 +1101,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                   <div className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse" />
                   Chief AI Architect
                 </div>
-                <h2 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-8 tracking-tighter leading-[1.05]">
-                  Munchangi Matyaraju <br />
-                  <span className="text-slate-600">(mm Raju)</span>
+                <h2 className="text-6xl md:text-7xl lg:text-8xl font-display font-extrabold text-white mb-8 tracking-tighter leading-[0.95] uppercase">
+                  M M RAJU
                 </h2>
                 
                 <div className="space-y-6 text-xl text-slate-400 font-light leading-relaxed max-w-xl">
