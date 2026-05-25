@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
+import html2pdf from 'html2pdf.js';
 
 const MOCK_DATA: CountryData[] = [
   { 
@@ -549,8 +550,10 @@ export default function App() {
   };
 
   const handleDownloadReport = (country: CountryData) => {
-    // 1. Native Print Workflow using asynchronous macro-task
-    // This bypasses the buggy third-party PDF libraries and resolves oklab/oklch parsing crashes
+    // 1. Direct PDF File Download via html2pdf using asynchronous macro-task
+    // This provides an automatic file download and avoids print overlays
+    triggerNotification(`Generating ${country.country_name} Executive Briefing...`);
+    
     setTimeout(() => {
       try {
         const element = document.getElementById('report-modal-content');
@@ -558,62 +561,93 @@ export default function App() {
           throw new Error("Neural content wrapper not accessible in the current DOM branch.");
         }
 
-        // 2. Print CSS Optimization & Isolation
-        // We clone the element and append it to the body root for the native print engine
-        const printClone = element.cloneNode(true) as HTMLElement;
-        printClone.id = "native-print-target";
-        document.body.appendChild(printClone);
-
-        const styleId = 'native-print-styles';
-        let styleTag = document.getElementById(styleId) as HTMLStyleElement;
+        // 2. Complete oklab/oklch Color Stripping via JS + Deep Clone
+        const clone = element.cloneNode(true) as HTMLElement;
+        clone.id = "pdf-generation-clone";
         
-        if (!styleTag) {
-          styleTag = document.createElement('style');
-          styleTag.id = styleId;
-          document.head.appendChild(styleTag);
-        }
-
-        styleTag.innerHTML = `
-          @media print {
-            body.print-mode-active > :not(#native-print-target) {
-              display: none !important;
-            }
-            #native-print-target {
-              display: block !important;
-              position: absolute !important;
-              top: 0 !important;
-              left: 0 !important;
-              width: 100% !important;
-              background: #060B13 !important;
-              color: #ffffff !important;
-              padding: 40px !important;
-              box-shadow: none !important;
-              border: none !important;
-              -webkit-print-color-adjust: exact !important;
-              print-color-adjust: exact !important;
-            }
-            /* Force standard colors for print safety */
-            #native-print-target * {
-              color-scheme: dark !important;
-            }
+        // Premium Hardcoded Styling for PDF Engine Compatibility
+        clone.style.position = "absolute";
+        clone.style.left = "-9999px";
+        clone.style.top = "0";
+        clone.style.width = "800px";
+        clone.style.backgroundColor = "#060B13"; // Hard hex instead of variable
+        clone.style.color = "#ffffff";
+        clone.style.padding = "40px";
+        clone.style.borderRadius = "24px";
+        clone.style.boxShadow = "none";
+        clone.style.border = "none";
+        
+        // Recursive Cleanup Utility to strip "oklab", "oklch", and variable references
+        const stripUnsupportedStyles = (node: HTMLElement) => {
+          const style = node.style;
+          
+          // Force standard HEX/RGBA for common properties
+          if (node.classList.contains('text-amber-600') || node.classList.contains('text-brand-gold')) {
+            node.style.color = "#d4af37";
+          } else if (node.classList.contains('text-slate-400')) {
+            node.style.color = "#94a3b8";
           }
-        `;
+          
+          if (node.classList.contains('bg-brand-gold/10')) {
+            node.style.backgroundColor = "rgba(212, 175, 55, 0.1)";
+          } else if (node.classList.contains('bg-white/5')) {
+            node.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+          }
 
-        document.body.classList.add('print-mode-active');
-        triggerNotification(`Initializing Native Executive Briefing for ${country.country_name}...`);
+          // Strip any remaining oklch/oklab/var references from the style attribute
+          const styleString = node.getAttribute('style') || "";
+          if (styleString.includes('oklab') || styleString.includes('oklch') || styleString.includes('var(')) {
+            const cleanedStyle = styleString
+              .replace(/oklab\([^)]+\)/g, '#1e1e1e')
+              .replace(/oklch\([^)]+\)/g, '#d4af37')
+              .replace(/var\(--[^)]+\)/g, '#ffffff'); // Generic fallback for missed vars
+            node.setAttribute('style', cleanedStyle);
+          }
 
-        // 3. Flawless Execution via native browser dialog
-        window.print();
+          // Strip transitions, animations and modern filters
+          node.style.transition = "none";
+          node.style.animation = "none";
+          node.style.backdropFilter = "none";
+          node.style.filter = "none";
+          node.style.transform = "none";
 
-        // 3. Cleanup: Remove temporary clone and active print state
-        document.body.classList.remove('print-mode-active');
-        if (document.body.contains(printClone)) {
-          document.body.removeChild(printClone);
-        }
-        
+          Array.from(node.children).forEach(child => stripUnsupportedStyles(child as HTMLElement));
+        };
+
+        stripUnsupportedStyles(clone);
+        document.body.appendChild(clone);
+
+        const opt = {
+          margin: 10,
+          filename: `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.pdf`,
+          image: { type: 'jpeg' as const, quality: 1.0 },
+          html2canvas: { 
+            scale: 2, 
+            backgroundColor: '#060B13',
+            useCORS: true,
+            letterRendering: true,
+            logging: false
+          },
+          jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
+        };
+
+        // 3. Flawless Async Download triggering automatic file save
+        html2pdf()
+          .set(opt)
+          .from(clone)
+          .save()
+          .then(() => {
+            document.body.removeChild(clone);
+            triggerNotification("Executive Briefing Export Complete.");
+          })
+          .catch((err: any) => {
+            document.body.removeChild(clone);
+            alert("PDF Export Error: " + err.message);
+          });
+
       } catch (error: any) {
-        // 4. Total Guardrails: Safer fallback and UI survival
-        alert("PDF save bypassed, please try printing directly. Error: " + error.message);
+        // Safe Abort: Cleanup and notify
+        alert("PDF Generation Aborted: " + error.message);
       }
     }, 100);
   };
