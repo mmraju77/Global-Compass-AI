@@ -550,8 +550,8 @@ export default function App() {
   };
 
   const handleDownloadReport = (country: CountryData) => {
-    // 1. Direct PDF File Download via html2pdf using asynchronous macro-task
-    // This provides an automatic file download and avoids print overlays
+    // 1. Direct PDF File Download via hidden iframe sandbox to bypass global oklab CSS errors
+    // This provides an automatic file download in an isolated document context
     triggerNotification(`Generating ${country.country_name} Executive Briefing...`);
     
     setTimeout(() => {
@@ -561,62 +561,97 @@ export default function App() {
           throw new Error("Neural content wrapper not accessible in the current DOM branch.");
         }
 
-        // 2. Complete oklab/oklch Color Stripping via JS + Deep Clone
-        const clone = element.cloneNode(true) as HTMLElement;
-        clone.id = "pdf-generation-clone";
-        
-        // Premium Hardcoded Styling for PDF Engine Compatibility
-        clone.style.position = "absolute";
-        clone.style.left = "-9999px";
-        clone.style.top = "0";
-        clone.style.width = "800px";
-        clone.style.backgroundColor = "#060B13"; // Hard hex instead of variable
-        clone.style.color = "#ffffff";
-        clone.style.padding = "40px";
-        clone.style.borderRadius = "24px";
-        clone.style.boxShadow = "none";
-        clone.style.border = "none";
-        
-        // Recursive Cleanup Utility to strip "oklab", "oklch", and variable references
-        const stripUnsupportedStyles = (node: HTMLElement) => {
-          const style = node.style;
-          
-          // Force standard HEX/RGBA for common properties
-          if (node.classList.contains('text-amber-600') || node.classList.contains('text-brand-gold')) {
-            node.style.color = "#d4af37";
-          } else if (node.classList.contains('text-slate-400')) {
-            node.style.color = "#94a3b8";
-          }
-          
-          if (node.classList.contains('bg-brand-gold/10')) {
-            node.style.backgroundColor = "rgba(212, 175, 55, 0.1)";
-          } else if (node.classList.contains('bg-white/5')) {
-            node.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-          }
+        // 1. Create a Hidden Sandbox Iframe programmatically
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.style.position = 'absolute';
+        iframe.style.width = '800px'; // Set base width for layout
+        iframe.style.height = '0';
+        iframe.style.border = 'none';
+        document.body.appendChild(iframe);
 
-          // Strip any remaining oklch/oklab/var references from the style attribute
-          const styleString = node.getAttribute('style') || "";
-          if (styleString.includes('oklab') || styleString.includes('oklch') || styleString.includes('var(')) {
-            const cleanedStyle = styleString
-              .replace(/oklab\([^)]+\)/g, '#1e1e1e')
-              .replace(/oklch\([^)]+\)/g, '#d4af37')
-              .replace(/var\(--[^)]+\)/g, '#ffffff'); // Generic fallback for missed vars
-            node.setAttribute('style', cleanedStyle);
-          }
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (!iframeDoc) {
+          throw new Error("Failed to initialize PDF sandbox context.");
+        }
 
-          // Strip transitions, animations and modern filters
-          node.style.transition = "none";
-          node.style.animation = "none";
-          node.style.backdropFilter = "none";
-          node.style.filter = "none";
-          node.style.transform = "none";
+        // 2. Isolated Content Copying & 3. Pure Inline Hex Styles Injection
+        // We inject a clean document with ONLY standard HEX colors
+        const htmlContent = element.innerHTML;
+        iframeDoc.open();
+        iframeDoc.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <style>
+              body {
+                background-color: #060B13 !important;
+                color: #ffffff !important;
+                font-family: system-ui, -apple-system, sans-serif;
+                margin: 0 !important;
+                padding: 40px !important;
+                width: 800px !important;
+              }
+              /* Explicitly map theme classes to solid HEX colors for the export engine */
+              .bg-brand-midnight { background-color: #060B13 !important; }
+              .text-brand-gold, .text-amber-600 { color: #d4af37 !important; }
+              .text-slate-400 { color: #94a3b8 !important; }
+              
+              /* Layout Utilities */
+              .p-4 { padding: 16px !important; }
+              .p-8 { padding: 32px !important; }
+              .rounded-xl { border-radius: 12px !important; }
+              .flex { display: flex !important; }
+              .grid { display: grid !important; }
+              .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+              .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+              .items-center { align-items: center !important; }
+              .justify-center { justify-content: center !important; }
+              .justify-between { justify-content: space-between !important; }
+              .gap-2 { gap: 8px !important; }
+              .gap-3 { gap: 12px !important; }
+              .space-y-1 > * + * { margin-top: 4px !important; }
+              .space-y-4 > * + * { margin-top: 16px !important; }
+              
+              /* Borders & Backgrounds */
+              .border { border: 1px solid #1e1e1e !important; }
+              .bg-brand-gold\\/10 { background-color: rgba(212, 175, 55, 0.1) !important; }
+              .bg-brand-gold\\/5 { background-color: rgba(212, 175, 55, 0.05) !important; }
+              .bg-white\\/5 { background-color: rgba(255, 255, 255, 0.05) !important; }
+              .bg-white\\/\\[0\\.02\\] { background-color: rgba(255, 255, 255, 0.02) !important; }
+              .border-brand-gold\\/10 { border-color: rgba(212, 175, 55, 0.1) !important; }
+              .border-brand-gold\\/20 { border-color: rgba(212, 175, 55, 0.2) !important; }
+              .border-white\\/10 { border-color: rgba(255, 255, 255, 0.1) !important; }
+              .border-white\\/5 { border-color: rgba(255, 255, 255, 0.05) !important; }
+              
+              /* Typography */
+              .text-3xl { font-size: 30px !important; font-weight: bold !important; }
+              .text-xl { font-size: 20px !important; font-weight: bold !important; }
+              .text-sm { font-size: 14px !important; }
+              .text-\\[10px\\] { font-size: 10px !important; }
+              .font-bold { font-weight: bold !important; }
+              .uppercase { text-transform: uppercase !important; }
+              .tracking-widest { letter-spacing: 0.1em !important; }
+              .tracking-\\[0\\.2em\\] { letter-spacing: 0.2em !important; }
+              
+              /* Strip all modern CSS filters/animations that crash engines */
+              * {
+                box-sizing: border-box !important;
+                transition: none !important;
+                animation: none !important;
+                backdrop-filter: none !important;
+                filter: none !important;
+              }
+            </style>
+          </head>
+          <body>
+            <div>${htmlContent}</div>
+          </body>
+          </html>
+        `);
+        iframeDoc.close();
 
-          Array.from(node.children).forEach(child => stripUnsupportedStyles(child as HTMLElement));
-        };
-
-        stripUnsupportedStyles(clone);
-        document.body.appendChild(clone);
-
+        // 4. Clean Library Execution & Automatic Cleanup
         const opt = {
           margin: 10,
           filename: `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.pdf`,
@@ -631,22 +666,26 @@ export default function App() {
           jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
         };
 
-        // 3. Flawless Async Download triggering automatic file save
         html2pdf()
           .set(opt)
-          .from(clone)
+          .from(iframeDoc.body)
           .save()
           .then(() => {
-            document.body.removeChild(clone);
+            // Remove sandbox iframe after success
+            if (document.body.contains(iframe)) {
+              document.body.removeChild(iframe);
+            }
             triggerNotification("Executive Briefing Export Complete.");
           })
           .catch((err: any) => {
-            document.body.removeChild(clone);
+            if (document.body.contains(iframe)) {
+              document.body.removeChild(iframe);
+            }
             alert("PDF Export Error: " + err.message);
           });
 
       } catch (error: any) {
-        // Safe Abort: Cleanup and notify
+        // Safe Abort: Cleanup and notify if initialization fails
         alert("PDF Generation Aborted: " + error.message);
       }
     }, 100);
