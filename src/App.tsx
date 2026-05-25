@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
-import html2pdf from 'html2pdf.js';
+import { jsPDF } from "jspdf";
 
 const MOCK_DATA: CountryData[] = [
   { 
@@ -550,145 +550,118 @@ export default function App() {
   };
 
   const handleDownloadReport = (country: CountryData) => {
-    // 1. Direct PDF File Download via hidden iframe sandbox to bypass global oklab CSS errors
-    // This provides an automatic file download in an isolated document context
+    // 1. Direct PDF File Download via data-driven jsPDF approach
+    // This bypasses the DOM rendering engine to avoid oklab color parsing crashes
     triggerNotification(`Generating ${country.country_name} Executive Briefing...`);
     
     setTimeout(() => {
       try {
-        const element = document.getElementById('report-modal-content');
-        if (!element) {
-          throw new Error("Neural content wrapper not accessible in the current DOM branch.");
-        }
+        const doc = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4'
+        });
 
-        // 1. Create a Hidden Sandbox Iframe programmatically
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.style.position = 'absolute';
-        iframe.style.width = '800px'; // Set base width for layout
-        iframe.style.height = '0';
-        iframe.style.border = 'none';
-        document.body.appendChild(iframe);
+        const countryName = country.country_name;
+        
+        // 3. Wall Street Layout: Deep Dark Background
+        doc.setFillColor("#060B13"); // Brand Midnight Hex
+        doc.rect(0, 0, 210, 297, "F");
 
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-        if (!iframeDoc) {
-          throw new Error("Failed to initialize PDF sandbox context.");
-        }
+        // Header Branding
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(22);
+        doc.setTextColor("#d4af37"); // Premium Gold Matte
+        doc.text("EXECUTIVE INTELLIGENCE DOSSIER", 20, 25);
+        
+        doc.setDrawColor("#d4af37");
+        doc.setLineWidth(0.5);
+        doc.line(20, 30, 190, 30);
 
-        // 2. Isolated Content Copying & 3. Pure Inline Hex Styles Injection
-        // We inject a clean document with ONLY standard HEX colors
-        const htmlContent = element.innerHTML;
-        iframeDoc.open();
-        iframeDoc.write(`
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <style>
-              body {
-                background-color: #060B13 !important;
-                color: #ffffff !important;
-                font-family: system-ui, -apple-system, sans-serif;
-                margin: 0 !important;
-                padding: 40px !important;
-                width: 800px !important;
-              }
-              /* Explicitly map theme classes to solid HEX colors for the export engine */
-              .bg-brand-midnight { background-color: #060B13 !important; }
-              .text-brand-gold, .text-amber-600 { color: #d4af37 !important; }
-              .text-slate-400 { color: #94a3b8 !important; }
-              
-              /* Layout Utilities */
-              .p-4 { padding: 16px !important; }
-              .p-8 { padding: 32px !important; }
-              .rounded-xl { border-radius: 12px !important; }
-              .flex { display: flex !important; }
-              .grid { display: grid !important; }
-              .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-              .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
-              .items-center { align-items: center !important; }
-              .justify-center { justify-content: center !important; }
-              .justify-between { justify-content: space-between !important; }
-              .gap-2 { gap: 8px !important; }
-              .gap-3 { gap: 12px !important; }
-              .space-y-1 > * + * { margin-top: 4px !important; }
-              .space-y-4 > * + * { margin-top: 16px !important; }
-              
-              /* Borders & Backgrounds */
-              .border { border: 1px solid #1e1e1e !important; }
-              .bg-brand-gold\\/10 { background-color: rgba(212, 175, 55, 0.1) !important; }
-              .bg-brand-gold\\/5 { background-color: rgba(212, 175, 55, 0.05) !important; }
-              .bg-white\\/5 { background-color: rgba(255, 255, 255, 0.05) !important; }
-              .bg-white\\/\\[0\\.02\\] { background-color: rgba(255, 255, 255, 0.02) !important; }
-              .border-brand-gold\\/10 { border-color: rgba(212, 175, 55, 0.1) !important; }
-              .border-brand-gold\\/20 { border-color: rgba(212, 175, 55, 0.2) !important; }
-              .border-white\\/10 { border-color: rgba(255, 255, 255, 0.1) !important; }
-              .border-white\\/5 { border-color: rgba(255, 255, 255, 0.05) !important; }
-              
-              /* Typography */
-              .text-3xl { font-size: 30px !important; font-weight: bold !important; }
-              .text-xl { font-size: 20px !important; font-weight: bold !important; }
-              .text-sm { font-size: 14px !important; }
-              .text-\\[10px\\] { font-size: 10px !important; }
-              .font-bold { font-weight: bold !important; }
-              .uppercase { text-transform: uppercase !important; }
-              .tracking-widest { letter-spacing: 0.1em !important; }
-              .tracking-\\[0\\.2em\\] { letter-spacing: 0.2em !important; }
-              
-              /* Strip all modern CSS filters/animations that crash engines */
-              * {
-                box-sizing: border-box !important;
-                transition: none !important;
-                animation: none !important;
-                backdrop-filter: none !important;
-                filter: none !important;
-              }
-            </style>
-          </head>
-          <body>
-            <div>${htmlContent}</div>
-          </body>
-          </html>
-        `);
-        iframeDoc.close();
+        doc.setFontSize(30);
+        doc.setTextColor("#ffffff");
+        doc.text(countryName.toUpperCase(), 20, 48);
 
-        // 4. Clean Library Execution & Automatic Cleanup
-        const opt = {
-          margin: 10,
-          filename: `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.pdf`,
-          image: { type: 'jpeg' as const, quality: 1.0 },
-          html2canvas: { 
-            scale: 2, 
-            backgroundColor: '#060B13',
-            useCORS: true,
-            letterRendering: true,
-            logging: false
-          },
-          jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
-        };
+        // Security Metadata
+        doc.setFontSize(9);
+        doc.setTextColor("#94a3b8"); // Slate 400
+        doc.text(`ARCHIVE REF: GC-SYS-${Math.random().toString(36).substring(7).toUpperCase()}`, 20, 56);
+        doc.text(`TIMESTAMP: ${new Date().toISOString().replace('T', ' ').substring(0, 19)} UTC`, 120, 56);
 
-        html2pdf()
-          .set(opt)
-          .from(iframeDoc.body)
-          .save()
-          .then(() => {
-            // Remove sandbox iframe after success
-            if (document.body.contains(iframe)) {
-              document.body.removeChild(iframe);
-            }
-            triggerNotification("Executive Briefing Export Complete.");
-          })
-          .catch((err: any) => {
-            if (document.body.contains(iframe)) {
-              document.body.removeChild(iframe);
-            }
-            alert("PDF Export Error: " + err.message);
-          });
+        // 3. Wall Street Layout: Strategic Data Matrix (11 Fields)
+        doc.setFontSize(14);
+        doc.setTextColor("#d4af37");
+        doc.text("STRATEGIC PERFORMANCE METRICS", 20, 75);
+        
+        const metrics = [
+          { label: "Stability Index", value: (country.compass_index || "0") + "/100" },
+          { label: "Annual GDP Growth", value: country.annual_growth || "N/A" },
+          { label: "Strategic Status", value: country.strategic_status || "Standard" },
+          { label: "Stability Score", value: country.stability_score || "N/A" },
+          { label: "Average Annual Salary", value: formatCurrency(country.average_salary_usd) },
+          { label: "Optimal Tax Rate", value: (country.tax_rate_percent !== undefined ? country.tax_rate_percent : "N/A") + "%" },
+          { label: "Cost of Living Score", value: (country.cost_of_living_score || "N/A") + "/100" },
+          { label: "Monthly Rent (Avg)", value: country.rent || (countryMetrics[countryName]?.rent || "N/A") },
+          { label: "Healthcare Rating", value: country.healthcare ? `${country.healthcare}/100` : (countryMetrics[countryName]?.healthcare || "N/A") },
+          { label: "Safety Rating", value: country.safety ? `${country.safety}/100` : (countryMetrics[countryName]?.safety || "N/A") },
+          { label: "Digital Connectivity", value: country.internet ? `${country.internet} Mbps` : (countryMetrics[countryName]?.internet || "N/A") },
+        ];
+
+        let yPos = 90;
+        metrics.forEach((m, idx) => {
+          // Row banding for readability
+          if (idx % 2 === 0) {
+            doc.setFillColor("#0f172a"); // Dark Slate
+            doc.rect(15, yPos - 6, 180, 10, "F");
+          }
+          
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(11);
+          doc.setTextColor("#94a3b8");
+          doc.text(m.label, 20, yPos);
+          
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor("#ffffff");
+          // Align value to the right of the label column
+          doc.text(String(m.value), 125, yPos);
+          
+          yPos += 12;
+        });
+
+        // 3. Wall Street Layout: Disclaimer & Authority
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(8);
+        doc.setTextColor("#64748b");
+        const footerLines = [
+          "CONFIDENTIALITY NOTICE: This strategic brief is proprietary to Global Compass AI members.",
+          "Global Compass AI provides architectural intelligence and baseline metrics for strategic planning goals.",
+          "Jurisdictional performance is simulated using neural intelligence frameworks and historical data sets."
+        ];
+        doc.text(footerLines, 20, 245);
+
+        // Executive Signature Footer
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor("#d4af37");
+        doc.text("GLOBAL COMPASS AI", 20, 275);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor("#64748b");
+        doc.text("Munchangi Matyaraju Signature Architecture Series", 60, 275);
+        
+        doc.setDrawColor("#1e293b");
+        doc.setLineWidth(0.2);
+        doc.line(20, 280, 190, 280);
+
+        // 4. Direct Automatic Download
+        doc.save(`${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.pdf`);
+        triggerNotification("Executive Briefing Export Complete.");
 
       } catch (error: any) {
-        // Safe Abort: Cleanup and notify if initialization fails
-        alert("PDF Generation Aborted: " + error.message);
+        // 5. Thread Safety: Safe Abort
+        alert("Strategic Export Failed: " + error.message);
       }
-    }, 100);
+    }, 150);
   };
 
   const formatCurrency = (val?: number | string) => {
