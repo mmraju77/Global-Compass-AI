@@ -222,11 +222,25 @@ export default function App() {
       
       alert("Data Saved Successfully!");
       triggerNotification("Jurisdiction Matrix Successfully Synchronized.");
+      
+      // Clear Form States
+      setAdminCountryName("");
+      setAdminAnnualGrowth("+0.0%");
+      setAdminStabilityScore("Stable");
+      setAdminCompassIndex(50);
+      setAdminStrategicStatus("Neutral");
+      setAdminSalary(50000);
+      setAdminTax(20);
+      setAdminRent(1500);
+      setAdminHealthcare(70);
+      setAdminSafety(70);
+      setAdminInternet(100);
+
       setIsAdminPanelOpen(false);
       
       // Immediate Live State Refresh
-      const { data } = await supabase.from('countries').select('*').order('compass_index', { ascending: false });
-      if (data) setCountries(data);
+      const { data: freshData } = await supabase.from('countries').select('*').order('compass_index', { ascending: false });
+      if (freshData) setCountries(freshData);
     } catch (err: any) {
       alert("Database Error: " + (err.message || "Unknown synchronization failure."));
       triggerNotification(err.message || "Matrix Synchronization Failure.");
