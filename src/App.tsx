@@ -11,63 +11,63 @@ import React, { useEffect, useState } from "react";
 const MOCK_DATA: CountryData[] = [
   { 
     country_name: "Switzerland", annual_growth: "+2.4%", stability_score: "Maximum", compass_index: 97, strategic_status: "Stable",
-    average_salary_usd: 95000, tax_rate_percent: 18, rent_cost_usd: 2800, healthcare_score: 89, safety_rating: 91, internet_speed_mbps: 145
+    average_salary_usd: 95000, tax_rate_percent: 18, rent: 2800, healthcare: 89, safety: 91, internet: 145
   },
   { 
     country_name: "Singapore", annual_growth: "+3.8%", stability_score: "Very High", compass_index: 95, strategic_status: "Premium",
-    average_salary_usd: 72000, tax_rate_percent: 15, rent_cost_usd: 3200, healthcare_score: 92, safety_rating: 93, internet_speed_mbps: 210
+    average_salary_usd: 72000, tax_rate_percent: 15, rent: 3200, healthcare: 92, safety: 93, internet: 210
   },
   { 
     country_name: "UAE", annual_growth: "+5.1%", stability_score: "High", compass_index: 88, strategic_status: "Emerging",
-    average_salary_usd: 68000, tax_rate_percent: 0, rent_cost_usd: 2100, healthcare_score: 78, safety_rating: 88, internet_speed_mbps: 120
+    average_salary_usd: 68000, tax_rate_percent: 0, rent: 2100, healthcare: 78, safety: 88, internet: 120
   },
   { 
     country_name: "Germany", annual_growth: "+1.8%", stability_score: "High", compass_index: 91, strategic_status: "Optimal",
-    average_salary_usd: 62000, tax_rate_percent: 32, rent_cost_usd: 1400, healthcare_score: 85, safety_rating: 82, internet_speed_mbps: 95
+    average_salary_usd: 62000, tax_rate_percent: 32, rent: 1400, healthcare: 85, safety: 82, internet: 95
   },
   { 
     country_name: "Luxembourg", annual_growth: "+2.1%", stability_score: "Maximum", compass_index: 94, strategic_status: "Premium",
-    average_salary_usd: 88000, tax_rate_percent: 24, rent_cost_usd: 2300, healthcare_score: 86, safety_rating: 85, internet_speed_mbps: 135
+    average_salary_usd: 88000, tax_rate_percent: 24, rent: 2300, healthcare: 86, safety: 85, internet: 135
   },
   { 
     country_name: "United States", annual_growth: "+4.2%", stability_score: "High", compass_index: 92, strategic_status: "Optimal",
-    average_salary_usd: 85000, tax_rate_percent: 25, rent_cost_usd: 2100, healthcare_score: 76, safety_rating: 71, internet_speed_mbps: 185
+    average_salary_usd: 85000, tax_rate_percent: 25, rent: 2100, healthcare: 76, safety: 71, internet: 185
   },
   { 
     country_name: "Norway", annual_growth: "+1.5%", stability_score: "Maximum", compass_index: 93, strategic_status: "Stable",
-    average_salary_usd: 78000, tax_rate_percent: 28, rent_cost_usd: 1550, healthcare_score: 88, safety_rating: 89, internet_speed_mbps: 160
+    average_salary_usd: 78000, tax_rate_percent: 28, rent: 1550, healthcare: 88, safety: 89, internet: 160
   },
   { 
     country_name: "Denmark", annual_growth: "+1.6%", stability_score: "Very High", compass_index: 92, strategic_status: "Stable",
-    average_salary_usd: 75000, tax_rate_percent: 35, rent_cost_usd: 1600, healthcare_score: 87, safety_rating: 88, internet_speed_mbps: 150
+    average_salary_usd: 75000, tax_rate_percent: 35, rent: 1600, healthcare: 87, safety: 88, internet: 150
   },
   { 
     country_name: "Australia", annual_growth: "+2.8%", stability_score: "High", compass_index: 89, strategic_status: "Stable",
-    average_salary_usd: 70000, tax_rate_percent: 32, rent_cost_usd: 1850, healthcare_score: 84, safety_rating: 83, internet_speed_mbps: 125
+    average_salary_usd: 70000, tax_rate_percent: 32, rent: 1850, healthcare: 84, safety: 83, internet: 125
   },
   { 
     country_name: "Sweden", annual_growth: "+1.9%", stability_score: "High", compass_index: 90, strategic_status: "Stable",
-    average_salary_usd: 65000, tax_rate_percent: 30, rent_cost_usd: 1350, healthcare_score: 83, safety_rating: 79, internet_speed_mbps: 155
+    average_salary_usd: 65000, tax_rate_percent: 30, rent: 1350, healthcare: 83, safety: 79, internet: 155
   },
   { 
     country_name: "Netherlands", annual_growth: "+2.2%", stability_score: "High", compass_index: 91, strategic_status: "Optimal",
-    average_salary_usd: 68000, tax_rate_percent: 37, rent_cost_usd: 1800, healthcare_score: 86, safety_rating: 84, internet_speed_mbps: 170
+    average_salary_usd: 68000, tax_rate_percent: 37, rent: 1800, healthcare: 86, safety: 84, internet: 170
   },
   { 
     country_name: "Canada", annual_growth: "+2.0%", stability_score: "High", compass_index: 88, strategic_status: "Stable",
-    average_salary_usd: 64000, tax_rate_percent: 28, rent_cost_usd: 1700, healthcare_score: 81, safety_rating: 82, internet_speed_mbps: 140
+    average_salary_usd: 64000, tax_rate_percent: 28, rent: 1700, healthcare: 81, safety: 82, internet: 140
   },
   { 
     country_name: "Ireland", annual_growth: "+5.8%", stability_score: "High", compass_index: 86, strategic_status: "Emerging",
-    average_salary_usd: 72000, tax_rate_percent: 20, rent_cost_usd: 2200, healthcare_score: 75, safety_rating: 81, internet_speed_mbps: 130
+    average_salary_usd: 72000, tax_rate_percent: 20, rent: 2200, healthcare: 75, safety: 81, internet: 130
   },
   { 
     country_name: "United Kingdom", annual_growth: "+1.2%", stability_score: "High", compass_index: 84, strategic_status: "Stable",
-    average_salary_usd: 60000, tax_rate_percent: 20, rent_cost_usd: 1750, healthcare_score: 79, safety_rating: 75, internet_speed_mbps: 120
+    average_salary_usd: 60000, tax_rate_percent: 20, rent: 1750, healthcare: 79, safety: 75, internet: 120
   },
   { 
     country_name: "India", annual_growth: "+7.2%", stability_score: "Moderate", compass_index: 78, strategic_status: "High Potential",
-    average_salary_usd: 32000, tax_rate_percent: 22, rent_cost_usd: 450, healthcare_score: 68, safety_rating: 72, internet_speed_mbps: 85
+    average_salary_usd: 32000, tax_rate_percent: 22, rent: 450, healthcare: 68, safety: 72, internet: 85
   },
 ];
 
@@ -113,10 +113,10 @@ interface CountryData {
   strategic_status: string;
   average_salary_usd?: number;
   tax_rate_percent?: number;
-  rent_cost_usd?: number;
-  healthcare_score?: number;
-  safety_rating?: number;
-  internet_speed_mbps?: number;
+  rent?: number;
+  healthcare?: number;
+  safety?: number;
+  internet?: number;
 }
 
 export default function App() {
@@ -142,6 +142,16 @@ export default function App() {
   const [savedReports, setSavedReports] = useState<any[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Comparison Display Logic
+  const getDisplayValue = (country: CountryData, metric: any) => {
+    if (metric.key === "rent" && country.rent) return formatCurrency(country.rent);
+    if (metric.key === "healthcare" && country.healthcare) return `${country.healthcare} / 100`;
+    if (metric.key === "safety" && country.safety) return `${country.safety} / 100`;
+    if (metric.key === "internet" && country.internet) return `${country.internet} Mbps`;
+    
+    return metric.format ? metric.format((country as any)[metric.key] || 0) : `${(country as any)[metric.key] || 0}${metric.suffix || ""}`;
+  };
+
   // Admin State
   const isAdmin = user?.email === "MooVi7g@gmail.com";
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
@@ -154,11 +164,35 @@ export default function App() {
     strategic_status: "Neutral",
     average_salary_usd: 50000,
     tax_rate_percent: 20,
-    rent_cost_usd: 1500,
-    healthcare_score: 70,
-    safety_rating: 70,
-    internet_speed_mbps: 100
+    rent: 1500,
+    healthcare: 70,
+    safety: 70,
+    internet: 100
   });
+
+  // Admin Auto-Populate Effect
+  useEffect(() => {
+    if (!isAdminPanelOpen || !adminFormData.country_name) return;
+    
+    const searchName = adminFormData.country_name.trim().toLowerCase();
+    const existing = countries.find(c => c.country_name.toLowerCase() === searchName);
+    
+    if (existing) {
+      setAdminFormData({
+        country_name: existing.country_name,
+        annual_growth: existing.annual_growth,
+        stability_score: existing.stability_score,
+        compass_index: existing.compass_index,
+        strategic_status: existing.strategic_status,
+        average_salary_usd: existing.average_salary_usd,
+        tax_rate_percent: existing.tax_rate_percent,
+        rent: existing.rent,
+        healthcare: existing.healthcare,
+        safety: existing.safety,
+        internet: existing.internet
+      });
+    }
+  }, [adminFormData.country_name, countries, isAdminPanelOpen]);
 
   const handleAdminUpsert = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,14 +201,30 @@ export default function App() {
 
     try {
       setIsUpserting(true);
+      
+      const payload = {
+        country_name: adminFormData.country_name,
+        annual_growth: adminFormData.annual_growth,
+        stability_score: adminFormData.stability_score,
+        compass_index: adminFormData.compass_index,
+        strategic_status: adminFormData.strategic_status,
+        average_salary_usd: adminFormData.average_salary_usd,
+        tax_rate_percent: adminFormData.tax_rate_percent,
+        rent: adminFormData.rent,
+        healthcare: adminFormData.healthcare,
+        safety: adminFormData.safety,
+        internet: adminFormData.internet
+      };
+
       const { error } = await supabase
         .from('countries')
-        .upsert([adminFormData], { onConflict: 'country_name' });
+        .upsert([payload], { onConflict: 'country_name' });
 
       if (error) throw error;
       triggerNotification("Jurisdiction Matrix Successfully Synchronized.");
       setIsAdminPanelOpen(false);
-      // Refresh countries list
+      
+      // Refresh local state instantly
       const { data } = await supabase.from('countries').select('*').order('compass_index', { ascending: false });
       if (data) setCountries(data);
     } catch (err: any) {
@@ -616,37 +666,22 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     animate={{ opacity: 1, y: 0 }}
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                   >
-                    {[
-                      { label: "Stability Index", key: "compass_index", icon: Shield, suffix: "/100" },
-                      { label: "Avg Annual Salary", key: "average_salary_usd", icon: DollarSign, format: (v: number) => formatCurrency(v) },
-                      { label: "Optimal Tax Rate", key: "tax_rate_percent", icon: Percent, suffix: "%" },
-                      { label: "Monthly Rent", key: "rent_cost_usd", icon: Home, countryMetric: "rent" },
-                      { label: "Safety Rating", key: "safety_rating", icon: Shield, countryMetric: "safety" },
-                      { label: "Internet Speed", key: "internet_speed_mbps", icon: Wifi, countryMetric: "internet" },
-                    ].map((metric) => {
-                      const valA = (compareA as any)[metric.key] || 0;
-                      const valB = (compareB as any)[metric.key] || 0;
+                      {[
+                        { label: "Stability Index", key: "compass_index", icon: Shield, suffix: "/100" },
+                        { label: "Avg Annual Salary", key: "average_salary_usd", icon: DollarSign, format: (v: number) => formatCurrency(v) },
+                        { label: "Optimal Tax Rate", key: "tax_rate_percent", icon: Percent, suffix: "%" },
+                        { label: "Monthly Rent", key: "rent", icon: Home },
+                        { label: "Safety Rating", key: "safety", icon: Shield },
+                        { label: "Internet Speed", key: "internet", icon: Wifi },
+                      ].map((metric) => {
+                        const valA = (compareA as any)[metric.key] || 0;
+                        const valB = (compareB as any)[metric.key] || 0;
 
-                      // Support for dynamic strings from live data with countryMetrics fallback
-                      const getDisplayValue = (country: CountryData) => {
-                        if (metric.key === "rent_cost_usd" && country.rent_cost_usd) return formatCurrency(country.rent_cost_usd);
-                        if (metric.key === "healthcare_score" && country.healthcare_score) return `${country.healthcare_score} / 100`;
-                        if (metric.key === "safety_rating" && country.safety_rating) return `${country.safety_rating} / 100`;
-                        if (metric.key === "internet_speed_mbps" && country.internet_speed_mbps) return `${country.internet_speed_mbps} Mbps`;
-                        
-                        // Fallback to countryMetrics if property is missing
-                        if ((metric as any).countryMetric) {
-                          return countryMetrics[country.country_name]?.[(metric as any).countryMetric as keyof typeof countryMetrics[string]];
-                        }
-                        
-                        return metric.format ? metric.format((country as any)[metric.key] || 0) : `${(country as any)[metric.key] || 0}${metric.suffix || ""}`;
-                      };
+                        const displayA = getDisplayValue(compareA, metric);
+                        const displayB = getDisplayValue(compareB, metric);
 
-                      const displayA = getDisplayValue(compareA);
-                      const displayB = getDisplayValue(compareB);
-
-                      // Higher index/salary/speed/safety is better, but lower rent/tax is better
-                      const isLowerBetter = metric.key === "tax_rate_percent" || metric.key === "rent_cost_usd";
+                        // Higher index/salary/speed/safety is better, but lower rent/tax is better
+                        const isLowerBetter = metric.key === "tax_rate_percent" || metric.key === "rent";
                       
                       // Logic for visual indicators (using numbers from data object for logic)
                       const isABetter = isLowerBetter ? (valA < valB && valA !== 0) : (valA > valB);
@@ -1312,8 +1347,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Monthly Rent ($)</label>
                           <input 
                             type="number"
-                            value={adminFormData.rent_cost_usd}
-                            onChange={(e) => setAdminFormData({...adminFormData, rent_cost_usd: parseInt(e.target.value)})}
+                            value={adminFormData.rent}
+                            onChange={(e) => setAdminFormData({...adminFormData, rent: parseInt(e.target.value)})}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1321,8 +1356,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Healthcare Score (0-100)</label>
                           <input 
                             type="number"
-                            value={adminFormData.healthcare_score}
-                            onChange={(e) => setAdminFormData({...adminFormData, healthcare_score: parseInt(e.target.value)})}
+                            value={adminFormData.healthcare}
+                            onChange={(e) => setAdminFormData({...adminFormData, healthcare: parseInt(e.target.value)})}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1332,8 +1367,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Safety Rating (0-100)</label>
                           <input 
                             type="number"
-                            value={adminFormData.safety_rating}
-                            onChange={(e) => setAdminFormData({...adminFormData, safety_rating: parseInt(e.target.value)})}
+                            value={adminFormData.safety}
+                            onChange={(e) => setAdminFormData({...adminFormData, safety: parseInt(e.target.value)})}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1341,8 +1376,8 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Internet Speed (Mbps)</label>
                           <input 
                             type="number"
-                            value={adminFormData.internet_speed_mbps}
-                            onChange={(e) => setAdminFormData({...adminFormData, internet_speed_mbps: parseInt(e.target.value)})}
+                            value={adminFormData.internet}
+                            onChange={(e) => setAdminFormData({...adminFormData, internet: parseInt(e.target.value)})}
                             className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
                           />
                         </div>
@@ -1440,7 +1475,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Home className="w-3 h-3 text-amber-600" /> Avg Rent
                     </div>
                     <div className="text-xl font-display font-bold text-slate-400">
-                      {selectedCountry.rent_cost_usd ? formatCurrency(selectedCountry.rent_cost_usd) : (countryMetrics[selectedCountry.country_name]?.rent || "N/A")}
+                      {selectedCountry.rent ? formatCurrency(selectedCountry.rent) : (countryMetrics[selectedCountry.country_name]?.rent || "N/A")}
                     </div>
                   </div>
 
@@ -1450,7 +1485,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                     </div>
                     <div className="flex items-center gap-2">
                        <span className="text-xl font-display font-bold text-slate-400">
-                         {selectedCountry.healthcare_score ? `${selectedCountry.healthcare_score} / 100` : (countryMetrics[selectedCountry.country_name]?.healthcare || "N/A")}
+                         {selectedCountry.healthcare ? `${selectedCountry.healthcare} / 100` : (countryMetrics[selectedCountry.country_name]?.healthcare || "N/A")}
                        </span>
                     </div>
                   </div>
@@ -1460,7 +1495,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Shield className="w-3 h-3 text-amber-600" /> Safety
                     </div>
                     <div className="text-xl font-display font-bold text-slate-400">
-                      {selectedCountry.safety_rating ? `${selectedCountry.safety_rating} / 100` : (countryMetrics[selectedCountry.country_name]?.safety || "N/A")}
+                      {selectedCountry.safety ? `${selectedCountry.safety} / 100` : (countryMetrics[selectedCountry.country_name]?.safety || "N/A")}
                     </div>
                   </div>
 
@@ -1469,7 +1504,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                       <Wifi className="w-3 h-3 text-amber-600" /> Connectivity
                     </div>
                     <div className="text-xl font-display font-bold text-slate-400">
-                      {selectedCountry.internet_speed_mbps ? `${selectedCountry.internet_speed_mbps} Mbps` : (countryMetrics[selectedCountry.country_name]?.internet || "N/A")}
+                      {selectedCountry.internet ? `${selectedCountry.internet} Mbps` : (countryMetrics[selectedCountry.country_name]?.internet || "N/A")}
                     </div>
                   </div>
                 </div>
