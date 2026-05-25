@@ -781,13 +781,25 @@ export default function App() {
         <section id="compare" className="py-20 bg-black/40 border-y border-white/5">
           <div className="container mx-auto px-6 flex flex-col gap-10">
             {/* Headline */}
-            <div className="flex flex-col md:flex-row justify-between items-end gap-8 font-display">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-8 font-display relative">
               <div className="max-w-xl">
                 <h2 className="text-4xl font-bold mb-4 text-slate-400">Strategic Jurisdictions</h2>
                 <p className="text-gray-400 text-lg">
                   Real-time comparison of premium growth corridors analyzed by our native AI engine.
                 </p>
               </div>
+
+              {/* Top Header Close Button */}
+              {(compareA || compareB) && (
+                <button 
+                  onClick={() => { setCompareA(null); setCompareB(null); }}
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl border border-brand-gold/30 bg-brand-gold/5 hover:bg-brand-gold/10 transition-all text-amber-600 font-bold uppercase tracking-widest text-xs z-20"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Back to Dashboard
+                </button>
+              )}
+
               <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                 <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase transition-all duration-500 ${isLive ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-brand-gold/10 text-amber-600 border border-brand-gold/20'}`}>
                   <div className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-emerald-500 animate-pulse' : 'bg-amber-600'}`} />
@@ -1025,11 +1037,11 @@ export default function App() {
 
                     <button 
                       onClick={() => { setCompareA(null); setCompareB(null); }}
-                      className="group relative flex items-center justify-center gap-3 px-10 py-5 rounded-2xl border border-brand-gold/30 bg-brand-gold/5 hover:bg-brand-gold/10 hover:scale-[1.02] active:scale-95 transition-all text-amber-600 font-bold overflow-hidden"
+                      className="group relative flex items-center justify-center gap-3 px-10 py-5 rounded-2xl border border-brand-gold/40 bg-brand-gold/5 hover:bg-brand-gold/15 hover:scale-[1.02] active:scale-95 transition-all text-amber-600 font-bold overflow-hidden"
                     >
                       <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <ArrowLeft className="w-5 h-5" />
-                      <span className="relative tracking-widest text-sm uppercase">Close Report</span>
+                      <X className="w-5 h-5" />
+                      <span className="relative tracking-widest text-sm uppercase">Close & Return</span>
                     </button>
                   </motion.div>
                 </>
