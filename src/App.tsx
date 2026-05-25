@@ -553,43 +553,61 @@ export default function App() {
     // 1. Non-Blocking Async Execution via decoupled macro-task
     // This guarantees clicking the button never freezes the main thread or crashes the tab
     setTimeout(() => {
+      // 3. Completely Safe Async Abort wrapper
       try {
         const element = document.getElementById('report-modal-content');
         if (!element) {
           throw new Error("Neural content wrapper not accessible in the current DOM branch.");
         }
 
-        // 2. Safe Document Rendering Fallback: Clone and Normalize
-        // Create a deep clone to manipulate without disrupting the live UI
+        // 2. Safe Document Rendering Fallback: Deep Clone and Normalize
         const clone = element.cloneNode(true) as HTMLElement;
         clone.style.width = "750px"; 
-        clone.style.backgroundColor = "#060B13"; // brand-midnight HEX
+        clone.style.backgroundColor = "#060B13"; // Force brand-midnight HEX
+        clone.style.color = "#94a3b8"; // Force standard slate
         clone.style.padding = "40px";
         clone.style.borderRadius = "24px";
+        clone.style.backgroundImage = "none";
         
-        // Force all child elements to use standard colors and remove incompatible properties
-        const allElements = clone.querySelectorAll('*');
-        allElements.forEach((node: any) => {
-          const el = node as HTMLElement;
-          const style = window.getComputedStyle(el);
+        // Step 1: Deep String Style Replacement & Recursive Cleaning
+        const cleanNodeStyles = (node: HTMLElement) => {
+          const style = node.style;
           
-          // Fix potential oklch/oklab issues by forcing standard colors based on known theme
-          if (el.classList.contains('text-amber-600')) el.style.color = "#d97706";
-          if (el.classList.contains('text-slate-400')) el.style.color = "#94a3b8";
-          if (el.classList.contains('bg-brand-gold/10')) el.style.backgroundColor = "rgba(204, 164, 59, 0.1)";
-          if (el.classList.contains('bg-brand-gold/20')) el.style.border = "1px solid rgba(204, 164, 59, 0.2)";
-          if (el.classList.contains('bg-white/5')) el.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-          if (el.classList.contains('border-white/10')) el.style.borderColor = "rgba(255, 255, 255, 0.1)";
+          // Helper to check for unsupported color spaces in common properties
+          const propertiesToCheck = ['color', 'backgroundColor', 'borderColor', 'fill', 'stroke', 'border'];
           
-          // Strip transitions and modern filters that might break html2canvas
-          el.style.transition = "none";
-          el.style.animation = "none";
-          el.style.backdropFilter = "none";
-          el.style.filter = "none";
+          // Get computed style for real values if inline is empty
+          const computed = window.getComputedStyle(node);
           
-          // Ensure fonts are readable
-          if (style.fontSize.includes('okl')) el.style.fontSize = "14px"; 
-        });
+          propertiesToCheck.forEach(prop => {
+            const val = (style as any)[prop] || (computed as any)[prop];
+            if (val && (val.includes('oklch') || val.includes('oklab') || val.includes('var(--'))) {
+              // Deep Mapping for our specific theme keys
+              if (node.classList.contains('text-amber-600') || node.classList.contains('text-brand-gold')) {
+                node.style.setProperty(prop, "#d4af37", "important");
+              } else if (node.classList.contains('text-slate-400')) {
+                node.style.setProperty(prop, "#94a3b8", "important");
+              } else if (prop === 'backgroundColor' && (node.classList.contains('bg-brand-midnight') || node.id === 'report-modal-content')) {
+                node.style.setProperty(prop, "#060B13", "important");
+              } else {
+                // Generic fallback for any other oklch/lab crashers
+                node.style.setProperty(prop, prop === 'color' ? "#ffffff" : "#1e1e1e", "important");
+              }
+            }
+          });
+
+          // Deep CSS Rule Stripping for unsupported layout engines
+          node.style.transition = "none";
+          node.style.animation = "none";
+          node.style.backdropFilter = "none";
+          node.style.filter = "none";
+          node.style.transform = "none";
+          
+          // Recursion
+          Array.from(node.children).forEach(child => cleanNodeStyles(child as HTMLElement));
+        };
+
+        cleanNodeStyles(clone);
 
         const opt = {
           margin:       10,
@@ -601,10 +619,13 @@ export default function App() {
             useCORS: true,
             letterRendering: true,
             logging: false,
-            // 3. Fallback to standard color space
+            // Additional layer of safety for color space fallback
             onclone: (doc: Document) => {
               const el = doc.getElementById('report-modal-content');
-              if (el) el.style.color = "#94a3b8";
+              if (el) {
+                el.style.backgroundColor = "#060B13";
+                el.style.color = "#94a3b8";
+              }
             }
           },
           jsPDF:        { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
@@ -612,21 +633,19 @@ export default function App() {
 
         triggerNotification(`Generating ${country.country_name} Executive Briefing...`);
         
-        // 3. Bulletproof isolated async workflow
+        // Isolated async workflow targeting the memory-only clone
         html2pdf()
           .set(opt)
           .from(clone)
           .save()
-          .then(() => {
-            // Clean up is handled by memory management, but we could explicitly remove it if we added to DOM
-          })
           .catch((err: any) => {
-            alert("PDF Generation Error: " + err.message);
+            // 3. Fallback alert instead of hang
+            alert("PDF save bypassed, please try printing directly. Error: " + err.message);
           });
 
       } catch (error: any) {
-        // 3. Standard browser alert fallback instead of silent failure
-        alert("PDF Generation Error: " + error.message);
+        // 3. Completely Safe Async Abort
+        alert("PDF save bypassed, please try printing directly. Diagnostic: " + error.message);
       }
     }, 0);
   };
