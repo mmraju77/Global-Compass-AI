@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark } from "lucide-react";
+import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 
@@ -109,14 +109,14 @@ interface CountryData {
   country_name: string;
   annual_growth: string;
   stability_score: string;
-  compass_index: number;
+  compass_index: number | string;
   strategic_status: string;
-  average_salary_usd?: number;
-  tax_rate_percent?: number;
-  rent?: number;
-  healthcare?: number;
-  safety?: number;
-  internet?: number;
+  average_salary_usd?: number | string;
+  tax_rate_percent?: number | string;
+  rent?: number | string;
+  healthcare?: number | string;
+  safety?: number | string;
+  internet?: number | string;
 }
 
 export default function App() {
@@ -144,12 +144,20 @@ export default function App() {
 
   // Comparison Display Logic
   const getDisplayValue = (country: CountryData, metric: any) => {
-    if (metric.key === "rent" && country.rent) return formatCurrency(country.rent);
-    if (metric.key === "healthcare" && country.healthcare) return `${country.healthcare} / 100`;
-    if (metric.key === "safety" && country.safety) return `${country.safety} / 100`;
-    if (metric.key === "internet" && country.internet) return `${country.internet} Mbps`;
+    const val = (country as any)[metric.key];
+    if (val === undefined || val === null || val === "") return "N/A";
     
-    return metric.format ? metric.format((country as any)[metric.key] || 0) : `${(country as any)[metric.key] || 0}${metric.suffix || ""}`;
+    // If it's already a formatted string, return as is
+    if (typeof val === "string" && (val.includes("$") || val.includes("/") || val.includes("Mbps") || val.includes("%"))) {
+      return val;
+    }
+
+    if (metric.key === "rent") return typeof val === "number" ? formatCurrency(val) : val;
+    if (metric.key === "healthcare") return typeof val === "number" ? `${val} / 100` : val;
+    if (metric.key === "safety") return typeof val === "number" ? `${val} / 100` : val;
+    if (metric.key === "internet") return typeof val === "number" ? `${val} Mbps` : val;
+    
+    return metric.format ? metric.format(val || 0) : `${val}${metric.suffix || ""}`;
   };
 
   // Admin State - Individual Hooks for build stability
@@ -157,18 +165,18 @@ export default function App() {
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const [isUpserting, setIsUpserting] = useState(false);
 
-  // Individual Form States - Use strings for inputs to allow empty/clearing
+  // Individual Form States - Initialized as empty strings for clean start
   const [adminCountryName, setAdminCountryName] = useState("");
-  const [adminAnnualGrowth, setAdminAnnualGrowth] = useState("+0.0%");
-  const [adminStabilityScore, setAdminStabilityScore] = useState("Stable");
-  const [adminCompassIndex, setAdminCompassIndex] = useState<string | number>(50);
-  const [adminStrategicStatus, setAdminStrategicStatus] = useState("Neutral");
-  const [adminSalary, setAdminSalary] = useState<string | number>(50000);
-  const [adminTax, setAdminTax] = useState<string | number>(20);
-  const [adminRent, setAdminRent] = useState<string | number>(1500);
-  const [adminHealthcare, setAdminHealthcare] = useState<string | number>(70);
-  const [adminSafety, setAdminSafety] = useState<string | number>(70);
-  const [adminInternet, setAdminInternet] = useState<string | number>(100);
+  const [adminAnnualGrowth, setAdminAnnualGrowth] = useState("");
+  const [adminStabilityScore, setAdminStabilityScore] = useState("");
+  const [adminCompassIndex, setAdminCompassIndex] = useState("");
+  const [adminStrategicStatus, setAdminStrategicStatus] = useState("");
+  const [adminSalary, setAdminSalary] = useState("");
+  const [adminTax, setAdminTax] = useState("");
+  const [adminRent, setAdminRent] = useState("");
+  const [adminHealthcare, setAdminHealthcare] = useState("");
+  const [adminSafety, setAdminSafety] = useState("");
+  const [adminInternet, setAdminInternet] = useState("");
 
   // Intelligent Auto-Populate on Type
   const handleCountryNameChange = (newName: string) => {
@@ -184,35 +192,32 @@ export default function App() {
     const existing = countries.find(c => c.country_name?.toLowerCase() === newName.trim().toLowerCase());
     
     if (existing) {
-      // Total Hydration of all 11 metrics
-      setAdminAnnualGrowth(existing.annual_growth || "+0.0%");
-      setAdminStabilityScore(existing.stability_score || "Stable");
-      setAdminCompassIndex(existing.compass_index || 50);
-      setAdminStrategicStatus(existing.strategic_status || "Neutral");
-      setAdminSalary(existing.average_salary_usd || 0);
-      setAdminTax(existing.tax_rate_percent || 0);
-      setAdminRent(existing.rent || 0);
-      setAdminHealthcare(existing.healthcare || 0);
-      setAdminSafety(existing.safety || 0);
-      setAdminInternet(existing.internet || 0);
-    } else {
-      // If user is typing something that doesn't match yet, DON'T clear 
-      // if they just deleted a character, but DO allow clearing if brand new
+      // Total Hydration of all metrics from database
+      setAdminAnnualGrowth(existing.annual_growth || "");
+      setAdminStabilityScore(existing.stability_score || "");
+      setAdminCompassIndex(String(existing.compass_index || ""));
+      setAdminStrategicStatus(existing.strategic_status || "");
+      setAdminSalary(String(existing.average_salary_usd || ""));
+      setAdminTax(String(existing.tax_rate_percent || ""));
+      setAdminRent(String(existing.rent || ""));
+      setAdminHealthcare(String(existing.healthcare || ""));
+      setAdminSafety(String(existing.safety || ""));
+      setAdminInternet(String(existing.internet || ""));
     }
   };
 
   const resetAdminForm = () => {
     setAdminCountryName("");
-    setAdminAnnualGrowth("+0.0%");
-    setAdminStabilityScore("Stable");
-    setAdminCompassIndex(50);
-    setAdminStrategicStatus("Neutral");
-    setAdminSalary(50000);
-    setAdminTax(20);
-    setAdminRent(1500);
-    setAdminHealthcare(70);
-    setAdminSafety(70);
-    setAdminInternet(100);
+    setAdminAnnualGrowth("");
+    setAdminStabilityScore("");
+    setAdminCompassIndex("");
+    setAdminStrategicStatus("");
+    setAdminSalary("");
+    setAdminTax("");
+    setAdminRent("");
+    setAdminHealthcare("");
+    setAdminSafety("");
+    setAdminInternet("");
   };
 
   const handleAdminUpsert = async (e: React.FormEvent) => {
@@ -224,22 +229,21 @@ export default function App() {
       setIsUpserting(true);
       const cleanName = adminCountryName.trim();
       
-      // Safe-Guard: Check if this is an existing country to provide fallbacks for empty fields
       const existingRef = countries.find(c => c.country_name?.toLowerCase() === cleanName.toLowerCase());
       
-      // Sanitized Payload Construction with "Blank Protection"
+      // Construction with "Blank Protection" - Save text strings directly for specified fields
       const payload = {
         country_name: cleanName,
         annual_growth: adminAnnualGrowth || (existingRef?.annual_growth) || "+0.0%",
         stability_score: adminStabilityScore || (existingRef?.stability_score) || "Stable",
-        compass_index: !isNaN(Number(adminCompassIndex)) ? Number(adminCompassIndex) : (existingRef?.compass_index || 50),
+        compass_index: adminCompassIndex || (existingRef?.compass_index) || 50,
         strategic_status: adminStrategicStatus || (existingRef?.strategic_status) || "Neutral",
-        average_salary_usd: !isNaN(Number(adminSalary)) ? Number(adminSalary) : (existingRef?.average_salary_usd || 0),
-        tax_rate_percent: !isNaN(Number(adminTax)) ? Number(adminTax) : (existingRef?.tax_rate_percent || 0),
-        rent: !isNaN(Number(adminRent)) ? Number(adminRent) : (existingRef?.rent || 0),
-        healthcare: !isNaN(Number(adminHealthcare)) ? Number(adminHealthcare) : (existingRef?.healthcare || 0),
-        safety: !isNaN(Number(adminSafety)) ? Number(adminSafety) : (existingRef?.safety || 0),
-        internet: !isNaN(Number(adminInternet)) ? Number(adminInternet) : (existingRef?.internet || 0),
+        average_salary_usd: adminSalary || (existingRef?.average_salary_usd) || 0,
+        tax_rate_percent: adminTax || (existingRef?.tax_rate_percent) || 0,
+        rent: adminRent || (existingRef?.rent) || "",
+        healthcare: adminHealthcare || (existingRef?.healthcare) || "",
+        safety: adminSafety || (existingRef?.safety) || "",
+        internet: adminInternet || (existingRef?.internet) || "",
         cost_of_living_score: 70
       };
 
@@ -257,19 +261,7 @@ export default function App() {
       if (freshData) setCountries(freshData);
       
       setIsAdminPanelOpen(false);
-      
-      // Clear Form States for next entry
-      setAdminCountryName("");
-      setAdminAnnualGrowth("+0.0%");
-      setAdminStabilityScore("Stable");
-      setAdminCompassIndex(50);
-      setAdminStrategicStatus("Neutral");
-      setAdminSalary(50000);
-      setAdminTax(20);
-      setAdminRent(1500);
-      setAdminHealthcare(70);
-      setAdminSafety(70);
-      setAdminInternet(100);
+      resetAdminForm();
     } catch (err: any) {
       alert("Database Error: " + (err.message || "Unknown synchronization failure."));
       triggerNotification(err.message || "Matrix Synchronization Failure.");
@@ -517,7 +509,7 @@ METRICS:
 
 ANALYSIS:
 This report confirms ${country.country_name} as a ${country.strategic_status.toLowerCase()} zone 
-for strategic growth. Our neural engine indicates a ${country.compass_index >= 90 ? 'prime' : 'stable'} 
+for strategic growth. Our neural engine indicates a ${Number(country.compass_index) >= 90 ? 'prime' : 'stable'} 
 window for resource allocation.
 
 --------------------------------------------------
@@ -535,9 +527,11 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
     URL.revokeObjectURL(url);
   };
 
-  const formatCurrency = (val?: number) => {
-    if (val === undefined || val === null) return "N/A";
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+  const formatCurrency = (val?: number | string) => {
+    if (val === undefined || val === null || val === "") return "N/A";
+    const num = typeof val === "number" ? val : parseFloat(String(val).replace(/[^0-9.]/g, ''));
+    if (isNaN(num)) return String(val);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
   };
 
   return (
@@ -809,7 +803,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                             <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
                               <motion.div 
                                 initial={{ width: 0 }}
-                                animate={{ width: `${(compareA.average_salary_usd / Math.max(compareA.average_salary_usd, compareB.average_salary_usd, 1)) * 100}%` }}
+                                animate={{ width: `${(Number(String(compareA.average_salary_usd).replace(/[^0-9.]/g, '')) / Math.max(Number(String(compareA.average_salary_usd).replace(/[^0-9.]/g, '')), Number(String(compareB.average_salary_usd).replace(/[^0-9.]/g, '')), 1)) * 100}%` }}
                                 transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
                                 className="h-full bg-amber-600/60"
                               />
@@ -823,7 +817,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                             <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
                               <motion.div 
                                 initial={{ width: 0 }}
-                                animate={{ width: `${(compareB.average_salary_usd / Math.max(compareA.average_salary_usd, compareB.average_salary_usd, 1)) * 100}%` }}
+                                animate={{ width: `${(Number(String(compareB.average_salary_usd).replace(/[^0-9.]/g, '')) / Math.max(Number(String(compareA.average_salary_usd).replace(/[^0-9.]/g, '')), Number(String(compareB.average_salary_usd).replace(/[^0-9.]/g, '')), 1)) * 100}%` }}
                                 transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
                                 className="h-full bg-slate-500/50"
                               />
@@ -846,7 +840,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                             <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
                               <motion.div 
                                 initial={{ width: 0 }}
-                                animate={{ width: `${(compareA.tax_rate_percent / Math.max(compareA.tax_rate_percent, compareB.tax_rate_percent, 1)) * 100}%` }}
+                                animate={{ width: `${(Number(String(compareA.tax_rate_percent).replace(/[^0-9.]/g, '')) / Math.max(Number(String(compareA.tax_rate_percent).replace(/[^0-9.]/g, '')), Number(String(compareB.tax_rate_percent).replace(/[^0-9.]/g, '')), 1)) * 100}%` }}
                                 transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
                                 className="h-full bg-amber-600/60"
                               />
@@ -860,7 +854,7 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                             <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
                               <motion.div 
                                 initial={{ width: 0 }}
-                                animate={{ width: `${(compareB.tax_rate_percent / Math.max(compareA.tax_rate_percent, compareB.tax_rate_percent, 1)) * 100}%` }}
+                                animate={{ width: `${(Number(String(compareB.tax_rate_percent).replace(/[^0-9.]/g, '')) / Math.max(Number(String(compareA.tax_rate_percent).replace(/[^0-9.]/g, '')), Number(String(compareB.tax_rate_percent).replace(/[^0-9.]/g, '')), 1)) * 100}%` }}
                                 transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
                                 className="h-full bg-slate-500/50"
                               />
@@ -1029,11 +1023,13 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
           </section>
         )}
 
-        {/* About: Leadership Profile */}
-        <section id="about" className="py-24 relative overflow-hidden bg-brand-midnight">
+        {/* About: Leadership Profile - Premium Fintech UI */}
+        <section id="about" className="py-24 relative overflow-hidden bg-[#0A0B0D]">
           <div className="absolute inset-0">
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-600/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-terracotta-start/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-600/[0.03] blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-terracotta-start/[0.03] blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2" />
+            {/* Fintech Grid Overlay */}
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none" />
           </div>
           
           <div className="container mx-auto px-6 relative z-10">
@@ -1044,39 +1040,43 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 viewport={{ once: true }}
                 className="w-full lg:w-1/2 order-2 lg:order-1"
               >
-                <div className="inline-block px-4 py-1.5 rounded-full bg-amber-600/10 border border-amber-600/20 text-amber-600 text-[10px] font-bold tracking-[0.3em] uppercase mb-6">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-600/5 border border-amber-600/20 text-amber-600 text-[10px] font-bold tracking-[0.35em] uppercase mb-8">
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse" />
                   Chief AI Architect
                 </div>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-slate-200 mb-8 tracking-tight leading-[1.1]">
-                  Munchangi Matyaraju <span className="text-slate-500 whitespace-nowrap">(mm Raju)</span>
+                <h2 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-8 tracking-tighter leading-[1.05]">
+                  Munchangi Matyaraju <br />
+                  <span className="text-slate-600">(mm Raju)</span>
                 </h2>
                 
-                <div className="space-y-6 text-lg text-slate-400 font-light leading-relaxed max-w-xl">
+                <div className="space-y-6 text-xl text-slate-400 font-light leading-relaxed max-w-xl">
                   <p>
-                    As the architect behind the <span className="text-slate-200 font-medium">Neural Intelligence Framework</span>, mm Raju leads the strategic vision for Global Compass. 
+                    As the visionary architect behind our <span className="text-white font-medium">Proprietary Neural Intelligence Framework</span>, mm Raju spearheads the strategic technological evolution of Global Compass. 
                   </p>
                   <p>
-                    With deep expertise in quantitative modeling and jurisdictional arbitrage, he has pioneered the use of predictive AI to navigate the increasingly complex patterns of global economic mobility and wealth preservation.
+                    Specializing in high-frequency quantitative jurisdictional modeling and decentralized asset optimization, he has pioneered the synthesis of AI with global economic mobility for institutional-grade wealth preservation.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-8 pt-10 mt-10 border-t border-white/5">
-                  <div>
-                    <div className="text-2xl font-display font-bold text-slate-200">15+</div>
-                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Strategic Markets</div>
+                <div className="grid grid-cols-2 gap-12 pt-12 mt-12 border-t border-white/5">
+                  <div className="space-y-1">
+                    <div className="text-3xl font-display font-bold text-white tracking-tight">$4.2B+</div>
+                    <div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">In-Matrix Assets</div>
                   </div>
-                  <div>
-                    <div className="text-2xl font-display font-bold text-slate-200">98%</div>
-                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Matrix Accuracy</div>
+                  <div className="space-y-1">
+                    <div className="text-3xl font-display font-bold text-white tracking-tight">99.9%</div>
+                    <div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Predictive Uptime</div>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-4 mt-12">
-                  <a href="https://www.linkedin.com/in/munchingi-matya-raju-52baa71bb/" target="_blank" rel="noopener noreferrer" className="px-8 py-3.5 rounded-xl bg-amber-600 text-brand-midnight text-[11px] font-bold tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-amber-600/20 uppercase flex items-center gap-2">
-                    <Linkedin className="w-4 h-4" /> Connect with mm Raju
+                <div className="flex flex-wrap gap-5 mt-14">
+                  <a href="https://www.linkedin.com/in/munchingi-matya-raju-52baa71bb/" target="_blank" rel="noopener noreferrer" className="group px-10 py-4.5 rounded-2xl bg-amber-600 text-brand-midnight text-[12px] font-bold tracking-[0.15em] hover:bg-white transition-all shadow-2xl shadow-amber-600/20 uppercase flex items-center gap-3">
+                    <Linkedin className="w-5 h-5" /> 
+                    <span>Access Executive Network</span>
                   </a>
-                  <a href="https://x.com/mmraju77" target="_blank" rel="noopener noreferrer" className="px-8 py-3.5 rounded-xl border border-white/10 text-slate-400 text-[11px] font-bold tracking-widest hover:border-amber-600 hover:text-amber-600 transition-all uppercase flex items-center gap-2">
-                    <Twitter className="w-4 h-4" /> Intelligence Feed
+                  <a href="https://x.com/mmraju77" target="_blank" rel="noopener noreferrer" className="px-10 py-4.5 rounded-2xl border border-white/10 text-slate-400 text-[12px] font-bold tracking-[0.15em] hover:border-amber-600 hover:text-amber-600 transition-all uppercase flex items-center gap-3">
+                    <Twitter className="w-5 h-5" /> 
+                    <span>Neural Feed</span>
                   </a>
                 </div>
               </motion.div>
@@ -1087,25 +1087,26 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                 viewport={{ once: true }}
                 className="w-full lg:w-1/2 order-1 lg:order-2 flex justify-center lg:justify-end"
               >
-                <div className="relative group">
-                  <div className="absolute -inset-10 bg-amber-600/10 blur-[100px] rounded-full opacity-40 group-hover:opacity-60 transition-opacity" />
-                  <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-[3rem] p-1.5 bg-gradient-to-br from-white/20 via-white/5 to-transparent shadow-2xl backdrop-blur-3xl overflow-hidden">
-                    <div className="w-full h-full rounded-[2.8rem] bg-brand-midnight relative overflow-hidden group">
-                      <img 
-                        src="/founder.jpg.jpeg" 
-                        alt="Founder" 
-                        className="w-full h-full object-cover grayscale brightness-125 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-brand-midnight via-transparent to-transparent opacity-60" />
-                      <div className="absolute bottom-8 left-8 right-8">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-amber-600/20 border border-amber-600/30 flex items-center justify-center">
-                            <Shield className="w-5 h-5 text-amber-600" />
-                          </div>
-                          <div>
-                            <div className="text-white font-bold text-xs">Architect Signature</div>
-                            <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-0.5">Verified Institutional Grade</div>
-                          </div>
+                <div className="relative">
+                  {/* Premium Framing */}
+                  <div className="absolute -inset-16 bg-amber-600/5 blur-[120px] rounded-full opacity-50" />
+                  <div className="relative w-80 h-96 md:w-[450px] md:h-[550px] overflow-hidden rounded-[4rem] border border-white/10 group">
+                    <img 
+                      src="/founder.jpg.jpeg" 
+                      alt="mm Raju" 
+                      className="w-full h-full object-cover grayscale brightness-110 contrast-125 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B0D] via-transparent to-transparent opacity-80" />
+                    
+                    {/* Floating Info Tag */}
+                    <div className="absolute bottom-12 left-12 right-12 p-8 rounded-3xl bg-white/[0.03] border border-white/10 backdrop-blur-2xl">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-amber-600/10 border border-amber-600/20 flex items-center justify-center">
+                          <CompassIcon className="w-6 h-6 text-amber-600" />
+                        </div>
+                        <div>
+                          <div className="text-white text-sm font-bold tracking-tight">Verified Chief Architect</div>
+                          <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Institutional Signature Series</div>
                         </div>
                       </div>
                     </div>
@@ -1248,21 +1249,35 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
             </div>
 
             <div className="mb-16">
-              <div className="p-10 rounded-2xl bg-white/[0.01] border border-white/5">
-                <div className="flex items-center gap-3 mb-6">
-                  <ShieldCheck className="w-5 h-5 text-amber-600" />
-                  <h4 className="text-white text-xs font-bold uppercase tracking-[0.3em]">Global Financial & Regulatory Disclaimer</h4>
+              <div className="p-10 rounded-[2rem] bg-white/[0.02] border border-white/5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-amber-600/[0.02] blur-[80px]" />
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-10 h-10 rounded-xl bg-amber-600/10 flex items-center justify-center border border-amber-600/20">
+                    <Scale className="w-5 h-5 text-amber-600" />
+                  </div>
+                  <h4 className="text-white text-[10px] font-bold uppercase tracking-[0.4em]">Strict Global Regulatory & Financial Compliance Registry</h4>
                 </div>
-                <div className="space-y-6 text-[11px] text-slate-600 leading-relaxed uppercase tracking-[0.05em]">
-                  <p>
-                    GLOBAL COMPASS (THE "PLATFORM") IS AN ANALYTICAL INTELLIGENCE SUITE OPERATED BY GLOBAL STRATEGY LABS. THE DATA, INSIGHTS, AND AI-GENERATED MODELS PROVIDED ARE STRICTLY FOR INFORMATIONAL AND EDUCATIONAL PURPOSES. THESE DO NOT CONSTITUTE, NOR SHOULD THEY BE INTERPRETED AS, FINANCIAL, INVESTMENT, LEGAL, OR TAX ADVICE.
-                  </p>
-                  <p>
-                    WEALTH MIGRATION AND JURISDICTIONAL ARBITRAGE CARRY SIGNIFICANT RISKS. PAST PERFORMANCE OF ANY TERRITORY OR ASSET CLASS IS NOT INDICATIVE OF FUTURE STABILITY. USERS MUST COMPLY WITH ALL LOCAL TAX AND REPORTING LAWS IN THEIR HOME AND TARGET JURISDICTIONS (INCLUDING CRS AND FATCA REQUIREMENTS). 
-                  </p>
-                  <p>
-                    THE PLATFORM AND ITS ARCHITECTS DISCLAIM ALL LIABILITY FOR FISCAL OR REGULATORY CONSEQUENCES ARISING FROM THE USE OF THESE INSIGHTS. SERVICES MAY BE RESTRICTED IN CERTAIN SANCTIONED JURISDICTIONS BY DEFAULT. BY ENGAGING WITH THIS INTERFACE, YOU ACKNOWLEDGE RECIPIENT RESPONSIBILITY FOR INDEPENDENT VERIFICATION OF ALL GLOBAL ECONOMIC DATA.
-                  </p>
+                <div className="grid md:grid-cols-2 gap-12 text-[10px] text-slate-500 leading-relaxed uppercase tracking-[0.06em] font-medium">
+                  <div className="space-y-6">
+                    <p>
+                      <span className="text-amber-600/80 font-bold block mb-2">I. NON-ADVISORY STATUS</span>
+                      GLOBAL COMPASS (THE "PLATFORM") OPERATES EXCLUSIVELY AS A JURISDICTIONAL DATA AGGREGATOR AND NEURAL MODELING SUITE. NEITHER THE PLATFORM NOR GLOBAL STRATEGY LABS ARE REGISTERED FINANCIAL ADVISORS, LEGAL SOLICITORS, OR TAX CONSULTANTS UNDER ANY SOVEREIGN JURISDICTION (INCLUDING BUT NOT LIMITED TO THE SEC, FCA, OR ESMA).
+                    </p>
+                    <p>
+                      <span className="text-amber-600/80 font-bold block mb-2">II. RISK ACKNOWLEDGMENT</span>
+                      INTERNATIONAL WEALTH MIGRATION AND JURISDICTIONAL SELECTION INVOLVE INHERENT MACROECONOMIC, POLITICAL, AND GEOSPATIAL RISKS. DATA PROVIDED IS HISTORICAL OR PREDICTIVE AND CARRIES NO GUARANTEES OF FUTURE STABILITY OR TAX EFFICIENCY.
+                    </p>
+                  </div>
+                  <div className="space-y-6">
+                    <p>
+                      <span className="text-amber-600/80 font-bold block mb-2">III. USER FISCAL RESPONSIBILITY</span>
+                      USERS RETAIN 100% RESPONSIBILITY FOR COMPLIANCE WITH THEIR RESIDENT NATION'S DECLARATION REQUIREMENTS, INCLUDING FATCA, CRS, AND ALL RELEVANT TAX TREATIES. GLOBAL COMPASS STERNLY ADVISES INDEPENDENT CERTIFIED CONSULTATION BEFORE ANY CAPITAL REALLOCATION.
+                    </p>
+                    <p>
+                      <span className="text-amber-600/80 font-bold block mb-2">IV. SANCTIONS & ELIGIBILITY</span>
+                      ACCESS TO ARCHIVED INTELLIGENCE REPORTS MAY BE RESTRICTED OR REVOKED FOR INDIVIDUALS SUBJECT TO INTERNATIONAL SANCTIONS LISTS (OFAC/EU/UN) OR THOSE LOCATED IN HIGH-RISK JURISDICTIONS AS DEFINED BY THE FATF.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1351,10 +1366,11 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Compass Index (0-100)</label>
                           <input 
-                            type="number"
+                            type="text"
                             value={adminCompassIndex}
                             onChange={(e) => setAdminCompassIndex(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="e.g., 95"
                           />
                         </div>
                         <div className="space-y-2">
@@ -1376,19 +1392,21 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Avg Annual Salary ($)</label>
                           <input 
-                            type="number"
+                            type="text"
                             value={adminSalary}
                             onChange={(e) => setAdminSalary(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="e.g., 85000"
                           />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Tax Rate (%)</label>
                           <input 
-                            type="number"
+                            type="text"
                             value={adminTax}
                             onChange={(e) => setAdminTax(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="e.g., 20"
                           />
                         </div>
                       </div>
@@ -1396,19 +1414,21 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Monthly Rent ($)</label>
                           <input 
-                            type="number"
+                            type="text"
                             value={adminRent}
                             onChange={(e) => setAdminRent(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="e.g., $1,200 / mo"
                           />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Healthcare Score (0-100)</label>
                           <input 
-                            type="number"
+                            type="text"
                             value={adminHealthcare}
                             onChange={(e) => setAdminHealthcare(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="e.g., 91 / 100"
                           />
                         </div>
                       </div>
@@ -1416,19 +1436,21 @@ CONFIDENTIAL - GLOBAL COMPASS LABS
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Safety Rating (0-100)</label>
                           <input 
-                            type="number"
+                            type="text"
                             value={adminSafety}
                             onChange={(e) => setAdminSafety(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="e.g., 88 / 100"
                           />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Internet Speed (Mbps)</label>
                           <input 
-                            type="number"
+                            type="text"
                             value={adminInternet}
                             onChange={(e) => setAdminInternet(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            placeholder="e.g., 180 Mbps"
                           />
                         </div>
                       </div>
