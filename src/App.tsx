@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
-import html2pdf from 'html2pdf.js';
 
 const MOCK_DATA: CountryData[] = [
   { 
@@ -550,104 +549,73 @@ export default function App() {
   };
 
   const handleDownloadReport = (country: CountryData) => {
-    // 1. Non-Blocking Async Execution via decoupled macro-task
-    // This guarantees clicking the button never freezes the main thread or crashes the tab
+    // 1. Native Print Workflow using asynchronous macro-task
+    // This bypasses the buggy third-party PDF libraries and resolves oklab/oklch parsing crashes
     setTimeout(() => {
-      // 3. Completely Safe Async Abort wrapper
       try {
         const element = document.getElementById('report-modal-content');
         if (!element) {
           throw new Error("Neural content wrapper not accessible in the current DOM branch.");
         }
 
-        // 2. Safe Document Rendering Fallback: Deep Clone and Normalize
-        const clone = element.cloneNode(true) as HTMLElement;
-        clone.style.width = "750px"; 
-        clone.style.backgroundColor = "#060B13"; // Force brand-midnight HEX
-        clone.style.color = "#94a3b8"; // Force standard slate
-        clone.style.padding = "40px";
-        clone.style.borderRadius = "24px";
-        clone.style.backgroundImage = "none";
+        // 2. Print CSS Optimization & Isolation
+        // We clone the element and append it to the body root for the native print engine
+        const printClone = element.cloneNode(true) as HTMLElement;
+        printClone.id = "native-print-target";
+        document.body.appendChild(printClone);
+
+        const styleId = 'native-print-styles';
+        let styleTag = document.getElementById(styleId) as HTMLStyleElement;
         
-        // Step 1: Deep String Style Replacement & Recursive Cleaning
-        const cleanNodeStyles = (node: HTMLElement) => {
-          const style = node.style;
-          
-          // Helper to check for unsupported color spaces in common properties
-          const propertiesToCheck = ['color', 'backgroundColor', 'borderColor', 'fill', 'stroke', 'border'];
-          
-          // Get computed style for real values if inline is empty
-          const computed = window.getComputedStyle(node);
-          
-          propertiesToCheck.forEach(prop => {
-            const val = (style as any)[prop] || (computed as any)[prop];
-            if (val && (val.includes('oklch') || val.includes('oklab') || val.includes('var(--'))) {
-              // Deep Mapping for our specific theme keys
-              if (node.classList.contains('text-amber-600') || node.classList.contains('text-brand-gold')) {
-                node.style.setProperty(prop, "#d4af37", "important");
-              } else if (node.classList.contains('text-slate-400')) {
-                node.style.setProperty(prop, "#94a3b8", "important");
-              } else if (prop === 'backgroundColor' && (node.classList.contains('bg-brand-midnight') || node.id === 'report-modal-content')) {
-                node.style.setProperty(prop, "#060B13", "important");
-              } else {
-                // Generic fallback for any other oklch/lab crashers
-                node.style.setProperty(prop, prop === 'color' ? "#ffffff" : "#1e1e1e", "important");
-              }
+        if (!styleTag) {
+          styleTag = document.createElement('style');
+          styleTag.id = styleId;
+          document.head.appendChild(styleTag);
+        }
+
+        styleTag.innerHTML = `
+          @media print {
+            body.print-mode-active > :not(#native-print-target) {
+              display: none !important;
             }
-          });
-
-          // Deep CSS Rule Stripping for unsupported layout engines
-          node.style.transition = "none";
-          node.style.animation = "none";
-          node.style.backdropFilter = "none";
-          node.style.filter = "none";
-          node.style.transform = "none";
-          
-          // Recursion
-          Array.from(node.children).forEach(child => cleanNodeStyles(child as HTMLElement));
-        };
-
-        cleanNodeStyles(clone);
-
-        const opt = {
-          margin:       10,
-          filename:     `${country.country_name.replace(/\s+/g, '_')}_Intelligence_Report.pdf`,
-          image:        { type: 'jpeg' as const, quality: 1.0 },
-          html2canvas:  { 
-            scale: 2, 
-            backgroundColor: '#060B13', 
-            useCORS: true,
-            letterRendering: true,
-            logging: false,
-            // Additional layer of safety for color space fallback
-            onclone: (doc: Document) => {
-              const el = doc.getElementById('report-modal-content');
-              if (el) {
-                el.style.backgroundColor = "#060B13";
-                el.style.color = "#94a3b8";
-              }
+            #native-print-target {
+              display: block !important;
+              position: absolute !important;
+              top: 0 !important;
+              left: 0 !important;
+              width: 100% !important;
+              background: #060B13 !important;
+              color: #ffffff !important;
+              padding: 40px !important;
+              box-shadow: none !important;
+              border: none !important;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
             }
-          },
-          jsPDF:        { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
-        };
+            /* Force standard colors for print safety */
+            #native-print-target * {
+              color-scheme: dark !important;
+            }
+          }
+        `;
 
-        triggerNotification(`Generating ${country.country_name} Executive Briefing...`);
+        document.body.classList.add('print-mode-active');
+        triggerNotification(`Initializing Native Executive Briefing for ${country.country_name}...`);
+
+        // 3. Flawless Execution via native browser dialog
+        window.print();
+
+        // 3. Cleanup: Remove temporary clone and active print state
+        document.body.classList.remove('print-mode-active');
+        if (document.body.contains(printClone)) {
+          document.body.removeChild(printClone);
+        }
         
-        // Isolated async workflow targeting the memory-only clone
-        html2pdf()
-          .set(opt)
-          .from(clone)
-          .save()
-          .catch((err: any) => {
-            // 3. Fallback alert instead of hang
-            alert("PDF save bypassed, please try printing directly. Error: " + err.message);
-          });
-
       } catch (error: any) {
-        // 3. Completely Safe Async Abort
-        alert("PDF save bypassed, please try printing directly. Diagnostic: " + error.message);
+        // 4. Total Guardrails: Safer fallback and UI survival
+        alert("PDF save bypassed, please try printing directly. Error: " + error.message);
       }
-    }, 0);
+    }, 100);
   };
 
   const formatCurrency = (val?: number | string) => {
