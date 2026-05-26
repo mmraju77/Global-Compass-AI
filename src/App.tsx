@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck } from "lucide-react";
+import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck, Brain, Sparkles } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
@@ -189,6 +189,68 @@ export default function App() {
   const [relocCountry, setRelocCountry] = useState<string>("Singapore");
   const [partySize, setPartySize] = useState<"Single" | "Couple" | "Family">("Single");
   const [shippingVolume, setShippingVolume] = useState<"Minimal" | "Medium" | "Heavy">("Medium");
+
+  // AI Relocation Advisor State
+  const [aiTargetSalary, setAiTargetSalary] = useState<number | string>(150000);
+  const [aiMaxTax, setAiMaxTax] = useState<number>(25);
+  const [aiPriority, setAiPriority] = useState<"Safety" | "Healthcare" | "Wealth">("Wealth");
+  const [aiResult, setAiResult] = useState<{ country: CountryData; score: number; summary: string } | null>(null);
+  const [isAiCalculating, setIsAiCalculating] = useState(false);
+
+  // Neural Matching Engine
+  const runAiMatch = () => {
+    if (!countries || countries.length === 0) return;
+    setIsAiCalculating(true);
+    
+    setTimeout(() => {
+      const targetSal = Number(aiTargetSalary) || 0;
+      
+      const scored = countries.map(country => {
+        let score = 70; // Baseline
+        
+        // Tax alignment
+        const taxRate = country.tax_rate_percent || 0;
+        if (taxRate > aiMaxTax) {
+          score -= (taxRate - aiMaxTax) * 1.5;
+        } else {
+          score += (aiMaxTax - taxRate) * 0.5;
+        }
+        
+        // Financial potential (Savings after tax & rent)
+        const rentVal = typeof country.rent === 'number' ? country.rent : 0;
+        const netAfterTax = targetSal * (1 - (taxRate / 100));
+        const estimatedSavings = netAfterTax - (rentVal * 12 + 12000); // 12k for food/misc
+        
+        if (aiPriority === "Wealth") {
+          score += (estimatedSavings / 5000);
+        } else if (aiPriority === "Safety") {
+          score += (country.safety || 50) / 2;
+        } else if (aiPriority === "Healthcare") {
+          score += (country.healthcare || 50) / 2;
+        }
+        
+        // Normalize score 0-100
+        const finalScore = Math.min(99, Math.max(65, Math.round(score)));
+        
+        // Generate summary based on priority
+        let summary = "";
+        if (aiPriority === "Wealth") {
+          summary = `${country.country_name} offers a superior capital accumulation profile with ${(country.tax_rate_percent || 0)}% effective tax and low overhead relative to your target income.`;
+        } else if (aiPriority === "Safety") {
+          summary = `With a world-class safety index of ${country.safety}/100, ${country.country_name} provides the most secure environment for high-net-worth relocation.`;
+        } else {
+          summary = `The healthcare infrastructure in ${country.country_name} (${country.healthcare}/100) aligns perfectly with your longevity and wellness priorites.`;
+        }
+
+        return { country, score: finalScore, summary };
+      });
+      
+      // Sort and take top
+      const winner = scored.sort((a, b) => b.score - a.score)[0];
+      setAiResult(winner);
+      setIsAiCalculating(false);
+    }, 1500);
+  };
 
   // Dynamic Currency Configuration
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
@@ -1355,6 +1417,182 @@ export default function App() {
                         </>
                       );
                     })()}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 🧠 PROPRIETARY AI RELOCATION ADVISOR & MATCH ENGINE */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-8 shadow-2xl shadow-black/80 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Brain className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">🧠 PROPRIETARY AI RELOCATION ADVISOR & MATCH ENGINE</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Powered by M M Raju Neural Infrastructure</p>
+                    </div>
+                  </div>
+                  <Sparkles className="w-5 h-5 text-brand-gold/40 animate-pulse" />
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Neural Inputs */}
+                  <div className="space-y-8">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-end">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest ml-1">Target Annual Salary Goal</label>
+                        <span className="text-white/40 text-[10px] font-mono">{CONVERSION_RATES[selectedCurrency].symbol}</span>
+                      </div>
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-gold/60 font-bold">{CONVERSION_RATES[selectedCurrency].symbol}</div>
+                        <input 
+                          type="number" 
+                          value={aiTargetSalary}
+                          onChange={(e) => setAiTargetSalary(e.target.value === "" ? "" : Number(e.target.value))}
+                          onFocus={(e) => e.target.select()}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-12 py-4 text-white font-bold text-lg focus:border-brand-gold focus:outline-none transition-all"
+                          placeholder="e.g. 200000"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest ml-1">Max Acceptable Tax Rate</label>
+                        <span className="text-brand-gold font-bold font-mono">{aiMaxTax}%</span>
+                      </div>
+                      <input 
+                        type="range"
+                        min="0"
+                        max="50"
+                        value={aiMaxTax}
+                        onChange={(e) => setAiMaxTax(Number(e.target.value))}
+                        className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-gold"
+                      />
+                      <div className="flex justify-between text-[8px] text-white/30 uppercase tracking-tighter">
+                        <span>Tax Haven (0%)</span>
+                        <span>High Utility (50%)</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest ml-1">Core Strategic Priority</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(["Wealth", "Safety", "Healthcare"] as const).map(p => (
+                          <button
+                            key={p}
+                            onClick={() => setAiPriority(p)}
+                            className={`py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border ${aiPriority === p ? 'bg-brand-gold border-brand-gold text-black shadow-xl shadow-amber-600/20' : 'bg-transparent border-white/10 text-white/40 hover:border-white/20 hover:text-white'}`}
+                          >
+                            <div className="flex flex-col items-center">
+                              {p === "Wealth" ? <TrendingUp className="w-3 h-3 mb-1" /> : p === "Safety" ? <Shield className="w-3 h-3 mb-1" /> : <HeartPulse className="w-3 h-3 mb-1" />}
+                              {p}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button 
+                      onClick={runAiMatch}
+                      disabled={isAiCalculating}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-2xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
+                    >
+                      {isAiCalculating ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Processing Neural Vectors...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                          <span>Run AI Neural Match</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Neural Output Result */}
+                  <div className="relative min-h-[300px]">
+                    <AnimatePresence mode="wait">
+                      {!aiResult && !isAiCalculating ? (
+                        <motion.div 
+                          key="empty"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="h-full flex flex-col items-center justify-center text-center p-8 bg-black/20 rounded-3xl border border-dashed border-white/10"
+                        >
+                          <Cpu className="w-12 h-12 text-white/10 mb-4" />
+                          <p className="text-white/30 text-[10px] font-medium uppercase tracking-widest leading-relaxed">
+                            Configure your strategic parameters and initiate neural matching to identify your optimal sovereign destination.
+                          </p>
+                        </motion.div>
+                      ) : isAiCalculating ? (
+                        <motion.div 
+                          key="loading"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="h-full flex flex-col items-center justify-center space-y-6"
+                        >
+                          <div className="relative w-20 h-20">
+                            <div className="absolute inset-0 border-2 border-brand-gold/20 rounded-full" />
+                            <div className="absolute inset-0 border-t-2 border-brand-gold rounded-full animate-spin" />
+                            <Brain className="absolute inset-0 m-auto w-8 h-8 text-brand-gold animate-pulse" />
+                          </div>
+                          <div className="space-y-2 text-center">
+                            <h4 className="text-white font-bold uppercase tracking-[0.3em] text-xs">Analyzing 32 Global Jurisdictions</h4>
+                            <p className="text-brand-gold/60 text-[8px] uppercase tracking-widest animate-pulse">Filtering Stability Indices & Fiscal Profiles</p>
+                          </div>
+                        </motion.div>
+                      ) : (
+                        aiResult && (
+                          <motion.div 
+                            key="result"
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="h-full bg-gradient-to-br from-black/60 to-black/20 rounded-3xl border border-brand-gold/20 p-8 flex flex-col gap-6"
+                          >
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <span className="bg-brand-gold/10 text-brand-gold text-[8px] font-black uppercase tracking-[0.3em] px-3 py-1 rounded-full border border-brand-gold/20">Optimal Match Found</span>
+                                <h4 className="text-4xl font-black text-white tracking-tighter mt-3 uppercase">{aiResult.country.country_name}</h4>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-brand-gold text-3xl font-black">{aiResult.score}%</span>
+                                <p className="text-white/40 text-[8px] uppercase tracking-widest font-bold">Compatibility Score</p>
+                              </div>
+                            </div>
+
+                            <div className="bg-white/5 p-5 rounded-2xl border border-white/5 relative group">
+                              <div className="absolute -top-3 left-6 px-2 bg-[#1a1a1a] text-amber-600 text-[8px] font-bold uppercase tracking-widest">Executive AI Summary</div>
+                              <p className="text-white/80 text-xs leading-relaxed font-medium italic">
+                                "{aiResult.summary}"
+                              </p>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 mt-auto">
+                              <div className="bg-black/40 p-4 rounded-xl border border-white/5">
+                                <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block mb-1">Fiscal Efficiency</span>
+                                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden mt-2">
+                                  <div className="h-full bg-brand-gold" style={{ width: `${100 - (aiResult.country.tax_rate_percent || 0) * 2}%` }} />
+                                </div>
+                              </div>
+                              <div className="bg-black/40 p-4 rounded-xl border border-white/5">
+                                <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block mb-1">Strategic Index</span>
+                                <div className="text-white font-bold text-sm">Level {Math.ceil((aiResult.country.compass_index || 50) / 10)} / 10</div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>
