@@ -230,7 +230,8 @@ export default function App() {
         }
         
         // Normalize score 0-100
-        const finalScore = Math.min(99, Math.max(65, Math.round(score)));
+        const rawScore = isNaN(score) ? 75 : score;
+        const finalScore = Math.min(99, Math.max(65, Math.round(rawScore)));
         
         // Generate summary based on priority
         let summary = "";
@@ -1570,9 +1571,9 @@ export default function App() {
                               </div>
                             </div>
 
-                            <div className="bg-white/5 p-5 rounded-2xl border border-white/5 relative group">
-                              <div className="absolute -top-3 left-6 px-2 bg-[#1a1a1a] text-amber-600 text-[8px] font-bold uppercase tracking-widest">Executive AI Summary</div>
-                              <p className="text-white/80 text-xs leading-relaxed font-medium italic">
+                            <div className="bg-white/5 p-5 rounded-2xl border border-white/10 relative group shadow-2xl shadow-black/40">
+                              <div className="absolute -top-3 left-6 px-2 bg-[#1a1a1a] text-brand-gold text-[10px] font-bold uppercase tracking-[0.2em]">Executive AI Summary</div>
+                              <p className="text-white text-sm md:text-base leading-relaxed font-semibold italic">
                                 "{aiResult.summary}"
                               </p>
                             </div>
