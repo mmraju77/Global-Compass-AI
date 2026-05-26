@@ -1133,8 +1133,10 @@ export default function App() {
                   {/* Results */}
                   <div className="bg-black/40 rounded-2xl border border-white/5 p-6 flex flex-col justify-center gap-6">
                     {(() => {
-                      const countryData = countries.find(c => c.country_name === estCountry) || countries[0];
-                      const rentVal = typeof countryData.rent === 'number' ? countryData.rent : parseFloat(String(countryData.rent).replace(/[^0-9.]/g, '')) || 0;
+                      const countryData = countries?.find(c => c.country_name === estCountry) || (countries?.[0] as any);
+                      const rentVal = countryData?.rent 
+                        ? (typeof countryData.rent === 'number' ? countryData.rent : parseFloat(String(countryData.rent).replace(/[^0-9.]/g, '')) || 0)
+                        : 0;
                       
                       let housing = 0;
                       let utilities = 0;
