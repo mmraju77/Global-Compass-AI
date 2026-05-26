@@ -181,6 +181,10 @@ export default function App() {
   const [savingsIncome, setSavingsIncome] = useState<number | string>(8000);
   const [savingsExpenses, setSavingsExpenses] = useState<number | string>(3000);
 
+  // Cost-of-Living Estimator State
+  const [estCountry, setEstCountry] = useState<string>("Singapore");
+  const [lifestyleTier, setLifestyleTier] = useState<"Basic" | "Executive" | "Luxury">("Executive");
+
   // Dynamic Currency Configuration
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
   const CONVERSION_RATES: Record<string, { rate: number, symbol: string, name: string }> = {
@@ -1070,6 +1074,117 @@ export default function App() {
                               {timeToMilestone}
                             </span>
                             <div className="mt-2 text-white/40 text-[9px] uppercase tracking-widest">Calculated at current savings velocity</div>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 📊 EXECUTIVE COST-OF-LIVING ESTIMATOR */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/60 relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-32 h-32 bg-brand-gold/5 blur-[80px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center gap-4 border-b border-white/5 pb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                    <Home className="w-6 h-6 text-amber-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white tracking-tight uppercase">📊 EXECUTIVE COST-OF-LIVING ESTIMATOR</h3>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                  {/* Inputs */}
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Select Jurisdiction</label>
+                      <div className="relative group/select">
+                        <select 
+                          value={estCountry}
+                          onChange={(e) => setEstCountry(e.target.value)}
+                          className="w-full bg-[#111111] border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={c.country_name} value={c.country_name} className="bg-[#111111] text-white">{c.country_name}</option>
+                          ))}
+                        </select>
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 border-r border-b border-white/40 rotate-45 pointer-events-none group-hover/select:border-brand-gold transition-colors" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Lifestyle Tier Selection</label>
+                      <div className="flex gap-2 p-1 bg-black/40 border border-white/5 rounded-xl">
+                        {(['Basic', 'Executive', 'Luxury'] as const).map((tier) => (
+                          <button
+                            key={tier}
+                            onClick={() => setLifestyleTier(tier)}
+                            className={`flex-1 py-3 rounded-lg text-xs font-bold transition-all uppercase tracking-widest ${lifestyleTier === tier ? 'bg-brand-gold text-black shadow-lg shadow-amber-600/20' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                          >
+                            {tier === 'Luxury' ? 'Ultra Luxury' : tier === 'Executive' ? 'Executive' : 'Basic'}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Results */}
+                  <div className="bg-black/40 rounded-2xl border border-white/5 p-6 flex flex-col justify-center gap-6">
+                    {(() => {
+                      const countryData = countries.find(c => c.country_name === estCountry) || countries[0];
+                      const rentVal = typeof countryData.rent === 'number' ? countryData.rent : parseFloat(String(countryData.rent).replace(/[^0-9.]/g, '')) || 0;
+                      
+                      let housing = 0;
+                      let utilities = 0;
+                      
+                      if (lifestyleTier === 'Basic') {
+                        housing = rentVal;
+                        utilities = 1500;
+                      } else if (lifestyleTier === 'Executive') {
+                        housing = rentVal * 1.5;
+                        utilities = 3000;
+                      } else {
+                        housing = rentVal * 2.5;
+                        utilities = 6000;
+                      }
+
+                      const totalCost = housing + utilities;
+                      const conv = CONVERSION_RATES[selectedCurrency] || CONVERSION_RATES['USD'];
+
+                      const formatWithConv = (num: number) => {
+                        const converted = num * conv.rate;
+                        return new Intl.NumberFormat('en-US', { 
+                          style: 'currency', 
+                          currency: selectedCurrency, 
+                          maximumFractionDigits: 0 
+                        }).format(converted);
+                      };
+
+                      return (
+                        <>
+                          <div className="space-y-4">
+                            <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                              <span className="text-slate-400 text-sm font-medium">Estimated Housing / Rent</span>
+                              <span className="text-white font-bold">{formatWithConv(housing)}</span>
+                            </div>
+                            <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                              <span className="text-slate-400 text-sm font-medium">Estimated Utilities & Food</span>
+                              <span className="text-white font-bold">{formatWithConv(utilities)}</span>
+                            </div>
+                          </div>
+
+                          <div className="bg-brand-gold/10 p-5 rounded-xl border border-brand-gold/20 shadow-lg shadow-amber-600/5 mt-2">
+                            <div className="flex justify-between items-center">
+                              <div className="flex flex-col">
+                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-[0.15em]">Total Monthly Cost-of-Living</span>
+                                <span className="text-white text-xs font-medium opacity-60">Estimated {lifestyleTier} Tier</span>
+                              </div>
+                              <span className="text-white font-extrabold text-3xl tracking-tighter">
+                                {formatWithConv(totalCost)}
+                              </span>
+                            </div>
                           </div>
                         </>
                       );
