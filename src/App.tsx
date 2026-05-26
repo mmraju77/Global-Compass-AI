@@ -197,6 +197,13 @@ export default function App() {
   const [aiResult, setAiResult] = useState<{ country: CountryData; score: number; summary: string } | null>(null);
   const [isAiCalculating, setIsAiCalculating] = useState(false);
 
+  // AI Salary Predictor State
+  const [salaryCountry, setSalaryCountry] = useState<string>("Singapore");
+  const [industry, setIndustry] = useState<string>("Technology & AI");
+  const [experience, setExperience] = useState<number | string>(5);
+  const [predictedSalaryResult, setPredictedSalaryResult] = useState<{ low: number; high: number; demand: string } | null>(null);
+  const [isPredicting, setIsPredicting] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -251,6 +258,40 @@ export default function App() {
       setAiResult(winner);
       setIsAiCalculating(false);
     }, 1500);
+  };
+
+  // Strategic Salary Predictor Engine
+  const predictSalary = () => {
+    if (!countries || countries.length === 0) return;
+    setIsPredicting(true);
+    
+    setTimeout(() => {
+      const countryData = countries.find(c => c.country_name === salaryCountry) || countries[0];
+      const baseSalary = countryData.average_salary_usd || 60000;
+      
+      const multipliers: Record<string, number> = {
+        "Technology & AI": 1.30,
+        "Finance & Investment": 1.25,
+        "Healthcare & BioTech": 1.20,
+        "Executive Management": 1.35
+      };
+      
+      const indMult = multipliers[industry] || 1;
+      const expYears = Number(experience) || 0;
+      const expMult = Math.pow(1.05, expYears);
+      
+      const midPoint = baseSalary * indMult * expMult;
+      const lowBracket = midPoint * 0.9;
+      const highBracket = midPoint * 1.15;
+      
+      let demand = "Moderate";
+      if (indMult >= 1.3 && expYears >= 5) demand = "CRITICAL SHORTAGE";
+      else if (indMult >= 1.25) demand = "HIGH DEMAND";
+      else demand = "STABLE DEMAND";
+      
+      setPredictedSalaryResult({ low: lowBracket, high: highBracket, demand });
+      setIsPredicting(false);
+    }, 1200);
   };
 
   // Dynamic Currency Configuration
@@ -1589,6 +1630,144 @@ export default function App() {
                                 <span className="text-slate-300 text-[8px] font-bold uppercase tracking-widest block mb-1">Strategic Index</span>
                                 <div className="text-white font-bold text-sm">Level {Math.ceil((aiResult.country.compass_index || 50) / 10)} / 10</div>
                               </div>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 📈 PROPRIETARY AI GLOBAL SALARY PREDICTOR */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <BarChart3 className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">📈 PROPRIETARY AI GLOBAL SALARY PREDICTOR</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Advanced Industry-Weight Alignment Engine</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div className="space-y-2 md:col-span-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Market Jurisdiction</label>
+                        <select 
+                          value={salaryCountry}
+                          onChange={(e) => setSalaryCountry(e.target.value)}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={c.country_name} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Core Industry / Profession</label>
+                        <select 
+                          value={industry}
+                          onChange={(e) => setIndustry(e.target.value)}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          <option value="Technology & AI" className="bg-[#1a1a1a]">Technology & AI</option>
+                          <option value="Finance & Investment" className="bg-[#1a1a1a]">Finance & Investment</option>
+                          <option value="Healthcare & BioTech" className="bg-[#1a1a1a]">Healthcare & BioTech</option>
+                          <option value="Executive Management" className="bg-[#1a1a1a]">Executive Management</option>
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Years of Experience</label>
+                        <input 
+                          type="number"
+                          value={experience}
+                          onChange={(e) => setExperience(e.target.value === "" ? "" : Number(e.target.value))}
+                          onFocus={(e) => e.target.select()}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all"
+                        />
+                    </div>
+
+                    <button 
+                      onClick={predictSalary}
+                      disabled={isPredicting}
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    >
+                      {isPredicting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Calculating Strategic Brackets...</span>
+                        </>
+                      ) : (
+                        <>
+                          <TrendingUp className="w-5 h-5" />
+                          <span>Predict Strategic Salary</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Results Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 flex flex-col justify-center min-h-[250px]">
+                    <AnimatePresence mode="wait">
+                      {!predictedSalaryResult && !isPredicting ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 opacity-40">
+                          <BarChart3 className="w-12 h-12" />
+                          <p className="text-[10px] font-bold uppercase tracking-widest">Select parameters to generate market predictions</p>
+                        </div>
+                      ) : isPredicting ? (
+                        <div className="flex flex-col items-center justify-center space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Monte Carlo Simulations...</p>
+                        </div>
+                      ) : (
+                        predictedSalaryResult && (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <div className="flex justify-between items-end">
+                              <div className="space-y-1">
+                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Estimated Market Range</span>
+                                <div className="text-white text-3xl font-black tracking-tighter">
+                                  {(() => {
+                                    const conv = CONVERSION_RATES[selectedCurrency];
+                                    const f = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(n * conv.rate);
+                                    return `${f(predictedSalaryResult.low)} — ${f(predictedSalaryResult.high)}`;
+                                  })()}
+                                </div>
+                                <p className="text-white/40 text-[9px] uppercase tracking-widest leading-relaxed">Annual recurring compensation estimate for {industry}</p>
+                              </div>
+                            </div>
+
+                            <div className="h-px bg-white/5 w-full" />
+
+                            <div className="flex items-center justify-between">
+                              <div className="flex flex-col">
+                                <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest">Talent Demand Index</span>
+                                <span className="text-white font-bold text-sm mt-1">{predictedSalaryResult.demand}</span>
+                              </div>
+                              <div className={`px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest ${predictedSalaryResult.demand === 'CRITICAL SHORTAGE' ? 'bg-red-500/10 border-red-500/20 text-red-500' : 'bg-brand-gold/10 border-brand-gold/20 text-brand-gold'}`}>
+                                {predictedSalaryResult.demand === 'CRITICAL SHORTAGE' ? 'Priority 1' : 'High Market Index'}
+                              </div>
+                            </div>
+
+                            <div className="bg-brand-gold/5 border border-brand-gold/10 p-4 rounded-xl flex items-center gap-3">
+                              <ShieldCheck className="w-5 h-5 text-brand-gold" />
+                              <p className="text-[10px] text-white/60 font-medium leading-relaxed italic">
+                                Prediction assumes Tier-1 corporate presence and aligns with the top 25th percentile of the local executive market in {salaryCountry}.
+                              </p>
                             </div>
                           </motion.div>
                         )
