@@ -176,6 +176,10 @@ export default function App() {
   // Tax Calculator State
   const [calcCountry, setCalcCountry] = useState<string>("Switzerland");
   const [annualIncome, setAnnualIncome] = useState<number | string>(100000);
+  
+  // Savings Calculator State
+  const [savingsIncome, setSavingsIncome] = useState<number | string>(8000);
+  const [savingsExpenses, setSavingsExpenses] = useState<number | string>(3000);
 
   // Dynamic Currency Configuration
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
@@ -956,6 +960,116 @@ export default function App() {
                             <span className="text-white font-extrabold text-3xl tracking-tighter">
                               {formatPlain(takeHomePay)}
                             </span>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 💰 EXECUTIVE SAVINGS & $1M MILESTONE PLANNER */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/60 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 blur-[80px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center gap-4 border-b border-white/5 pb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                    <TrendingUp className="w-6 h-6 text-amber-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white tracking-tight uppercase">💰 EXECUTIVE SAVINGS & $1M MILESTONE PLANNER</h3>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                  {/* Inputs */}
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Estimated Monthly Income</label>
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600 font-bold">{CONVERSION_RATES[selectedCurrency]?.symbol || '$'}</div>
+                        <input 
+                          type="number" 
+                          value={savingsIncome}
+                          onChange={(e) => setSavingsIncome(e.target.value === "" ? "" : Number(e.target.value))}
+                          onFocus={(e) => e.target.select()}
+                          placeholder="Monthly Income"
+                          className="w-full bg-[#111111] border border-white/10 rounded-xl px-12 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Estimated Monthly Expenses</label>
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600 font-bold">{CONVERSION_RATES[selectedCurrency]?.symbol || '$'}</div>
+                        <input 
+                          type="number" 
+                          value={savingsExpenses}
+                          onChange={(e) => setSavingsExpenses(e.target.value === "" ? "" : Number(e.target.value))}
+                          onFocus={(e) => e.target.select()}
+                          placeholder="Monthly Expenses"
+                          className="w-full bg-[#111111] border border-white/10 rounded-xl px-12 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Results */}
+                  <div className="bg-black/40 rounded-2xl border border-white/5 p-6 flex flex-col justify-center gap-6">
+                    {(() => {
+                      const inc = Number(savingsIncome) || 0;
+                      const exp = Number(savingsExpenses) || 0;
+                      const netSavings = Math.max(0, inc - exp);
+                      const annualSavings = netSavings * 12;
+                      
+                      // Milestone calculation (reaching 1,000,000 units of selected currency)
+                      const milestone = 1000000;
+                      let timeToMilestone = "N/A";
+                      
+                      if (netSavings > 0) {
+                        const totalMonths = milestone / netSavings;
+                        const years = Math.floor(totalMonths / 12);
+                        const months = Math.round(totalMonths % 12);
+                        
+                        if (years === 0) {
+                          timeToMilestone = `${months} Month${months !== 1 ? 's' : ''}`;
+                        } else if (years > 100) {
+                          timeToMilestone = "100+ Years";
+                        } else {
+                          timeToMilestone = `${years} Year${years !== 1 ? 's' : ''} ${months > 0 ? `& ${months} Month${months !== 1 ? 's' : ''}` : ''}`;
+                        }
+                      } else {
+                        timeToMilestone = "Infinite Horizon";
+                      }
+
+                      const formatPlain = (num: number) => {
+                        return new Intl.NumberFormat('en-US', { 
+                          style: 'currency', 
+                          currency: selectedCurrency, 
+                          maximumFractionDigits: 0 
+                        }).format(num);
+                      };
+
+                      return (
+                        <>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-white/5 p-4 rounded-xl border border-white/5">
+                              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest block mb-1">Monthly Net Savings</span>
+                              <span className="text-white font-bold text-lg">{formatPlain(netSavings)}</span>
+                            </div>
+                            <div className="bg-white/5 p-4 rounded-xl border border-white/5">
+                              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest block mb-1">Annualized Accumulation</span>
+                              <span className="text-white font-bold text-lg">{formatPlain(annualSavings)}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-brand-gold/10 p-5 rounded-xl border border-brand-gold/20 shadow-lg shadow-amber-600/5 text-center">
+                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-[0.2em] block mb-2">TIME TO REACH {formatPlain(milestone)} MILESTONE</span>
+                            <span className="text-white font-extrabold text-3xl tracking-tighter">
+                              {timeToMilestone}
+                            </span>
+                            <div className="mt-2 text-white/40 text-[9px] uppercase tracking-widest">Calculated at current savings velocity</div>
                           </div>
                         </>
                       );
