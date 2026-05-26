@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft } from "lucide-react";
+import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
@@ -184,6 +184,11 @@ export default function App() {
   // Cost-of-Living Estimator State
   const [estCountry, setEstCountry] = useState<string>("Singapore");
   const [lifestyleTier, setLifestyleTier] = useState<"Basic" | "Executive" | "Luxury">("Executive");
+
+  // Relocation Planner State
+  const [relocCountry, setRelocCountry] = useState<string>("Singapore");
+  const [partySize, setPartySize] = useState<"Single" | "Couple" | "Family">("Single");
+  const [shippingVolume, setShippingVolume] = useState<"Minimal" | "Medium" | "Heavy">("Medium");
 
   // Dynamic Currency Configuration
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
@@ -1201,6 +1206,150 @@ export default function App() {
                               <span className="text-white font-extrabold text-3xl tracking-tighter">
                                 {formatWithConv(totalCost)}
                               </span>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ✈️ EXECUTIVE RELOCATION UPFRONT BUDGET PLANNER */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/60 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-brand-gold/5 blur-[100px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center gap-4 border-b border-white/5 pb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                    <Plane className="w-6 h-6 text-amber-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white tracking-tight uppercase">✈️ EXECUTIVE RELOCATION UPFRONT BUDGET PLANNER</h3>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                  {/* Inputs */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:col-span-1">
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Relocation Jurisdiction</label>
+                      <div className="relative group/select">
+                        <select 
+                          value={relocCountry}
+                          onChange={(e) => setRelocCountry(e.target.value)}
+                          className="w-full bg-[#111111] border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={c.country_name} value={c.country_name} className="bg-[#111111] text-white">{c.country_name}</option>
+                          ))}
+                        </select>
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 border-r border-b border-white/40 rotate-45 pointer-events-none group-hover/select:border-brand-gold transition-colors" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Moving Party Size</label>
+                      <div className="relative group/select">
+                        <select 
+                          value={partySize}
+                          onChange={(e) => setPartySize(e.target.value as any)}
+                          className="w-full bg-[#111111] border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          <option value="Single">Single Professional</option>
+                          <option value="Couple">Couple</option>
+                          <option value="Family">Family (3-4 Members)</option>
+                        </select>
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 border-r border-b border-white/40 rotate-45 pointer-events-none group-hover/select:border-brand-gold transition-colors" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Logistics & Shipping Volume</label>
+                      <div className="relative group/select">
+                        <select 
+                          value={shippingVolume}
+                          onChange={(e) => setShippingVolume(e.target.value as any)}
+                          className="w-full bg-[#111111] border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          <option value="Minimal">Minimal (Luggage Only)</option>
+                          <option value="Medium">Medium (Partial Home)</option>
+                          <option value="Heavy">Heavy (Full Container)</option>
+                        </select>
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 border-r border-b border-white/40 rotate-45 pointer-events-none group-hover/select:border-brand-gold transition-colors" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Results */}
+                  <div className="bg-black/40 rounded-2xl border border-white/5 p-6 flex flex-col justify-center gap-5">
+                    {(() => {
+                      if (!countries || countries.length === 0) {
+                        return (
+                          <div className="flex flex-col items-center justify-center p-10 text-center space-y-3">
+                            <Loader2 className="w-6 h-6 animate-spin text-brand-gold" />
+                            <span className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Assembling Sovereign Assets...</span>
+                          </div>
+                        );
+                      }
+                      const countryData = countries.find(c => c.country_name === relocCountry) || countries[0];
+                      const rawRent = countryData?.rent || 0;
+                      const rentVal = typeof rawRent === 'number' ? rawRent : parseFloat(String(rawRent).replace(/[^0-9.]/g, '')) || 0;
+
+                      let partyFactor = 1;
+                      if (partySize === "Couple") partyFactor = 2;
+                      if (partySize === "Family") partyFactor = 4;
+
+                      let shippingCost = 3500;
+                      if (shippingVolume === "Minimal") shippingCost = 750;
+                      if (shippingVolume === "Heavy") shippingCost = 9000;
+
+                      const visaFees = 1200 * partyFactor;
+                      const flightCosts = 850 * partyFactor;
+                      const securityDeposit = rentVal * 2;
+                      const totalUpfront = visaFees + flightCosts + shippingCost + securityDeposit;
+
+                      const conv = CONVERSION_RATES[selectedCurrency] || CONVERSION_RATES['USD'];
+                      const formatWithConv = (num: number) => {
+                        const converted = num * conv.rate;
+                        return new Intl.NumberFormat('en-US', { 
+                          style: 'currency', 
+                          currency: selectedCurrency, 
+                          maximumFractionDigits: 0 
+                        }).format(converted);
+                      };
+
+                      return (
+                        <>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-4">
+                              <div className="flex flex-col border-b border-white/5 pb-2">
+                                <span className="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Visa & Admin Fees</span>
+                                <span className="text-white font-bold text-sm">{formatWithConv(visaFees)}</span>
+                              </div>
+                              <div className="flex flex-col border-b border-white/5 pb-2">
+                                <span className="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Flights & Travel</span>
+                                <span className="text-white font-bold text-sm">{formatWithConv(flightCosts)}</span>
+                              </div>
+                            </div>
+                            <div className="space-y-4">
+                              <div className="flex flex-col border-b border-white/5 pb-2">
+                                <span className="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Logistics & Freight</span>
+                                <span className="text-white font-bold text-sm">{formatWithConv(shippingCost)}</span>
+                              </div>
+                              <div className="flex flex-col border-b border-white/5 pb-2">
+                                <span className="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Housing Security Deposit</span>
+                                <span className="text-white font-bold text-sm">{formatWithConv(securityDeposit)}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="bg-brand-gold/10 p-5 rounded-xl border border-brand-gold/20 shadow-lg shadow-amber-600/5 mt-2">
+                            <div className="flex flex-col text-center">
+                              <span className="text-amber-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Total Estimated Capital Required</span>
+                              <span className="text-white font-extrabold text-4xl tracking-tighter">
+                                {formatWithConv(totalUpfront)}
+                              </span>
+                              <div className="mt-2 text-white/40 text-[8px] uppercase tracking-widest">Estimated upfront deployment for {partySize} relocation</div>
                             </div>
                           </div>
                         </>
