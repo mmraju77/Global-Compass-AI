@@ -175,7 +175,7 @@ export default function App() {
   
   // Tax Calculator State
   const [calcCountry, setCalcCountry] = useState<string>("Switzerland");
-  const [annualIncome, setAnnualIncome] = useState<number>(100000);
+  const [annualIncome, setAnnualIncome] = useState<number | string>(100000);
 
   // Dynamic Currency Configuration
   const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
@@ -907,7 +907,8 @@ export default function App() {
                         <input 
                           type="number" 
                           value={annualIncome}
-                          onChange={(e) => setAnnualIncome(Number(e.target.value))}
+                          onChange={(e) => setAnnualIncome(e.target.value === "" ? "" : Number(e.target.value))}
+                          onFocus={(e) => e.target.select()}
                           placeholder="Enter Amount"
                           className="w-full bg-[#111111] border border-white/10 rounded-xl px-12 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all"
                         />
@@ -918,10 +919,11 @@ export default function App() {
                   {/* Results */}
                   <div className="bg-black/40 rounded-2xl border border-white/5 p-6 flex flex-col justify-center gap-6">
                     {(() => {
+                      const incomeNum = Number(annualIncome) || 0;
                       const countryData = countries.find(c => c.country_name === calcCountry);
                       const taxRate = countryData ? Number(countryData.tax_rate_percent || 0) : 0;
-                      const totalTax = annualIncome * (taxRate / 100);
-                      const takeHomePay = annualIncome - totalTax;
+                      const totalTax = incomeNum * (taxRate / 100);
+                      const takeHomePay = incomeNum - totalTax;
 
                       const formatPlain = (num: number) => {
                         return new Intl.NumberFormat('en-US', { 
@@ -935,7 +937,7 @@ export default function App() {
                         <>
                           <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/5">
                             <span className="text-slate-400 text-sm font-medium">Total Annual Salary</span>
-                            <span className="text-white font-bold text-xl">{formatPlain(annualIncome)}</span>
+                            <span className="text-white font-bold text-xl">{formatPlain(incomeNum)}</span>
                           </div>
                           <div className="flex justify-between items-center border-b border-white/5 pb-4 px-2">
                             <div className="flex flex-col">
