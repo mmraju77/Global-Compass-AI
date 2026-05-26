@@ -927,8 +927,16 @@ export default function App() {
                   {/* Results */}
                   <div className="bg-black/40 rounded-2xl border border-white/5 p-6 flex flex-col justify-center gap-6">
                     {(() => {
+                      if (!countries || countries.length === 0) {
+                        return (
+                          <div className="flex flex-col items-center justify-center p-10 text-center space-y-3">
+                            <Loader2 className="w-6 h-6 animate-spin text-brand-gold" />
+                            <span className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Synchronizing Neural Matrix...</span>
+                          </div>
+                        );
+                      }
                       const incomeNum = Number(annualIncome) || 0;
-                      const countryData = countries.find(c => c.country_name === calcCountry);
+                      const countryData = countries.find(c => c.country_name === calcCountry) || countries[0];
                       const taxRate = countryData ? Number(countryData.tax_rate_percent || 0) : 0;
                       const totalTax = incomeNum * (taxRate / 100);
                       const takeHomePay = incomeNum - totalTax;
@@ -1133,10 +1141,17 @@ export default function App() {
                   {/* Results */}
                   <div className="bg-black/40 rounded-2xl border border-white/5 p-6 flex flex-col justify-center gap-6">
                     {(() => {
-                      const countryData = countries?.find(c => c.country_name === estCountry) || (countries?.[0] as any);
-                      const rentVal = countryData?.rent 
-                        ? (typeof countryData.rent === 'number' ? countryData.rent : parseFloat(String(countryData.rent).replace(/[^0-9.]/g, '')) || 0)
-                        : 0;
+                      if (!countries || countries.length === 0) {
+                        return (
+                          <div className="flex flex-col items-center justify-center p-10 text-center space-y-3">
+                            <Loader2 className="w-6 h-6 animate-spin text-brand-gold" />
+                            <span className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Calculating Life Vectors...</span>
+                          </div>
+                        );
+                      }
+                      const countryData = countries.find(c => c.country_name === estCountry) || countries[0];
+                      const rawRent = countryData?.rent || 0;
+                      const rentVal = typeof rawRent === 'number' ? rawRent : parseFloat(String(rawRent).replace(/[^0-9.]/g, '')) || 0;
                       
                       let housing = 0;
                       let utilities = 0;
