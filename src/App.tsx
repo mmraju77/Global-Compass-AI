@@ -1572,21 +1572,21 @@ export default function App() {
                             </div>
 
                             <div className="bg-white/5 p-5 rounded-2xl border border-white/10 relative group shadow-2xl shadow-black/40">
-                              <div className="absolute -top-3 left-6 px-2 bg-[#1a1a1a] text-brand-gold text-[10px] font-bold uppercase tracking-[0.2em]">Executive AI Summary</div>
-                              <p className="text-white text-sm md:text-base leading-relaxed font-semibold italic">
+                              <div className="absolute -top-3 left-6 px-2 bg-[#1a1a1a] text-brand-gold text-[10px] font-bold uppercase tracking-[0.2em] opacity-100">Executive AI Summary</div>
+                              <p className="text-[#ffffff] text-sm md:text-base leading-relaxed font-semibold italic opacity-100">
                                 "{aiResult.summary}"
                               </p>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4 mt-auto">
                               <div className="bg-black/40 p-4 rounded-xl border border-white/5">
-                                <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block mb-1">Fiscal Efficiency</span>
+                                <span className="text-slate-300 text-[8px] font-bold uppercase tracking-widest block mb-1">Fiscal Efficiency</span>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden mt-2">
                                   <div className="h-full bg-brand-gold" style={{ width: `${100 - (aiResult.country.tax_rate_percent || 0) * 2}%` }} />
                                 </div>
                               </div>
                               <div className="bg-black/40 p-4 rounded-xl border border-white/5">
-                                <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block mb-1">Strategic Index</span>
+                                <span className="text-slate-300 text-[8px] font-bold uppercase tracking-widest block mb-1">Strategic Index</span>
                                 <div className="text-white font-bold text-sm">Level {Math.ceil((aiResult.country.compass_index || 50) / 10)} / 10</div>
                               </div>
                             </div>
