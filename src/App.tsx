@@ -6,7 +6,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck, Brain, Sparkles } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { jsPDF } from "jspdf";
 
 const MOCK_DATA: CountryData[] = [
@@ -203,6 +203,7 @@ export default function App() {
   const [experience, setExperience] = useState<number | string>(5);
   const [predictedSalaryResult, setPredictedSalaryResult] = useState<{ low: number; high: number; demand: string } | null>(null);
   const [isPredicting, setIsPredicting] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   // Neural Matching Engine
   const runAiMatch = () => {
@@ -1664,7 +1665,12 @@ export default function App() {
                         <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Market Jurisdiction</label>
                         <select 
                           value={salaryCountry}
-                          onChange={(e) => setSalaryCountry(e.target.value)}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => {
+                              setSalaryCountry(val);
+                            });
+                          }}
                           className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
                         >
                           {countries.map(c => (
@@ -1677,7 +1683,12 @@ export default function App() {
                         <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Core Industry / Profession</label>
                         <select 
                           value={industry}
-                          onChange={(e) => setIndustry(e.target.value)}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => {
+                              setIndustry(val);
+                            });
+                          }}
                           className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
                         >
                           <option value="Technology & AI" className="bg-[#1a1a1a]">Technology & AI</option>
@@ -1759,7 +1770,7 @@ export default function App() {
                                 <span className="text-white font-bold text-sm mt-1">{predictedSalaryResult.demand}</span>
                               </div>
                               <div className={`px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest ${predictedSalaryResult.demand === 'CRITICAL SHORTAGE' ? 'bg-red-500/10 border-red-500/20 text-red-500' : 'bg-brand-gold/10 border-brand-gold/20 text-brand-gold'}`}>
-                                {predictedSalaryResult.demand === 'CRITICAL SHORTAGE' ? 'Priority 1' : 'High Market Index'}
+                                {predictedSalaryResult.demand === 'CRITICAL SHORTAGE' ? 'HIGHEST PRIORITY' : 'High Market Index'}
                               </div>
                             </div>
 
