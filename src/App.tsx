@@ -1475,7 +1475,7 @@ export default function App() {
                         onChange={(e) => setAiMaxTax(Number(e.target.value))}
                         className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-gold"
                       />
-                      <div className="flex justify-between text-[8px] text-white/30 uppercase tracking-tighter">
+                      <div className="flex justify-between text-[10px] text-white font-bold uppercase tracking-widest">
                         <span>Tax Haven (0%)</span>
                         <span>High Utility (50%)</span>
                       </div>
