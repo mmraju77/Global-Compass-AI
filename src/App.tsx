@@ -271,6 +271,16 @@ export default function App() {
   } | null>(null);
   const [isCalculatingFx, setIsCalculatingFx] = useState(false);
 
+  // Immigration Concierge & Eligibility Engine State
+  const [immiTargetCountry, setImmiTargetCountry] = useState<string>("Singapore");
+  const [immiCitizenship, setImmiCitizenship] = useState<string>("Global");
+  const [immiTier, setImmiTier] = useState<string>("Standard Application Assist");
+  const [immiResult, setImmiResult] = useState<{
+    probability: string;
+    deliverables: string[];
+  } | null>(null);
+  const [isAssessingImmi, setIsAssessingImmi] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -628,6 +638,49 @@ export default function App() {
         symbol: toRateObj.symbol
       });
       setIsCalculatingFx(false);
+    }, 1200);
+  };
+
+  // Strategic Turnkey Immigration Concierge Engine
+  const assessImmigration = () => {
+    setIsAssessingImmi(true);
+    
+    setTimeout(() => {
+      let probability = "75% Moderate Probability";
+      let deliverables: string[] = [];
+
+      if (immiTier === "Standard Application Assist") {
+        probability = "82% High Probability";
+        deliverables = [
+          "Initial Eligibility Audit",
+          "Document Checklist Preparation",
+          "Standard Embassy Booking",
+          "Application Review before Submission"
+        ];
+      } else if (immiTier === "VIP Fast-Track Processing") {
+        probability = "91% Very High Probability";
+        deliverables = [
+          "Dedicated Immigration Attorney",
+          "Priority Embassy Interview Booking",
+          "100% Document Translation & Notarization",
+          "Direct Diplomatic Liaison"
+        ];
+      } else if (immiTier === "Ultra-Luxury Family Relocation (End-to-End)") {
+        probability = "98% Near-Guaranteed Probability";
+        deliverables = [
+          "Elite Tax & Immigration Counsel Team",
+          "VIP Airport Fast-Track & Chauffeur",
+          "Private School Placement for Dependents",
+          "Turnkey Real Estate & Bank Setup",
+          "Full Concierge Relocation Logistics"
+        ];
+      }
+
+      setImmiResult({
+        probability,
+        deliverables
+      });
+      setIsAssessingImmi(false);
     }, 1200);
   };
 
@@ -2955,6 +3008,144 @@ export default function App() {
                                   {fxResult.rateText}
                                 </span>
                               </div>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 🛂 TURNKEY IMMIGRATION CONCIERGE SERVICES */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Plane className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">🛂 TURNKEY IMMIGRATION CONCIERGE SERVICES</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Relocation & Visa Eligibility</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={immiTargetCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setImmiTargetCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`immi-target-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Current Citizenship</label>
+                        <select 
+                          value={immiCitizenship}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setImmiCitizenship(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['Global', 'USA', 'EU', 'UK', 'India', 'UAE', 'Canada', 'Australia'].map(c => (
+                            <option key={`immi-cit-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Desired Concierge Tier</label>
+                        <select 
+                          value={immiTier}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setImmiTier(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['Standard Application Assist', 'VIP Fast-Track Processing', 'Ultra-Luxury Family Relocation (End-to-End)'].map(c => (
+                            <option key={`immi-tier-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={assessImmigration}
+                      disabled={isAssessingImmi}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isAssessingImmi ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Auditing Profile...</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShieldCheck className="w-5 h-5" />
+                          <span>Assess Eligibility & Initiate Service</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!immiResult && !isAssessingImmi ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <Plane className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select parameters to compute visa eligibility</p>
+                        </div>
+                      ) : isAssessingImmi ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Consulting Global Immigration Counsel...</p>
+                        </div>
+                      ) : (
+                        immiResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <div>
+                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-4">Visa Approval Probability</span>
+                                <div className="p-4 bg-gradient-to-r from-amber-900/40 to-brand-gold/10 border border-brand-gold/30 rounded-xl mb-6">
+                                  <div className="text-white text-2xl font-black tracking-tighter">
+                                    {immiResult.probability}
+                                  </div>
+                                </div>
+
+                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-4">Dedicated Concierge Deliverables</span>
+                                <ul className="space-y-3 mb-8">
+                                  {immiResult.deliverables.map((item, idx) => (
+                                    <li key={idx} className="flex items-start gap-3">
+                                      <CheckCircle2 className="w-5 h-5 text-brand-gold shrink-0 mt-0.5" />
+                                      <span className="text-zinc-200 text-sm font-medium">{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                                
+                                <button className="w-full bg-transparent border-2 border-brand-gold/50 hover:bg-brand-gold/10 py-4 rounded-xl text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
+                                  Schedule Initial Consultation
+                                </button>
                             </div>
                           </motion.div>
                         )
