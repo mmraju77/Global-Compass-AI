@@ -237,6 +237,16 @@ export default function App() {
   } | null>(null);
   const [isAnalyzingNomad, setIsAnalyzingNomad] = useState(false);
 
+  // Executive Purchasing Power & PPP Calculator State
+  const [pppBaseCountry, setPppBaseCountry] = useState<string>("Singapore");
+  const [pppTargetCountry, setPppTargetCountry] = useState<string>("United States");
+  const [pppBaseSalary, setPppBaseSalary] = useState<number | string>(100000);
+  const [pppResult, setPppResult] = useState<{
+    equivalentSalary: number;
+    insight: string;
+  } | null>(null);
+  const [isCalculatingPPP, setIsCalculatingPPP] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -452,6 +462,39 @@ export default function App() {
         insight
       });
       setIsAnalyzingNomad(false);
+    }, 1200);
+  };
+
+  // Strategic Executive Purchasing Power & PPP Calculator
+  const calculatePPP = () => {
+    if (!countries || countries.length === 0) return;
+    setIsCalculatingPPP(true);
+    
+    setTimeout(() => {
+      const baseCountryData = countries.find(c => c.country_name === pppBaseCountry) || countries[0];
+      const targetCountryData = countries.find(c => c.country_name === pppTargetCountry) || countries[1] || countries[0];
+      
+      const baseCol = Number(baseCountryData.cost_of_living_score) || 80;
+      const targetCol = Number(targetCountryData.cost_of_living_score) || 80;
+      const baseSalary = Number(pppBaseSalary) || 0;
+      
+      const equivalentSalary = (targetCol / baseCol) * baseSalary;
+      const deltaPercent = ((targetCol - baseCol) / baseCol) * 100;
+      
+      let insight = "";
+      if (deltaPercent > 0) {
+        insight = `To maintain the same lifestyle in ${pppTargetCountry}, you need ${deltaPercent.toFixed(1)}% more income compared to ${pppBaseCountry}.`;
+      } else if (deltaPercent < 0) {
+        insight = `Your purchasing power significantly increases. You need ${Math.abs(deltaPercent).toFixed(1)}% less income in ${pppTargetCountry} to maintain your ${pppBaseCountry} lifestyle.`;
+      } else {
+        insight = `Cost of living is statistically identical between ${pppBaseCountry} and ${pppTargetCountry}.`;
+      }
+      
+      setPppResult({
+        equivalentSalary,
+        insight
+      });
+      setIsCalculatingPPP(false);
     }, 1200);
   };
 
@@ -2363,6 +2406,151 @@ export default function App() {
                                 <span className="text-brand-gold text-[9px] font-black uppercase tracking-[0.2em] mb-0.5">AI Executive Nomad Insight</span>
                                 <span className="text-white text-xs font-medium leading-relaxed">
                                   {nomadResult.insight}
+                                </span>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 📊 EXECUTIVE PURCHASING POWER & PPP CALCULATOR */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Scale className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">📊 EXECUTIVE PURCHASING POWER & PPP CALCULATOR</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border Wealth Parity Engine</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Base Jurisdiction</label>
+                        <select 
+                          value={pppBaseCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setPppBaseCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`base-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={pppTargetCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setPppTargetCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`target-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2 md:col-span-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Base Annual Salary</label>
+                        <div className="relative">
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">
+                            {CONVERSION_RATES[selectedCurrency]?.symbol || '$'}
+                          </span>
+                          <input 
+                            type="number"
+                            value={pppBaseSalary}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              startTransition(() => setPppBaseSalary(val === "" ? "" : Number(val)));
+                            }}
+                            onFocus={(e) => e.target.select()}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all"
+                          />
+                        </div>
+                    </div>
+
+                    <button 
+                      onClick={calculatePPP}
+                      disabled={isCalculatingPPP}
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isCalculatingPPP ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Computing Delta Parity...</span>
+                        </>
+                      ) : (
+                        <>
+                          <TrendingUp className="w-5 h-5" />
+                          <span>Calculate PPP Equivalent</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!pppResult && !isCalculatingPPP ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <Scale className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select jurisdictions to compute purchasing power delta</p>
+                        </div>
+                      ) : isCalculatingPPP ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Parity Indexing...</p>
+                        </div>
+                      ) : (
+                        pppResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <div>
+                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Real Purchasing Power Equivalent</span>
+                                <div className="mt-4 p-6 bg-gradient-to-r from-amber-900/40 to-brand-gold/10 border border-brand-gold/30 rounded-2xl">
+                                  <div className="text-white text-4xl font-black tracking-tighter">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(pppResult.equivalentSalary * conv.rate);
+                                    })()}
+                                  </div>
+                                  <div className="text-white/60 text-xs font-medium mt-2">
+                                    Equivalent salary required in <span className="text-white font-bold">{pppTargetCountry}</span>
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div className="h-px bg-white/5 w-full mt-2" />
+
+                            <div className="bg-brand-gold/5 border border-brand-gold/10 p-4 rounded-xl flex items-center gap-4">
+                              <Brain className="w-6 h-6 text-brand-gold shrink-0" />
+                              <div className="flex flex-col">
+                                <span className="text-brand-gold text-[9px] font-black uppercase tracking-[0.2em] mb-0.5">Parity Intelligence Alert</span>
+                                <span className="text-white text-xs font-medium leading-relaxed">
+                                  {pppResult.insight}
                                 </span>
                               </div>
                             </div>
