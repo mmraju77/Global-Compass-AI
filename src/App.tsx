@@ -324,6 +324,15 @@ export default function App() {
   const [cityReviewResult, setCityReviewResult] = useState<{title: string, safety: number, cost: number, lifestyle: number, text: string}[] | null>(null);
   const [isFetchingCityReviews, setIsFetchingCityReviews] = useState(false);
 
+  // Jurisdiction Comparison Matrix State
+  const [compareCountryA, setCompareCountryA] = useState<string>("United States");
+  const [compareCountryB, setCompareCountryB] = useState<string>("Singapore");
+  const [compareResult, setCompareResult] = useState<{
+    countryA: { name: string, costIndex: number, taxRate: number, digitalNomad: string, qualityScore: number },
+    countryB: { name: string, costIndex: number, taxRate: number, digitalNomad: string, qualityScore: number }
+  } | null>(null);
+  const [isComparing, setIsComparing] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -982,6 +991,37 @@ export default function App() {
 
       setCityReviewResult(reviews);
       setIsFetchingCityReviews(false);
+    }, 1200);
+  };
+
+  // Strategic Jurisdiction Comparison Engine
+  const compareJurisdictions = () => {
+    setIsComparing(true);
+    
+    setTimeout(() => {
+      // Find country objects
+      const a = countries.find(c => c.country_name === compareCountryA);
+      const b = countries.find(c => c.country_name === compareCountryB);
+      
+      if (a && b) {
+        setCompareResult({
+          countryA: {
+            name: a.country_name,
+            costIndex: a.cost_of_living_index,
+            taxRate: a.standard_tax_rate,
+            digitalNomad: a.digital_nomad_visa === "Yes" ? "Available" : "Not Available",
+            qualityScore: a.quality_of_life_score
+          },
+          countryB: {
+            name: b.country_name,
+            costIndex: b.cost_of_living_index,
+            taxRate: b.standard_tax_rate,
+            digitalNomad: b.digital_nomad_visa === "Yes" ? "Available" : "Not Available",
+            qualityScore: b.quality_of_life_score
+          }
+        });
+      }
+      setIsComparing(false);
     }, 1200);
   };
 
@@ -4362,6 +4402,165 @@ export default function App() {
                                 <p className="text-zinc-200 text-sm leading-relaxed italic border-l-2 border-brand-gold/50 pl-3">"{review.text}"</p>
                               </div>
                             ))}
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ⚖️ PROPRIETARY JURISDICTION COMPARISON MATRIX */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Scale className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">⚖️ PROPRIETARY JURISDICTION COMPARISON MATRIX</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border Metrics Evaluator</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Jurisdiction A (Base Country)</label>
+                        <select 
+                          value={compareCountryA}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setCompareCountryA(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`compare-a-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Jurisdiction B (Target Country)</label>
+                        <select 
+                          value={compareCountryB}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setCompareCountryB(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`compare-b-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={compareJurisdictions}
+                      disabled={isComparing}
+                      className="w-full h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    >
+                      {isComparing ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Processing...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Scale className="w-5 h-5" />
+                          <span>Compare Jurisdictions</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!compareResult && !isComparing ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <Scale className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select jurisdictions to synthesize matrix data</p>
+                        </div>
+                      ) : isComparing ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Comparative Algorithms...</p>
+                        </div>
+                      ) : (
+                        compareResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2 text-center md:text-left">Strategic Comparison Matrix</span>
+                            
+                            <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center border-b border-white/10 pb-4">
+                              <div className="text-transparent">Metric</div>
+                              <div className="text-center">
+                                <h4 className="text-white font-bold text-lg md:text-xl truncate">{compareResult.countryA.name}</h4>
+                                <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mt-1">Jurisdiction A</span>
+                              </div>
+                              <div className="text-center">
+                                <h4 className="text-white font-bold text-lg md:text-xl truncate">{compareResult.countryB.name}</h4>
+                                <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mt-1">Jurisdiction B</span>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col gap-3">
+                              {/* Row 1: Cost of Living */}
+                              <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <div className="text-xs md:text-sm font-bold text-zinc-400 uppercase tracking-wider">Est. Cost of Living</div>
+                                <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryA.costIndex < compareResult.countryB.costIndex ? 'text-brand-gold' : 'text-white'}`}>
+                                  {compareResult.countryA.costIndex}
+                                </div>
+                                <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryB.costIndex < compareResult.countryA.costIndex ? 'text-brand-gold' : 'text-white'}`}>
+                                  {compareResult.countryB.costIndex}
+                                </div>
+                              </div>
+
+                              {/* Row 2: Standard Tax Rate */}
+                              <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <div className="text-xs md:text-sm font-bold text-zinc-400 uppercase tracking-wider">Standard Tax Rate</div>
+                                <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryA.taxRate < compareResult.countryB.taxRate ? 'text-brand-gold' : 'text-white'}`}>
+                                  {compareResult.countryA.taxRate}%
+                                </div>
+                                <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryB.taxRate < compareResult.countryA.taxRate ? 'text-brand-gold' : 'text-white'}`}>
+                                  {compareResult.countryB.taxRate}%
+                                </div>
+                              </div>
+
+                              {/* Row 3: Digital Nomad Visa */}
+                              <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <div className="text-xs md:text-sm font-bold text-zinc-400 uppercase tracking-wider">Digital Nomad Visa</div>
+                                <div className={`text-center text-sm md:text-base font-bold ${compareResult.countryA.digitalNomad === 'Available' ? 'text-emerald-400' : 'text-zinc-500'}`}>
+                                  {compareResult.countryA.digitalNomad}
+                                </div>
+                                <div className={`text-center text-sm md:text-base font-bold ${compareResult.countryB.digitalNomad === 'Available' ? 'text-emerald-400' : 'text-zinc-500'}`}>
+                                  {compareResult.countryB.digitalNomad}
+                                </div>
+                              </div>
+
+                              {/* Row 4: Quality of Life */}
+                              <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <div className="text-xs md:text-sm font-bold text-zinc-400 uppercase tracking-wider">Quality of Life (100)</div>
+                                <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryA.qualityScore > compareResult.countryB.qualityScore ? 'text-brand-gold' : 'text-white'}`}>
+                                  {compareResult.countryA.qualityScore}
+                                </div>
+                                <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryB.qualityScore > compareResult.countryA.qualityScore ? 'text-brand-gold' : 'text-white'}`}>
+                                  {compareResult.countryB.qualityScore}
+                                </div>
+                              </div>
+                            </div>
                           </motion.div>
                         )
                       )}
