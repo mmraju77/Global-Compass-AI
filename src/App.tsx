@@ -1024,21 +1024,23 @@ export default function App() {
       const a = countries.find(c => c.country_name === compareCountryA);
       const b = countries.find(c => c.country_name === compareCountryB);
       
+      const hasNomad = (name: string) => ["Portugal", "Spain", "United Arab Emirates", "Croatia", "Greece", "Estonia", "Mexico"].includes(name) ? "Available" : "Not Available";
+
       if (a && b) {
         setCompareResult({
           countryA: {
             name: a.country_name,
-            costIndex: a.cost_of_living_index,
-            taxRate: a.standard_tax_rate,
-            digitalNomad: a.digital_nomad_visa === "Yes" ? "Available" : "Not Available",
-            qualityScore: a.quality_of_life_score
+            costIndex: a.cost_of_living_score || 0,
+            taxRate: a.tax_rate_percent || 0,
+            digitalNomad: hasNomad(a.country_name),
+            qualityScore: a.compass_index || 0
           },
           countryB: {
             name: b.country_name,
-            costIndex: b.cost_of_living_index,
-            taxRate: b.standard_tax_rate,
-            digitalNomad: b.digital_nomad_visa === "Yes" ? "Available" : "Not Available",
-            qualityScore: b.quality_of_life_score
+            costIndex: b.cost_of_living_score || 0,
+            taxRate: b.tax_rate_percent || 0,
+            digitalNomad: hasNomad(b.country_name),
+            qualityScore: b.compass_index || 0
           }
         });
       }
@@ -1097,8 +1099,8 @@ export default function App() {
       
       // Look up country base rate for simplicity
       const countryData = countries.find(c => c.country_name === offerCountry);
-      if (countryData) {
-        baseRate = countryData.standard_tax_rate;
+      if (countryData && countryData.tax_rate_percent !== undefined) {
+        baseRate = countryData.tax_rate_percent;
       } else {
         baseRate = 25; // fallback
       }
