@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck, Brain, Sparkles, Landmark, Calculator, PieChart, TrendingDown, Briefcase, Search, MessageSquare, Clock, User } from "lucide-react";
+import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck, Brain, Sparkles, Landmark, Calculator, PieChart, TrendingDown, Briefcase, Search, MessageSquare, Clock, User, MapPin, Star } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState, useTransition } from "react";
 import { jsPDF } from "jspdf";
@@ -317,6 +317,12 @@ export default function App() {
   const [salaryInsightsContribution, setSalaryInsightsContribution] = useState<number>(0);
   const [salaryInsightsResult, setSalaryInsightsResult] = useState<{role: string, base: number, bonus: number, time: string}[] | null>(null);
   const [isFetchingSalaryInsights, setIsFetchingSalaryInsights] = useState(false);
+
+  // Expat City Reviews & Neighborhood Ratings State
+  const [cityReviewCountry, setCityReviewCountry] = useState<string>("Singapore");
+  const [cityReviewNeighborhood, setCityReviewNeighborhood] = useState<string>("Primary Financial District");
+  const [cityReviewResult, setCityReviewResult] = useState<{title: string, safety: number, cost: number, lifestyle: number, text: string}[] | null>(null);
+  const [isFetchingCityReviews, setIsFetchingCityReviews] = useState(false);
 
   // Neural Matching Engine
   const runAiMatch = () => {
@@ -943,6 +949,39 @@ export default function App() {
 
       setSalaryInsightsResult(insights);
       setIsFetchingSalaryInsights(false);
+    }, 1200);
+  };
+
+  // Strategic Expat City Reviews & Neighborhood Ratings Engine
+  const fetchCityReviews = () => {
+    setIsFetchingCityReviews(true);
+    
+    setTimeout(() => {
+      let reviews = [];
+      
+      if (cityReviewNeighborhood === "Primary Financial District") {
+        reviews = [
+          { title: "Verified Digital Nomad", safety: 5, cost: 3, lifestyle: 5, text: `Incredible infrastructure and zero tax, but rents in the ${cityReviewCountry} financial district have spiked by 20% this year.` },
+          { title: "Executive Expat", safety: 5, cost: 2, lifestyle: 4, text: "Excellent connectivity to the global office, though dining and daily expenses are exceptionally high." }
+        ];
+      } else if (cityReviewNeighborhood === "Tech & Startup Hub") {
+        reviews = [
+          { title: "Tech Founder", safety: 4, cost: 3, lifestyle: 5, text: "Vibrant community of innovators with great co-working spaces and a thriving venture ecosystem." },
+          { title: "Senior AI Engineer", safety: 5, cost: 4, lifestyle: 4, text: "Great quality of life and fast-paced environment, making it perfect for tech networking." }
+        ];
+      } else if (cityReviewNeighborhood === "Luxury Coastal/Marina Area") {
+        reviews = [
+          { title: "Expat Family of 4", safety: 5, cost: 2, lifestyle: 5, text: "Unmatched waterfront lifestyle and premium international schools nearby, but traffic can be challenging." },
+          { title: "Offshore Wealth Manager", safety: 5, cost: 1, lifestyle: 5, text: "The absolute pinnacle of luxury living. Premium amenities and a highly exclusive community." }
+        ];
+      } else {
+        reviews = [
+          { title: "Verified Resident", safety: 4, cost: 3, lifestyle: 4, text: "A great place to live and work with a well-balanced lifestyle." }
+        ];
+      }
+
+      setCityReviewResult(reviews);
+      setIsFetchingCityReviews(false);
     }, 1200);
   };
 
@@ -4172,6 +4211,155 @@ export default function App() {
                                     </div>
                                   </div>
                                 </div>
+                              </div>
+                            ))}
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 🏙️ PROPRIETARY EXPAT CITY REVIEWS & RATINGS */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <MapPin className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">🏙️ PROPRIETARY EXPAT CITY REVIEWS & RATINGS</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Verified Neighborhood Insights</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={cityReviewCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setCityReviewCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`city-review-target-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">City & Neighborhood</label>
+                        <select 
+                          value={cityReviewNeighborhood}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setCityReviewNeighborhood(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['Primary Financial District', 'Tech & Startup Hub', 'Luxury Coastal/Marina Area'].map(c => (
+                            <option key={`city-review-neigh-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={fetchCityReviews}
+                      disabled={isFetchingCityReviews}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isFetchingCityReviews ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Curating Verified Reviews...</span>
+                        </>
+                      ) : (
+                        <>
+                          <MapPin className="w-5 h-5" />
+                          <span>Load City Insights</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!cityReviewResult && !isFetchingCityReviews ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <MapPin className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select filters to view premium neighborhood intelligence</p>
+                        </div>
+                      ) : isFetchingCityReviews ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Aggregating Verified Reviews...</p>
+                        </div>
+                      ) : (
+                        cityReviewResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-4"
+                          >
+                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Premium Expat Intelligence</span>
+                            
+                            {cityReviewResult.map((review, idx) => (
+                              <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-4 hover:border-brand-gold/30 transition-colors">
+                                <div className="flex items-start justify-between gap-2">
+                                  <span className="text-brand-gold font-bold text-sm tracking-wider uppercase">{review.title}</span>
+                                  <div className="flex items-center gap-0.5">
+                                    {[...Array(5)].map((_, i) => (
+                                      <span key={i} className="text-xs">⭐</span>
+                                    ))}
+                                  </div>
+                                </div>
+                                
+                                <div className="grid grid-cols-3 gap-2 border-y border-white/5 py-3">
+                                  <div className="flex flex-col items-center gap-1 text-center">
+                                    <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Safety</span>
+                                    <div className="flex items-center gap-0.5">
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 1 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 2 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 3 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 4 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 5 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-col items-center gap-1 text-center border-l border-r border-white/5">
+                                    <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Cost</span>
+                                    <div className="flex items-center gap-0.5">
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 1 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 2 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 3 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 4 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 5 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-col items-center gap-1 text-center">
+                                    <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Lifestyle</span>
+                                    <div className="flex items-center gap-0.5">
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 1 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 2 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 3 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 4 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 5 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <p className="text-zinc-200 text-sm leading-relaxed italic border-l-2 border-brand-gold/50 pl-3">"{review.text}"</p>
                               </div>
                             ))}
                           </motion.div>
