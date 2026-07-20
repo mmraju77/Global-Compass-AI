@@ -281,6 +281,12 @@ export default function App() {
   } | null>(null);
   const [isAssessingImmi, setIsAssessingImmi] = useState(false);
 
+  // Global Insurance Partners State
+  const [insTargetCountry, setInsTargetCountry] = useState<string>("Singapore");
+  const [insCategory, setInsCategory] = useState<string>("Premium Global Health & Medical");
+  const [insResult, setInsResult] = useState<{name: string, description: string}[] | null>(null);
+  const [isAssessingIns, setIsAssessingIns] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -681,6 +687,40 @@ export default function App() {
         deliverables
       });
       setIsAssessingImmi(false);
+    }, 1200);
+  };
+
+  // Strategic Global Insurance Partners Engine
+  const matchInsuranceProviders = () => {
+    setIsAssessingIns(true);
+    
+    setTimeout(() => {
+      let partners = [];
+
+      if (insCategory === "Premium Global Health & Medical") {
+        partners = [
+          { name: "Cigna Sovereign Health", description: "Comprehensive global medical coverage with zero-deductible premium plans." },
+          { name: "Bupa Elite Expat", description: "Priority access to private hospitals worldwide with dedicated health concierges." }
+        ];
+      } else if (insCategory === "International Life & Wealth Protection") {
+        partners = [
+          { name: "Allianz Global Wealth", description: "High-net-worth life insurance designed for cross-border legacy planning." },
+          { name: "Swiss Re Private Client", description: "Bespoke risk management and wealth preservation structures." },
+          { name: "AIA Executive Series", description: "Premium term and whole life solutions for global executives." }
+        ];
+      } else if (insCategory === "Expat Asset & Real Estate Cover") {
+        partners = [
+          { name: "Chubb Prestige Home", description: "Comprehensive coverage for high-value overseas properties and collections." },
+          { name: "AXA Global Asset Guard", description: "Specialized protection for international real estate portfolios." }
+        ];
+      } else {
+        partners = [
+          { name: "Global Premier Partners", description: "Bespoke international coverage." }
+        ];
+      }
+
+      setInsResult(partners);
+      setIsAssessingIns(false);
     }, 1200);
   };
 
@@ -3147,6 +3187,120 @@ export default function App() {
                                   Schedule Initial Consultation
                                 </button>
                             </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 🛡️ PROPRIETARY GLOBAL INSURANCE PARTNERS */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Shield className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">🛡️ PROPRIETARY GLOBAL INSURANCE PARTNERS</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Coverage & Wealth Protection</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={insTargetCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setInsTargetCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`ins-target-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Coverage Category</label>
+                        <select 
+                          value={insCategory}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setInsCategory(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['Premium Global Health & Medical', 'International Life & Wealth Protection', 'Expat Asset & Real Estate Cover'].map(c => (
+                            <option key={`ins-cat-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={matchInsuranceProviders}
+                      disabled={isAssessingIns}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isAssessingIns ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Curating Elite Partners...</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShieldCheck className="w-5 h-5" />
+                          <span>Match Premium Providers</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!insResult && !isAssessingIns ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <Shield className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select coverage requirements</p>
+                        </div>
+                      ) : isAssessingIns ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Sourcing Global Underwriters...</p>
+                        </div>
+                      ) : (
+                        insResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-4"
+                          >
+                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Verified Tier-1 Partners</span>
+                            
+                            {insResult.map((partner, idx) => (
+                              <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-3 hover:border-brand-gold/30 transition-colors">
+                                <div className="flex items-center gap-2">
+                                  <ShieldCheck className="w-5 h-5 text-brand-gold shrink-0" />
+                                  <span className="text-white font-bold text-lg">{partner.name}</span>
+                                </div>
+                                <p className="text-zinc-300 text-sm">{partner.description}</p>
+                                <button className="w-full mt-2 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
+                                  Request Custom Quote
+                                </button>
+                              </div>
+                            ))}
                           </motion.div>
                         )
                       )}
