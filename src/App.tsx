@@ -339,6 +339,14 @@ export default function App() {
   const [trendResult, setTrendResult] = useState<{ role: string, country: string, year1: number, year3: number, year5: number } | null>(null);
   const [isTrackingTrend, setIsTrackingTrend] = useState(false);
 
+  // Relocation Portfolio & Saved Plans State
+  const [isSavingPlan, setIsSavingPlan] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [savedPlans, setSavedPlans] = useState([
+    { id: 1, name: "Project Alpha: Dubai Zero-Tax Move", target: "United Arab Emirates", budget: 45000, visa: "Golden Visa" },
+    { id: 2, name: "Project Beta: Singapore Tech Executive", target: "Singapore", budget: 85000, visa: "Tech.Pass / EP" }
+  ]);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -1059,6 +1067,19 @@ export default function App() {
       
       setIsTrackingTrend(false);
     }, 1200);
+  };
+
+  // Relocation Portfolio & Saved Plans Engine
+  const handleSavePlan = () => {
+    setIsSavingPlan(true);
+    setTimeout(() => {
+      setIsSavingPlan(false);
+      setSaveSuccess(true);
+      
+      setTimeout(() => {
+        setSaveSuccess(false);
+      }, 3000);
+    }, 1500);
   };
 
   // Auth Form State
@@ -4744,6 +4765,86 @@ export default function App() {
                       )}
                     </AnimatePresence>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 📁 PROPRIETARY RELOCATION PORTFOLIO & SAVED PLANS */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Bookmark className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">📁 PROPRIETARY RELOCATION PORTFOLIO & SAVED PLANS</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Saved Blueprints & Export Options</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleSavePlan}
+                    disabled={isSavingPlan || saveSuccess}
+                    className={`px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs flex items-center gap-2 transition-all ${
+                      saveSuccess 
+                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        : 'bg-gradient-to-r from-amber-600 to-brand-gold text-black shadow-xl shadow-amber-600/10 hover:scale-[1.02] active:scale-[0.98]'
+                    }`}
+                  >
+                    {isSavingPlan ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> Saving Blueprint...</>
+                    ) : saveSuccess ? (
+                      <><CheckCircle2 className="w-4 h-4" /> Blueprint Saved Successfully!</>
+                    ) : (
+                      <><Download className="w-4 h-4" /> Save Current Relocation Blueprint</>
+                    )}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {savedPlans.map(plan => (
+                    <div key={plan.id} className="bg-white/5 border border-white/10 hover:border-brand-gold/30 rounded-2xl p-6 flex flex-col justify-between transition-colors h-full group relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <Globe className="w-16 h-16 text-brand-gold" />
+                      </div>
+                      <div className="flex flex-col gap-4 relative z-10">
+                        <div>
+                          <span className="text-brand-gold text-[10px] font-bold uppercase tracking-widest block mb-1">{plan.target}</span>
+                          <h4 className="text-white font-bold text-lg leading-tight">{plan.name}</h4>
+                        </div>
+                        
+                        <div className="bg-black/40 rounded-lg p-3 border border-white/5 flex flex-col gap-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Est. Budget</span>
+                            <span className="text-white text-xs font-bold">
+                              {(() => {
+                                const conv = CONVERSION_RATES[selectedCurrency];
+                                return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(plan.budget * conv.rate);
+                              })()}
+                            </span>
+                          </div>
+                          <div className="w-full h-px bg-white/5 my-1" />
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Target Visa</span>
+                            <span className="text-amber-600 text-xs font-bold uppercase tracking-wider">{plan.visa}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-3 mt-6 relative z-10">
+                        <button className="py-2.5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
+                          <History className="w-3.5 h-3.5" />
+                          Load
+                        </button>
+                        <button className="py-2.5 rounded-lg border border-brand-gold/30 hover:bg-brand-gold/10 transition-colors text-brand-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
+                          <Download className="w-3.5 h-3.5" />
+                          PDF
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
