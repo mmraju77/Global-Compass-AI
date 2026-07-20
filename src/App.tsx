@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck, Brain, Sparkles, Landmark, Calculator, PieChart, TrendingDown } from "lucide-react";
+import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck, Brain, Sparkles, Landmark, Calculator, PieChart, TrendingDown, Briefcase, Search } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState, useTransition } from "react";
 import { jsPDF } from "jspdf";
@@ -286,6 +286,12 @@ export default function App() {
   const [insCategory, setInsCategory] = useState<string>("Premium Global Health & Medical");
   const [insResult, setInsResult] = useState<{name: string, description: string}[] | null>(null);
   const [isAssessingIns, setIsAssessingIns] = useState(false);
+
+  // Global Remote Job Board State
+  const [jobIndustry, setJobIndustry] = useState<string>("Technology & AI Engineering");
+  const [jobSalary, setJobSalary] = useState<string>("$150k - $250k");
+  const [jobResult, setJobResult] = useState<{title: string, company: string, salary: number}[] | null>(null);
+  const [isFetchingJobs, setIsFetchingJobs] = useState(false);
 
   // Neural Matching Engine
   const runAiMatch = () => {
@@ -721,6 +727,49 @@ export default function App() {
 
       setInsResult(partners);
       setIsAssessingIns(false);
+    }, 1200);
+  };
+
+  // Strategic Global Remote Job Board Engine
+  const fetchRemoteJobs = () => {
+    setIsFetchingJobs(true);
+    
+    setTimeout(() => {
+      let jobs = [];
+
+      let baseSalary = 150000;
+      if (jobSalary === "$100k - $150k") {
+        baseSalary = 125000;
+      } else if (jobSalary === "$150k - $250k") {
+        baseSalary = 180000;
+      } else if (jobSalary === "$250k+ (Equity Included)") {
+        baseSalary = 320000;
+      }
+
+      if (jobIndustry === "Technology & AI Engineering") {
+        jobs = [
+          { title: "Senior VP of Engineering - Fully Remote", company: "NextGen Fintech Global", salary: baseSalary },
+          { title: "Lead AI Systems Architect", company: "Quantum Neural Labs", salary: baseSalary * 1.1 }
+        ];
+      } else if (jobIndustry === "Executive Management (C-Suite)") {
+        jobs = [
+          { title: "Chief Operations Officer (Remote)", company: "Sovereign Wealth Partners", salary: baseSalary },
+          { title: "Global Managing Director", company: "Apex Offshore Solutions", salary: baseSalary * 1.2 }
+        ];
+      } else if (jobIndustry === "Global Finance & Wealth Advisory") {
+        jobs = [
+          { title: "Offshore Wealth Manager - Global", company: "Swiss Alliance Capital", salary: baseSalary },
+          { title: "Senior Quantitative Analyst", company: "Prime Global Hedge", salary: baseSalary * 1.15 }
+        ];
+      } else {
+        jobs = [
+          { title: "Head of Global Marketing Strategy", company: "Vanguard Media Group", salary: baseSalary },
+          { title: "Growth Marketing Director", company: "Elevate Global Brands", salary: baseSalary * 0.9 }
+        ];
+      }
+
+      setJobResult(jobs);
+      setIsFetchingJobs(false);
     }, 1200);
   };
 
@@ -3298,6 +3347,134 @@ export default function App() {
                                 <p className="text-zinc-300 text-sm">{partner.description}</p>
                                 <button className="w-full mt-2 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
                                   Request Custom Quote
+                                </button>
+                              </div>
+                            ))}
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 💼 PROPRIETARY GLOBAL REMOTE JOB BOARD */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Briefcase className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">💼 PROPRIETARY GLOBAL REMOTE JOB BOARD</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Offshore & Tech Placements</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Industry / Profession</label>
+                        <select 
+                          value={jobIndustry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setJobIndustry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['Technology & AI Engineering', 'Executive Management (C-Suite)', 'Global Finance & Wealth Advisory', 'Marketing & Strategy'].map(c => (
+                            <option key={`job-ind-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Desired Annual Salary Bracket</label>
+                        <select 
+                          value={jobSalary}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setJobSalary(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['$100k - $150k', '$150k - $250k', '$250k+ (Equity Included)'].map(c => (
+                            <option key={`job-sal-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={fetchRemoteJobs}
+                      disabled={isFetchingJobs}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isFetchingJobs ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Matching Candidate Profile...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Search className="w-5 h-5" />
+                          <span>Fetch Premium Remote Roles</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!jobResult && !isFetchingJobs ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <Briefcase className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select filters to query headhunter network</p>
+                        </div>
+                      ) : isFetchingJobs ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Scanning Global Opportunities...</p>
+                        </div>
+                      ) : (
+                        jobResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-4"
+                          >
+                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Exclusive Matched Roles</span>
+                            
+                            {jobResult.map((job, idx) => (
+                              <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-3 hover:border-brand-gold/30 transition-colors">
+                                <div className="flex flex-col gap-1">
+                                  <div className="flex items-start justify-between gap-2">
+                                    <span className="text-white font-bold text-lg leading-tight">{job.title}</span>
+                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-[9px] font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
+                                      <CheckCircle2 className="w-3 h-3" />
+                                      Verified Remote
+                                    </div>
+                                  </div>
+                                  <span className="text-amber-600 text-sm font-medium">{job.company}</span>
+                                </div>
+                                
+                                <div className="text-zinc-200 text-base font-bold bg-black/40 px-3 py-2 rounded-lg inline-block w-fit mt-1">
+                                  {(() => {
+                                    const conv = CONVERSION_RATES[selectedCurrency];
+                                    return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(job.salary * conv.rate);
+                                  })()}
+                                  <span className="text-zinc-500 text-xs font-normal ml-1">/yr</span>
+                                </div>
+
+                                <button className="w-full mt-3 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
+                                  Apply via Headhunter
                                 </button>
                               </div>
                             ))}
