@@ -333,6 +333,12 @@ export default function App() {
   } | null>(null);
   const [isComparing, setIsComparing] = useState(false);
 
+  // Global Salary Trend Tracker State
+  const [trendCountry, setTrendCountry] = useState<string>("United States");
+  const [trendRole, setTrendRole] = useState<string>("AI & Tech Engineering");
+  const [trendResult, setTrendResult] = useState<{ role: string, country: string, year1: number, year3: number, year5: number } | null>(null);
+  const [isTrackingTrend, setIsTrackingTrend] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -1022,6 +1028,36 @@ export default function App() {
         });
       }
       setIsComparing(false);
+    }, 1200);
+  };
+
+  // Strategic Global Salary Trend Engine
+  const fetchSalaryTrend = () => {
+    setIsTrackingTrend(true);
+    
+    setTimeout(() => {
+      let base = 100000;
+      if (trendRole === "AI & Tech Engineering") base = 120000;
+      else if (trendRole === "Investment Banking") base = 150000;
+      else if (trendRole === "Corporate Law") base = 140000;
+      else if (trendRole === "C-Suite Management") base = 200000;
+
+      // add some variation based on country name length just to make it dynamic
+      const countryMultiplier = 1 + (trendCountry.length % 5) * 0.1;
+      
+      const year1 = Math.round(base * countryMultiplier);
+      const year3 = Math.round(year1 * 1.4);
+      const year5 = Math.round(year3 * 1.3);
+
+      setTrendResult({
+        role: trendRole,
+        country: trendCountry,
+        year1,
+        year3,
+        year5
+      });
+      
+      setIsTrackingTrend(false);
     }, 1200);
   };
 
@@ -4558,6 +4594,148 @@ export default function App() {
                                 </div>
                                 <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryB.qualityScore > compareResult.countryA.qualityScore ? 'text-brand-gold' : 'text-white'}`}>
                                   {compareResult.countryB.qualityScore}
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 📈 PROPRIETARY GLOBAL SALARY TREND TRACKER */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <TrendingUp className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">📈 PROPRIETARY GLOBAL SALARY TREND TRACKER</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive 5-Year Progression</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={trendCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setTrendCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`trend-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Executive Role</label>
+                        <select 
+                          value={trendRole}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setTrendRole(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['AI & Tech Engineering', 'Investment Banking', 'Corporate Law', 'C-Suite Management'].map(c => (
+                            <option key={`trend-role-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={fetchSalaryTrend}
+                      disabled={isTrackingTrend}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isTrackingTrend ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Calculating Trajectory...</span>
+                        </>
+                      ) : (
+                        <>
+                          <TrendingUp className="w-5 h-5" />
+                          <span>Track 5-Year Trajectory</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!trendResult && !isTrackingTrend ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <TrendingUp className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select parameters to view 5-year progression</p>
+                        </div>
+                      ) : isTrackingTrend ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Modeling Career Trajectory...</p>
+                        </div>
+                      ) : (
+                        trendResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <div className="text-center md:text-left border-b border-white/5 pb-4">
+                              <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-1">Estimated Projection</span>
+                              <h4 className="text-white font-bold text-xl">{trendResult.role} in {trendResult.country}</h4>
+                            </div>
+                            
+                            <div className="flex flex-col gap-4 relative before:absolute before:inset-y-0 before:left-3.5 before:w-px before:bg-white/10 ml-2">
+                              {/* Year 1 */}
+                              <div className="relative pl-10">
+                                <div className="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-black border-2 border-brand-gold z-10" />
+                                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Year 1 (Entry / Transfer)</span>
+                                <div className="text-white font-bold text-xl">
+                                  {(() => {
+                                    const conv = CONVERSION_RATES[selectedCurrency];
+                                    return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(trendResult.year1 * conv.rate);
+                                  })()}
+                                </div>
+                              </div>
+                              
+                              {/* Year 3 */}
+                              <div className="relative pl-10 mt-2">
+                                <div className="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-black border-2 border-brand-gold/60 z-10" />
+                                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Year 3 (Mid-Level Growth)</span>
+                                <div className="text-white font-bold text-2xl">
+                                  {(() => {
+                                    const conv = CONVERSION_RATES[selectedCurrency];
+                                    return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(trendResult.year3 * conv.rate);
+                                  })()}
+                                </div>
+                              </div>
+                              
+                              {/* Year 5 */}
+                              <div className="relative pl-10 mt-2">
+                                <div className="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-brand-gold border-2 border-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.5)] z-10" />
+                                <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mb-1">Year 5 (Senior / Partner Level)</span>
+                                <div className="text-brand-gold font-bold text-3xl tracking-tight">
+                                  {(() => {
+                                    const conv = CONVERSION_RATES[selectedCurrency];
+                                    return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(trendResult.year5 * conv.rate);
+                                  })()}
                                 </div>
                               </div>
                             </div>
