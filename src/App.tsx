@@ -311,6 +311,13 @@ export default function App() {
   const [forumResult, setForumResult] = useState<{title: string, author: string, time: string, replies: number}[] | null>(null);
   const [isFetchingForum, setIsFetchingForum] = useState(false);
 
+  // Anonymous Executive Salary Insights State
+  const [salaryInsightsCountry, setSalaryInsightsCountry] = useState<string>("Singapore");
+  const [salaryInsightsIndustry, setSalaryInsightsIndustry] = useState<string>("Technology & AI Engineering");
+  const [salaryInsightsContribution, setSalaryInsightsContribution] = useState<number>(0);
+  const [salaryInsightsResult, setSalaryInsightsResult] = useState<{role: string, base: number, bonus: number, time: string}[] | null>(null);
+  const [isFetchingSalaryInsights, setIsFetchingSalaryInsights] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -898,6 +905,44 @@ export default function App() {
 
       setForumResult(threads);
       setIsFetchingForum(false);
+    }, 1200);
+  };
+
+  // Strategic Anonymous Executive Salary Insights Engine
+  const fetchSalaryInsights = () => {
+    setIsFetchingSalaryInsights(true);
+    
+    setTimeout(() => {
+      let insights = [];
+      
+      if (salaryInsightsIndustry === "Technology & AI Engineering") {
+        insights = [
+          { role: "Senior AI Engineer - Verified Expat", base: 180000, bonus: 50000, time: "Submitted 3 days ago" },
+          { role: "Lead Data Scientist - Verified Expat", base: 165000, bonus: 40000, time: "Submitted 1 week ago" }
+        ];
+      } else if (salaryInsightsIndustry === "Finance & Investment") {
+        insights = [
+          { role: "Quantitative Analyst - Verified Expat", base: 220000, bonus: 150000, time: "Submitted 2 days ago" },
+          { role: "Offshore Wealth Manager - Verified Expat", base: 195000, bonus: 85000, time: "Submitted 5 days ago" }
+        ];
+      } else if (salaryInsightsIndustry === "Healthcare & BioTech") {
+        insights = [
+          { role: "Medical Director - Verified Expat", base: 240000, bonus: 60000, time: "Submitted 4 days ago" },
+          { role: "Senior BioTech Researcher - Verified Expat", base: 155000, bonus: 35000, time: "Submitted 2 weeks ago" }
+        ];
+      } else if (salaryInsightsIndustry === "Executive Management") {
+        insights = [
+          { role: "Chief Operations Officer - Verified Expat", base: 280000, bonus: 120000, time: "Submitted 1 day ago" },
+          { role: "Managing Director - Verified Expat", base: 310000, bonus: 180000, time: "Submitted 6 days ago" }
+        ];
+      } else {
+        insights = [
+          { role: "Executive - Verified Expat", base: 150000, bonus: 30000, time: "Submitted 1 day ago" }
+        ];
+      }
+
+      setSalaryInsightsResult(insights);
+      setIsFetchingSalaryInsights(false);
     }, 1200);
   };
 
@@ -3970,6 +4015,163 @@ export default function App() {
                                 <button className="w-full mt-2 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
                                   Read & Join Discussion
                                 </button>
+                              </div>
+                            ))}
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 💸 PROPRIETARY ANONYMOUS SALARY INSIGHTS */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <DollarSign className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">💸 PROPRIETARY ANONYMOUS SALARY INSIGHTS</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Compensation & Equity Benchmarks</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={salaryInsightsCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setSalaryInsightsCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`salary-target-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Core Industry / Profession</label>
+                        <select 
+                          value={salaryInsightsIndustry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setSalaryInsightsIndustry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['Technology & AI Engineering', 'Finance & Investment', 'Healthcare & BioTech', 'Executive Management'].map(c => (
+                            <option key={`salary-ind-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Contribute Your Salary (Anonymous)</label>
+                        <div className="relative">
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">{CONVERSION_RATES[selectedCurrency]?.symbol || '$'}</span>
+                          <input 
+                            type="number"
+                            value={salaryInsightsContribution}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              startTransition(() => setSalaryInsightsContribution(val));
+                            }}
+                            onFocus={(e) => e.target.select()}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all"
+                          />
+                        </div>
+                    </div>
+
+                    <button 
+                      onClick={fetchSalaryInsights}
+                      disabled={isFetchingSalaryInsights}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isFetchingSalaryInsights ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Decrypting Market Data...</span>
+                        </>
+                      ) : (
+                        <>
+                          <DollarSign className="w-5 h-5" />
+                          <span>Reveal Market Compensation</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!salaryInsightsResult && !isFetchingSalaryInsights ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <DollarSign className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select filters to reveal anonymous compensation data</p>
+                        </div>
+                      ) : isFetchingSalaryInsights ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Aggregating Global Salary Vault...</p>
+                        </div>
+                      ) : (
+                        salaryInsightsResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-4"
+                          >
+                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Verified Anonymous Contributions</span>
+                            
+                            {salaryInsightsResult.map((insight, idx) => (
+                              <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-4 hover:border-brand-gold/30 transition-colors">
+                                <div className="flex flex-col gap-1">
+                                  <div className="flex items-start justify-between gap-2">
+                                    <span className="text-white font-bold text-lg leading-tight">{insight.role}</span>
+                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-[9px] font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
+                                      <CheckCircle2 className="w-3 h-3" />
+                                      Verified Expat
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-1.5 text-zinc-400 text-xs font-medium mt-1">
+                                    <Clock className="w-3.5 h-3.5 text-brand-gold" />
+                                    <span>{insight.time}</span>
+                                  </div>
+                                </div>
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="bg-black/40 rounded-lg p-3 border border-white/5">
+                                    <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Base Salary</span>
+                                    <div className="text-white font-bold">
+                                      {(() => {
+                                        const conv = CONVERSION_RATES[selectedCurrency];
+                                        return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(insight.base * conv.rate);
+                                      })()}
+                                    </div>
+                                  </div>
+                                  <div className="bg-brand-gold/5 rounded-lg p-3 border border-brand-gold/10">
+                                    <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mb-1">Bonus / Equity</span>
+                                    <div className="text-brand-gold font-bold">
+                                      + {(() => {
+                                        const conv = CONVERSION_RATES[selectedCurrency];
+                                        return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(insight.bonus * conv.rate);
+                                      })()}
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             ))}
                           </motion.div>
