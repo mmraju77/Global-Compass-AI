@@ -205,6 +205,27 @@ export default function App() {
   const [isPredicting, setIsPredicting] = useState(false);
   const [isPending, startTransition] = useTransition();
 
+  // AI Visa Roadmap State
+  const [visaCountry, setVisaCountry] = useState<string>("Singapore");
+  const [visaPathway, setVisaPathway] = useState<string>("Golden Visa / Residency by Investment");
+  const [visaRoadmap, setVisaRoadmap] = useState<{
+    timeline: { step: string; detail: string }[];
+    totalTime: string;
+    documents: string[];
+  } | null>(null);
+  const [isGeneratingRoadmap, setIsGeneratingRoadmap] = useState(false);
+
+  // AI Savings Planner State
+  const [savingsStrategy, setSavingsStrategy] = useState<string>("Capital Preservation (Low Risk)");
+  const [savingsMonthly, setSavingsMonthly] = useState<number | string>(1000);
+  const [savingsAllocation, setSavingsAllocation] = useState<{
+    safe: number;
+    cash: number;
+    growth: number;
+    timeline: string;
+  } | null>(null);
+  const [isOptimizingSavings, setIsOptimizingSavings] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -292,6 +313,92 @@ export default function App() {
       
       setPredictedSalaryResult({ low: lowBracket, high: highBracket, demand });
       setIsPredicting(false);
+    }, 1200);
+  };
+
+  // Strategic AI Visa Roadmap Engine
+  const generateVisaRoadmap = () => {
+    if (!countries || countries.length === 0) return;
+    setIsGeneratingRoadmap(true);
+    
+    setTimeout(() => {
+      const countryData = countries.find(c => c.country_name === visaCountry) || countries[0];
+      
+      const roadmaps: Record<string, any> = {
+        "Golden Visa / Residency by Investment": {
+          timeline: [
+            { step: "Initial Vetting", detail: "KYC and Source of Funds verification." },
+            { step: "Capital Escrow", detail: "Transfer of investment funds to secure escrow." },
+            { step: "Residency Approval", detail: "Formal government issuance of residency certificate." },
+            { step: "Passport Stamping", detail: "Final biometrics and visa validity endorsement." }
+          ],
+          totalTime: countryData.tax_rate_percent < 5 ? "3-6 Months" : "6-12 Months",
+          documents: ["Proof of Net Worth", "Clean Criminal Record", "Bank References", "Health Insurance"]
+        },
+        "Digital Nomad & Remote Work Permit": {
+          timeline: [
+            { step: "Online Submission", detail: "Portal registration and document upload." },
+            { step: "Remote Income Audit", detail: "Verification of external contract and revenue." },
+            { step: "Permit Clearance", detail: "Approval of 1-2 year stay permit." },
+            { step: "Local Registration", detail: "Address registration and ID collection." }
+          ],
+          totalTime: "1-3 Months",
+          documents: ["Remote Work Contract", "Bank Statements (12 months)", "Valid Passport", "Proof of Accommodation"]
+        },
+        "Skilled Tech & Executive Professional Visa": {
+          timeline: [
+            { step: "Employer Sponsoring", detail: "Formal job offer and sponsorship licensing." },
+            { step: "Skills Assessment", detail: "Degree verification and technical vettings." },
+            { step: "Priority Processing", detail: "Fast-track executive visa adjudication." },
+            { step: "Entry Clearance", detail: "On-arrival orientation and labor registration." }
+          ],
+          totalTime: "2-5 Months",
+          documents: ["Employment Contract", "Academic Certificates", "Tax Returns", "CV/Executive Profile"]
+        }
+      };
+      
+      setVisaRoadmap(roadmaps[visaPathway] || roadmaps["Golden Visa / Residency by Investment"]);
+      setIsGeneratingRoadmap(false);
+    }, 1500);
+  };
+
+  // Strategic AI Savings Planner Engine
+  const optimizeSavingsDistribution = () => {
+    setIsOptimizingSavings(true);
+    
+    setTimeout(() => {
+      let result = {
+        safe: 0,
+        cash: 0,
+        growth: 0,
+        timeline: ""
+      };
+      
+      if (savingsStrategy === "Capital Preservation (Low Risk)") {
+        result = {
+          safe: 60,
+          cash: 25,
+          growth: 15,
+          timeline: "Timeline compressed by 12 Months vs Standard Savings"
+        };
+      } else if (savingsStrategy === "Balanced Wealth Accumulation") {
+        result = {
+          safe: 40,
+          cash: 15,
+          growth: 45,
+          timeline: "Timeline compressed by 3.5 Years vs Standard Savings"
+        };
+      } else {
+        result = {
+          safe: 15,
+          cash: 10,
+          growth: 75,
+          timeline: "Timeline compressed by 7+ Years vs Standard Savings"
+        };
+      }
+      
+      setSavingsAllocation(result);
+      setIsOptimizingSavings(false);
     }, 1200);
   };
 
@@ -1779,6 +1886,291 @@ export default function App() {
                               <p className="text-[10px] text-white/60 font-medium leading-relaxed italic">
                                 Prediction assumes Tier-1 corporate presence and aligns with the top 25th percentile of the local executive market in {salaryCountry}.
                               </p>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 🗺️ PROPRIETARY AI VISA ROADMAP & IMMIGRATION ENGINE */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Plane className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">🗺️ PROPRIETARY AI VISA ROADMAP & IMMIGRATION ENGINE</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Sovereign Jurisdictional Mobility Protocol</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={visaCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setVisaCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={c.country_name} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Visa Pathway Stream</label>
+                        <select 
+                          value={visaPathway}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setVisaPathway(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          <option value="Golden Visa / Residency by Investment" className="bg-[#1a1a1a]">Golden Visa / Residency by Investment</option>
+                          <option value="Digital Nomad & Remote Work Permit" className="bg-[#1a1a1a]">Digital Nomad & Remote Work Permit</option>
+                          <option value="Skilled Tech & Executive Professional Visa" className="bg-[#1a1a1a]">Skilled Tech & Executive Professional Visa</option>
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={generateVisaRoadmap}
+                      disabled={isGeneratingRoadmap}
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    >
+                      {isGeneratingRoadmap ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Adjudicating Roadmap Protocol...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-5 h-5" />
+                          <span>Generate Immigration Roadmap</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Roadmap Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[350px] relative">
+                    <AnimatePresence mode="wait">
+                      {!visaRoadmap && !isGeneratingRoadmap ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <Plane className="w-12 h-12" />
+                          <p className="text-[10px] font-bold uppercase tracking-widest">Select stream to synchronize mobility data</p>
+                        </div>
+                      ) : isGeneratingRoadmap ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Sequential Sovereignty Matches...</p>
+                        </div>
+                      ) : (
+                        visaRoadmap && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Strategic Implementation Timeline</span>
+                                <div className="text-white text-xl font-bold mt-1 uppercase tracking-tight">{visaPathway}</div>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block">Est. Duration</span>
+                                <span className="text-brand-gold font-black text-sm">{visaRoadmap.totalTime}</span>
+                              </div>
+                            </div>
+
+                            <div className="space-y-4 relative ml-4 border-l border-white/5 pl-6">
+                              {visaRoadmap.timeline.map((item, idx) => (
+                                <div key={idx} className="relative">
+                                  <div className="absolute -left-[31px] top-1.5 w-2 h-2 rounded-full bg-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.5)]" />
+                                  <div className="space-y-0.5">
+                                    <div className="text-white font-bold text-xs uppercase tracking-wider">{item.step}</div>
+                                    <p className="text-white/40 text-[10px] italic">{item.detail}</p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            <div className="h-px bg-white/5 w-full" />
+
+                            <div className="space-y-3">
+                              <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block">Executive Document Checklist</span>
+                              <div className="grid grid-cols-2 gap-2">
+                                {visaRoadmap.documents.map((doc, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg border border-white/5">
+                                    <CheckCircle2 className="w-3 h-3 text-brand-gold" />
+                                    <span className="text-white/80 text-[9px] font-medium uppercase tracking-tight">{doc}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 🤖 PROPRIETARY NEURAL AI SAVINGS PLANNER */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Cpu className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">🤖 PROPRIETARY NEURAL AI SAVINGS PLANNER</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Asset Allocation & Wealth Velocity Engine</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Optimization Strategy</label>
+                        <select 
+                          value={savingsStrategy}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setSavingsStrategy(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          <option value="Capital Preservation (Low Risk)" className="bg-[#1a1a1a]">Capital Preservation (Low Risk)</option>
+                          <option value="Balanced Wealth Accumulation" className="bg-[#1a1a1a]">Balanced Wealth Accumulation</option>
+                          <option value="Aggressive $1M Growth Velocity" className="bg-[#1a1a1a]">Aggressive $1M Growth Velocity</option>
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Additional Monthly AI Injection</label>
+                        <input 
+                          type="number"
+                          value={savingsMonthly}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setSavingsMonthly(val === "" ? "" : Number(val)));
+                          }}
+                          onFocus={(e) => e.target.select()}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all"
+                        />
+                    </div>
+
+                    <button 
+                      onClick={optimizeSavingsDistribution}
+                      disabled={isOptimizingSavings}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isOptimizingSavings ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Processing Allocation Arrays...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Zap className="w-5 h-5" />
+                          <span>Optimize Savings Distribution</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!savingsAllocation && !isOptimizingSavings ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <Cpu className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select strategy to compute asset velocity</p>
+                        </div>
+                      ) : isOptimizingSavings ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Monte Carlo Simulations...</p>
+                        </div>
+                      ) : (
+                        savingsAllocation && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <div>
+                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Dynamic Asset Allocation Breakdown</span>
+                                
+                                <div className="space-y-4 mt-6">
+                                  <div className="space-y-1">
+                                    <div className="flex justify-between text-xs font-bold text-white uppercase tracking-wider">
+                                      <span>Safe Sovereign Havens</span>
+                                      <span>{savingsAllocation.safe}%</span>
+                                    </div>
+                                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                      <div className="bg-emerald-500 h-full transition-all duration-1000" style={{ width: `${savingsAllocation.safe}%` }} />
+                                    </div>
+                                  </div>
+
+                                  <div className="space-y-1">
+                                    <div className="flex justify-between text-xs font-bold text-white uppercase tracking-wider">
+                                      <span>High-Yield Cash Deposits</span>
+                                      <span>{savingsAllocation.cash}%</span>
+                                    </div>
+                                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                      <div className="bg-blue-500 h-full transition-all duration-1000" style={{ width: `${savingsAllocation.cash}%` }} />
+                                    </div>
+                                  </div>
+
+                                  <div className="space-y-1">
+                                    <div className="flex justify-between text-xs font-bold text-white uppercase tracking-wider">
+                                      <span>Strategic Growth Assets</span>
+                                      <span>{savingsAllocation.growth}%</span>
+                                    </div>
+                                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                      <div className="bg-brand-gold h-full transition-all duration-1000" style={{ width: `${savingsAllocation.growth}%` }} />
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div className="h-px bg-white/5 w-full mt-2" />
+
+                            <div className="bg-brand-gold/10 border border-brand-gold/20 p-4 rounded-xl flex items-center gap-4">
+                              <Sparkles className="w-8 h-8 text-brand-gold shrink-0" />
+                              <div className="flex flex-col">
+                                <span className="text-brand-gold text-[9px] font-black uppercase tracking-[0.2em] mb-0.5">AI Timeline Compression Alert</span>
+                                <span className="text-white text-sm font-bold leading-snug">
+                                  {savingsAllocation.timeline} based on a monthly injection of <span className="text-brand-gold">{(() => {
+                                    const conv = CONVERSION_RATES[selectedCurrency];
+                                    const val = Number(savingsMonthly) || 0;
+                                    return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(val * conv.rate);
+                                  })()}</span>
+                                </span>
+                              </div>
                             </div>
                           </motion.div>
                         )
