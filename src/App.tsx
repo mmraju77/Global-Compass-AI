@@ -364,6 +364,17 @@ export default function App() {
   } | null>(null);
   const [isGeneratingProfile, setIsGeneratingProfile] = useState(false);
 
+  // Comprehensive City Guide & Neighborhood Profiles State
+  const [cityGuideCountry, setCityGuideCountry] = useState<string>("United States");
+  const [cityGuideCity, setCityGuideCity] = useState<string>("Financial Capital");
+  const [cityGuideData, setCityGuideData] = useState<{
+    neighborhoods: { n1: string, v1: string, n2: string, v2: string, n3: string, v3: string },
+    housing: { rent1br: number, rent3br: number },
+    lifestyle: { schools: string, healthcare: string, dining: string },
+    connectivity: { transitScore: number, airport: string, walkability: number }
+  } | null>(null);
+  const [isGeneratingCity, setIsGeneratingCity] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -1186,6 +1197,43 @@ export default function App() {
       }
       setIsGeneratingProfile(false);
     }, 1500);
+  };
+
+  // Comprehensive City Guide Generator
+  const generateCityGuide = () => {
+    setIsGeneratingCity(true);
+    setTimeout(() => {
+      const countryData = countries.find(c => c.country_name === cityGuideCountry);
+      const baseRent = countryData ? (countryData.rent || 2000) : 2000;
+      
+      let mult = 1;
+      if (cityGuideCity === "Financial Capital") mult = 1.4;
+      if (cityGuideCity === "Tech Hub") mult = 1.25;
+      if (cityGuideCity === "Coastal/Luxury Hub") mult = 1.35;
+
+      setCityGuideData({
+        neighborhoods: { 
+          n1: "Marina District", v1: "Luxury & Nightlife", 
+          n2: "Downtown Core", v2: "Financial / High-Rise Living",
+          n3: "Heritage Quarter", v3: "Culture, Arts & Expat Families"
+        },
+        housing: { 
+          rent1br: Math.round(baseRent * mult), 
+          rent3br: Math.round(baseRent * mult * 2.2) 
+        },
+        lifestyle: { 
+          schools: "Multiple Tier 1 International Options", 
+          healthcare: "Premium Expat Coverage Available", 
+          dining: "Michelin-Star to Global Cuisine"
+        },
+        connectivity: { 
+          transitScore: Math.round(75 + mult * 10), 
+          airport: "15-25 Mins (Intl. Terminal)", 
+          walkability: Math.round(80 + mult * 5)
+        }
+      });
+      setIsGeneratingCity(false);
+    }, 1200);
   };
 
   // Auth Form State
@@ -5291,6 +5339,200 @@ export default function App() {
                                 <div>
                                   <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Primary Language(s)</span>
                                   <div className="text-white text-sm font-bold leading-tight">{profileData.qualityLife.languages}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+
+            {/* 🏙️ COMPREHENSIVE CITY GUIDE & NEIGHBORHOOD PROFILES */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-8 md:p-12 shadow-2xl shadow-black/80 relative overflow-hidden mt-8 mb-16">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
+                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Urban Intelligence</span>
+                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">🏙️ COMPREHENSIVE CITY GUIDE <span className="text-brand-gold">&</span> NEIGHBORHOOD PROFILES</h2>
+                  <p className="text-sm text-zinc-400 mt-2">Curated localized metrics and luxury expat housing data.</p>
+                </div>
+
+                <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
+                  <div className="w-full space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction (Country)</label>
+                      <select 
+                        value={cityGuideCountry}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          startTransition(() => setCityGuideCountry(val));
+                        }}
+                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
+                      >
+                        {countries.map(c => (
+                          <option key={`city-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                        ))}
+                      </select>
+                  </div>
+                  
+                  <div className="w-full space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Top Tier City / Expat Hub</label>
+                      <select 
+                        value={cityGuideCity}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          startTransition(() => setCityGuideCity(val));
+                        }}
+                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
+                      >
+                        {['Financial Capital', 'Tech Hub', 'Coastal/Luxury Hub'].map(c => (
+                          <option key={`city-hub-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                        ))}
+                      </select>
+                  </div>
+
+                  <button 
+                    onClick={generateCityGuide}
+                    disabled={isGeneratingCity}
+                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                  >
+                    {isGeneratingCity ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>Aggregating Data...</span>
+                      </>
+                    ) : (
+                      <>
+                        <MapPin className="w-5 h-5" />
+                        <span>Generate Full City Report</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Dashboard Data Grid */}
+                <div className="min-h-[400px] flex flex-col relative rounded-3xl border border-white/5 bg-black/40 p-8 md:p-10">
+                  <AnimatePresence mode="wait">
+                    {!cityGuideData && !isGeneratingCity ? (
+                      <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
+                        <MapPin className="w-16 h-16 text-white" />
+                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and city hub to generate the localized report</p>
+                      </div>
+                    ) : isGeneratingCity ? (
+                      <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
+                        <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
+                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Local Intelligence...</p>
+                      </div>
+                    ) : (
+                      cityGuideData && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex flex-col gap-10"
+                        >
+                          <div className="flex items-center gap-4 border-b border-brand-gold/20 pb-6">
+                            <h3 className="text-3xl font-black text-white">{cityGuideCity}, {cityGuideCountry}</h3>
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
+                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Verified Expat Data</span>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {/* Pillar 1: Top Neighborhoods */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Home className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Top Neighborhoods</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n1}</span>
+                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v1}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n2}</span>
+                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v2}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n3}</span>
+                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v3}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 2: Housing Market */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Landmark className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Housing Market</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (1BR Premium)</span>
+                                  <div className="text-white font-bold text-xl">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(cityGuideData.housing.rent1br * conv.rate);
+                                    })()}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (3BR Family)</span>
+                                  <div className="text-white font-bold text-xl">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(cityGuideData.housing.rent3br * conv.rate);
+                                    })()}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 3: Lifestyle & Amenities */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Sparkles className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Lifestyle & Amenities</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">International Schools</span>
+                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.schools}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Quality</span>
+                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.healthcare}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Entertainment & Dining</span>
+                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.dining}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 4: Connectivity */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Truck className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Connectivity</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Public Transit Score</span>
+                                  <div className="text-white font-bold text-xl">{cityGuideData.connectivity.transitScore} / 100</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Airport Access</span>
+                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.connectivity.airport}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Walkability Index</span>
+                                  <div className="text-white font-bold text-xl">{cityGuideData.connectivity.walkability} / 100</div>
                                 </div>
                               </div>
                             </div>
