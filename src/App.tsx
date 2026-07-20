@@ -347,6 +347,13 @@ export default function App() {
     { id: 2, name: "Project Beta: Singapore Tech Executive", target: "Singapore", budget: 85000, visa: "Tech.Pass / EP" }
   ]);
 
+  // Job Offer & Tax Burden Analyzer State
+  const [offerCountry, setOfferCountry] = useState<string>("United States");
+  const [offerSalary, setOfferSalary] = useState<number>(150000);
+  const [offerType, setOfferType] = useState<string>("Full-Time Employee (PAYE/W2)");
+  const [offerResult, setOfferResult] = useState<{ effectiveTaxRate: number, taxesDeducted: number, netAnnual: number, netMonthly: number } | null>(null);
+  const [isCalculatingOffer, setIsCalculatingOffer] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -1080,6 +1087,42 @@ export default function App() {
         setSaveSuccess(false);
       }, 3000);
     }, 1500);
+  };
+
+  // Proprietary Job Offer & Tax Burden Analyzer Logic
+  const calculateJobOffer = () => {
+    setIsCalculatingOffer(true);
+    setTimeout(() => {
+      let baseRate = 0;
+      
+      // Look up country base rate for simplicity
+      const countryData = countries.find(c => c.country_name === offerCountry);
+      if (countryData) {
+        baseRate = countryData.standard_tax_rate;
+      } else {
+        baseRate = 25; // fallback
+      }
+
+      // Adjust based on employment type
+      let effectiveRate = baseRate;
+      if (offerType === "Independent Contractor / Freelance") {
+        effectiveRate = Math.max(0, baseRate - 5); // Some deductions
+      } else if (offerType === "Digital Nomad (Tax Exempt)") {
+        effectiveRate = 0; // Tax exempt
+      }
+
+      const totalTaxes = (offerSalary * effectiveRate) / 100;
+      const netAnnual = offerSalary - totalTaxes;
+      const netMonthly = netAnnual / 12;
+
+      setOfferResult({
+        effectiveTaxRate: effectiveRate,
+        taxesDeducted: totalTaxes,
+        netAnnual: netAnnual,
+        netMonthly: netMonthly
+      });
+      setIsCalculatingOffer(false);
+    }, 1200);
   };
 
   // Auth Form State
@@ -4845,6 +4888,166 @@ export default function App() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 💼 PROPRIETARY JOB OFFER & TAX BURDEN ANALYZER */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Briefcase className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">💼 PROPRIETARY JOB OFFER & TAX BURDEN ANALYZER</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border Compensation Simulator</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={offerCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setOfferCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`offer-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Gross Annual Job Offer Salary</label>
+                        <div className="relative">
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">{CONVERSION_RATES[selectedCurrency]?.symbol || '$'}</span>
+                          <input 
+                            type="number"
+                            value={offerSalary}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              startTransition(() => setOfferSalary(val));
+                            }}
+                            onFocus={(e) => e.target.select()}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all"
+                          />
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Employment Type</label>
+                        <select 
+                          value={offerType}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setOfferType(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['Full-Time Employee (PAYE/W2)', 'Independent Contractor / Freelance', 'Digital Nomad (Tax Exempt)'].map(c => (
+                            <option key={`offer-type-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={calculateJobOffer}
+                      disabled={isCalculatingOffer}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isCalculatingOffer ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Simulating Deductions...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Calculator className="w-5 h-5" />
+                          <span>Calculate Net Take-Home Pay</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!offerResult && !isCalculatingOffer ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <Calculator className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Input offer parameters to calculate net retention</p>
+                        </div>
+                      ) : isCalculatingOffer ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Computing Tax Burden...</p>
+                        </div>
+                      ) : (
+                        offerResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2 text-center md:text-left">Compensation Analysis</span>
+                            
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-2">
+                                <span className="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Est. Effective Tax Rate</span>
+                                <div className="text-white font-bold text-2xl">{offerResult.effectiveTaxRate.toFixed(1)}%</div>
+                              </div>
+                              <div className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-2">
+                                <span className="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Annual Taxes Deducted</span>
+                                <div className="text-white font-bold text-xl">
+                                  {(() => {
+                                    const conv = CONVERSION_RATES[selectedCurrency];
+                                    return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(offerResult.taxesDeducted * conv.rate);
+                                  })()}
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div className="bg-brand-gold/10 border border-brand-gold/30 rounded-2xl p-6 mt-2 relative overflow-hidden">
+                              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-brand-gold/10 to-transparent pointer-events-none" />
+                              <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-4">True Net Take-Home Pay</span>
+                              
+                              <div className="flex flex-col gap-4">
+                                <div className="flex items-baseline justify-between border-b border-brand-gold/20 pb-3">
+                                  <span className="text-white/70 text-xs font-bold uppercase tracking-wider">Annual Net</span>
+                                  <span className="text-brand-gold font-black text-3xl tracking-tight">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(offerResult.netAnnual * conv.rate);
+                                    })()}
+                                  </span>
+                                </div>
+                                <div className="flex items-baseline justify-between">
+                                  <span className="text-white/70 text-xs font-bold uppercase tracking-wider">Monthly Net</span>
+                                  <span className="text-brand-gold font-black text-2xl tracking-tight">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(offerResult.netMonthly * conv.rate);
+                                    })()}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </div>
             </div>
