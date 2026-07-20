@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck, Brain, Sparkles, Landmark, Calculator, PieChart, TrendingDown, Briefcase, Search } from "lucide-react";
+import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRight, Loader2, X, DollarSign, Percent, Linkedin, Twitter, Mail, Lock, CheckCircle2, Home, HeartPulse, Wifi, Zap, BarChart3, History, Bookmark, Scale, Download, ArrowLeft, Plane, Truck, Brain, Sparkles, Landmark, Calculator, PieChart, TrendingDown, Briefcase, Search, MessageSquare, Clock, User } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState, useTransition } from "react";
 import { jsPDF } from "jspdf";
@@ -304,6 +304,12 @@ export default function App() {
   const [networkInterest, setNetworkInterest] = useState<string>("Tech Founders & VC Mastermind");
   const [networkResult, setNetworkResult] = useState<{name: string, description: string}[] | null>(null);
   const [isFetchingNetworks, setIsFetchingNetworks] = useState(false);
+
+  // Global Expat Discussion Board State
+  const [forumTargetCountry, setForumTargetCountry] = useState<string>("Singapore");
+  const [forumTopic, setForumTopic] = useState<string>("Tax Optimization & Legal");
+  const [forumResult, setForumResult] = useState<{title: string, author: string, time: string, replies: number}[] | null>(null);
+  const [isFetchingForum, setIsFetchingForum] = useState(false);
 
   // Neural Matching Engine
   const runAiMatch = () => {
@@ -854,6 +860,44 @@ export default function App() {
 
       setNetworkResult(communities);
       setIsFetchingNetworks(false);
+    }, 1200);
+  };
+
+  // Strategic Global Expat Discussion Board Engine
+  const fetchForumDiscussions = () => {
+    setIsFetchingForum(true);
+    
+    setTimeout(() => {
+      let threads = [];
+
+      if (forumTopic === "Tax Optimization & Legal") {
+        threads = [
+          { title: `Recent changes to the ${forumTargetCountry} Golden Visa processing times?`, author: "David Wallace, Esq.", time: "2 hours ago", replies: 42 },
+          { title: "Offshore trust structuring vs local holding companies - advice?", author: "Elena Rostova", time: "5 hours ago", replies: 18 }
+        ];
+      } else if (forumTopic === "Housing & Premium Real Estate") {
+        threads = [
+          { title: "Best luxury neighborhoods for tech executives?", author: "James T.", time: "1 hour ago", replies: 56 },
+          { title: `Current premium rental yield expectations in ${forumTargetCountry}?`, author: "GlobalRE_Invest", time: "8 hours ago", replies: 31 }
+        ];
+      } else if (forumTopic === "Visas & Immigration Timelines") {
+        threads = [
+          { title: "Digital Nomad Visa vs. Business Investor track?", author: "NomadSarah", time: "30 mins ago", replies: 12 },
+          { title: "Dependant visa processing delays - any workarounds?", author: "Marcus B.", time: "1 day ago", replies: 89 }
+        ];
+      } else if (forumTopic === "General Expat Lifestyle & Schools") {
+        threads = [
+          { title: "Top-tier international schools - waitlist times?", author: "FamilyRelo2026", time: "3 hours ago", replies: 114 },
+          { title: "Finding private healthcare concierges?", author: "Dr. Alex Chen", time: "6 hours ago", replies: 27 }
+        ];
+      } else {
+        threads = [
+          { title: "General discussion thread", author: "Admin", time: "1 hour ago", replies: 5 }
+        ];
+      }
+
+      setForumResult(threads);
+      setIsFetchingForum(false);
     }, 1200);
   };
 
@@ -3799,6 +3843,132 @@ export default function App() {
                                 
                                 <button className="w-full mt-3 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
                                   Request Private Invitation
+                                </button>
+                              </div>
+                            ))}
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 💬 PROPRIETARY GLOBAL EXPAT DISCUSSION BOARD */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <MessageSquare className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">💬 PROPRIETARY GLOBAL EXPAT DISCUSSION BOARD</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Premium Insights & Relocation Intel</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={forumTargetCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setForumTargetCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={`forum-target-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Discussion Topic</label>
+                        <select 
+                          value={forumTopic}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setForumTopic(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['Tax Optimization & Legal', 'Housing & Premium Real Estate', 'Visas & Immigration Timelines', 'General Expat Lifestyle & Schools'].map(c => (
+                            <option key={`forum-topic-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={fetchForumDiscussions}
+                      disabled={isFetchingForum}
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isFetchingForum ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Aggregating Active Threads...</span>
+                        </>
+                      ) : (
+                        <>
+                          <MessageSquare className="w-5 h-5" />
+                          <span>Load Trending Discussions</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!forumResult && !isFetchingForum ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <MessageSquare className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select filters to view active elite discussions</p>
+                        </div>
+                      ) : isFetchingForum ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Syncing Private Forum Intel...</p>
+                        </div>
+                      ) : (
+                        forumResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-4"
+                          >
+                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Top Trending Threads</span>
+                            
+                            {forumResult.map((thread, idx) => (
+                              <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-4 hover:border-brand-gold/30 transition-colors">
+                                <h4 className="text-white font-bold text-lg leading-tight">{thread.title}</h4>
+                                
+                                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-zinc-400 text-xs font-medium">
+                                  <div className="flex items-center gap-1.5">
+                                    <User className="w-3.5 h-3.5 text-brand-gold" />
+                                    <span>{thread.author}</span>
+                                  </div>
+                                  <div className="flex items-center gap-1.5">
+                                    <Clock className="w-3.5 h-3.5 text-brand-gold" />
+                                    <span>{thread.time}</span>
+                                  </div>
+                                  <div className="flex items-center gap-1.5 bg-brand-gold/10 text-brand-gold px-2 py-0.5 rounded-full border border-brand-gold/20">
+                                    <MessageSquare className="w-3.5 h-3.5" />
+                                    <span>{thread.replies} Replies - Active Now</span>
+                                  </div>
+                                </div>
+                                
+                                <button className="w-full mt-2 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
+                                  Read & Join Discussion
                                 </button>
                               </div>
                             ))}
