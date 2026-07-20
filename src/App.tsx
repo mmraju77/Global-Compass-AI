@@ -226,6 +226,17 @@ export default function App() {
   } | null>(null);
   const [isOptimizingSavings, setIsOptimizingSavings] = useState(false);
 
+  // AI Remote-Work & Nomad Advisor State
+  const [nomadCountry, setNomadCountry] = useState<string>("Singapore");
+  const [nomadRevenue, setNomadRevenue] = useState<number | string>(5000);
+  const [nomadResult, setNomadResult] = useState<{
+    score: string;
+    internet: number;
+    visaStatus: string;
+    insight: string;
+  } | null>(null);
+  const [isAnalyzingNomad, setIsAnalyzingNomad] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -399,6 +410,48 @@ export default function App() {
       
       setSavingsAllocation(result);
       setIsOptimizingSavings(false);
+    }, 1200);
+  };
+
+  // Strategic AI Remote-Work & Nomad Engine
+  const analyzeRemoteFeasibility = () => {
+    if (!countries || countries.length === 0) return;
+    setIsAnalyzingNomad(true);
+    
+    setTimeout(() => {
+      const countryData = countries.find(c => c.country_name === nomadCountry) || countries[0];
+      const internetSpeed = countryData.internet_speed_mbps || 100;
+      const safetyRating = countryData.safety_index || 70;
+      const taxRate = countryData.tax_rate_percent || 0;
+      
+      let matchScore = 50;
+      if (internetSpeed > 100) matchScore += 15;
+      if (safetyRating > 75) matchScore += 20;
+      if (taxRate < 10) matchScore += 15;
+      
+      let scoreLabel = "Moderate Match";
+      if (matchScore >= 90) scoreLabel = `${matchScore}% Excellent Match`;
+      else if (matchScore >= 75) scoreLabel = `${matchScore}% Strong Match`;
+      else scoreLabel = `${matchScore}% Fair Match`;
+      
+      let insight = "";
+      if (taxRate < 10 && internetSpeed > 100) {
+        insight = `Highly favorable tax jurisdiction for remote operations with elite ${internetSpeed} Mbps infrastructure. Perfect for setting up compliant digital bases without heavy tax burdens.`;
+      } else if (internetSpeed > 100) {
+        insight = `Top-tier digital infrastructure ensures seamless operations. However, structuring tax compliance efficiently will be your primary strategic objective here.`;
+      } else {
+        insight = `Viable for basic remote work, but infrastructure may require strategic upgrades or reliable co-working spaces to ensure seamless executive operations.`;
+      }
+      
+      const visaStatus = (taxRate < 15 || safetyRating > 80) ? "Active Nomad Program Available" : "Standard Tourist/Business Route";
+      
+      setNomadResult({
+        score: scoreLabel,
+        internet: internetSpeed,
+        visaStatus,
+        insight
+      });
+      setIsAnalyzingNomad(false);
     }, 1200);
   };
 
@@ -2169,6 +2222,147 @@ export default function App() {
                                     const val = Number(savingsMonthly) || 0;
                                     return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(val * conv.rate);
                                   })()}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 🌐 PROPRIETARY AI REMOTE-WORK & NOMAD ADVISOR */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <Wifi className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">🌐 PROPRIETARY AI REMOTE-WORK & NOMAD ADVISOR</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Digital Infrastructure & Remote Compliance Engine</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <select 
+                          value={nomadCountry}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setNomadCountry(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {countries.map(c => (
+                            <option key={c.country_name} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Monthly Remote Revenue</label>
+                        <div className="relative">
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">
+                            {CONVERSION_RATES[selectedCurrency]?.symbol || '$'}
+                          </span>
+                          <input 
+                            type="number"
+                            value={nomadRevenue}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              startTransition(() => setNomadRevenue(val === "" ? "" : Number(val)));
+                            }}
+                            onFocus={(e) => e.target.select()}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all"
+                          />
+                        </div>
+                    </div>
+
+                    <button 
+                      onClick={analyzeRemoteFeasibility}
+                      disabled={isAnalyzingNomad}
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    >
+                      {isAnalyzingNomad ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Adjudicating Remote Protocols...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-5 h-5" />
+                          <span>Analyze Remote Feasibility</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!nomadResult && !isAnalyzingNomad ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <Wifi className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select parameters to compute remote viability</p>
+                        </div>
+                      ) : isAnalyzingNomad ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Computing Infrastructure Feasibility...</p>
+                        </div>
+                      ) : (
+                        nomadResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <div className="flex justify-between items-end">
+                              <div>
+                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Remote Feasibility Score</span>
+                                <div className="text-white text-2xl font-black mt-1 uppercase tracking-tight">{nomadResult.score}</div>
+                              </div>
+                            </div>
+
+                            <div className="space-y-3">
+                              <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block">Infrastructure Checklist</span>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="flex flex-col justify-center bg-white/5 px-4 py-3 rounded-lg border border-white/5">
+                                  <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-1">Internet Speed</span>
+                                  <div className="flex items-center gap-2">
+                                    <Wifi className="w-4 h-4 text-emerald-500" />
+                                    <span className="text-white text-xs font-bold">{nomadResult.internet} Mbps Avg</span>
+                                  </div>
+                                </div>
+                                <div className="flex flex-col justify-center bg-white/5 px-4 py-3 rounded-lg border border-white/5">
+                                  <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-1">Nomad Program</span>
+                                  <div className="flex items-center gap-2">
+                                    <ShieldCheck className="w-4 h-4 text-brand-gold" />
+                                    <span className="text-white text-xs font-bold">{nomadResult.visaStatus}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="h-px bg-white/5 w-full mt-2" />
+
+                            <div className="bg-brand-gold/5 border border-brand-gold/10 p-4 rounded-xl flex items-center gap-4">
+                              <Brain className="w-6 h-6 text-brand-gold shrink-0" />
+                              <div className="flex flex-col">
+                                <span className="text-brand-gold text-[9px] font-black uppercase tracking-[0.2em] mb-0.5">AI Executive Nomad Insight</span>
+                                <span className="text-white text-xs font-medium leading-relaxed">
+                                  {nomadResult.insight}
                                 </span>
                               </div>
                             </div>
