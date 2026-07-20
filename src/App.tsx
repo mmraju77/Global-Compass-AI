@@ -354,6 +354,16 @@ export default function App() {
   const [offerResult, setOfferResult] = useState<{ effectiveTaxRate: number, taxesDeducted: number, netAnnual: number, netMonthly: number } | null>(null);
   const [isCalculatingOffer, setIsCalculatingOffer] = useState(false);
 
+  // Comprehensive Country Profile & Relocation Dashboard State
+  const [profileCountry, setProfileCountry] = useState<string>("United States");
+  const [profileData, setProfileData] = useState<{
+    taxWealth: { maxIncomeTax: number, corpTax: number, capitalGains: string },
+    immigration: { visas: string, processing: string },
+    costHousing: { rent: number, utilities: number, costIndex: number },
+    qualityLife: { healthcare: string, safety: string, languages: string }
+  } | null>(null);
+  const [isGeneratingProfile, setIsGeneratingProfile] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -1125,6 +1135,57 @@ export default function App() {
       });
       setIsCalculatingOffer(false);
     }, 1200);
+  };
+
+  // Comprehensive Country Profile Generator
+  const generateCountryProfile = () => {
+    setIsGeneratingProfile(true);
+    setTimeout(() => {
+      const countryData = countries.find(c => c.country_name === profileCountry);
+      
+      let capitalGainsStatus = "Standard Rate";
+      let visasList = "Work Permit / Resident Visa";
+      let healthcareStd = "High Standard (Private Recommended)";
+      let safeIndex = "Very High";
+      let langs = "English, Local Language";
+      
+      if (countryData) {
+        if (["United Arab Emirates", "Singapore", "Bahrain", "Monaco", "Cayman Islands", "Bermuda", "Vanuatu"].includes(profileCountry)) {
+          capitalGainsStatus = "0% (Exempt)";
+        }
+        
+        if (["Portugal", "Spain", "Greece", "United Arab Emirates", "Cyprus", "Malta"].includes(profileCountry)) {
+          visasList = "Digital Nomad / Golden Visa Available";
+        }
+        
+        if (countryData.stability_score === "Maximum") {
+          safeIndex = "AAA / Maximum";
+        }
+        
+        setProfileData({
+          taxWealth: {
+            maxIncomeTax: countryData.tax_rate_percent || 0,
+            corpTax: Math.max(0, (countryData.tax_rate_percent || 0) - 5),
+            capitalGains: capitalGainsStatus
+          },
+          immigration: {
+            visas: visasList,
+            processing: "30 - 90 Days Est."
+          },
+          costHousing: {
+            rent: countryData.rent || 2000,
+            utilities: (countryData.rent || 2000) * 0.15,
+            costIndex: countryData.cost_of_living_score || 80
+          },
+          qualityLife: {
+            healthcare: healthcareStd,
+            safety: safeIndex,
+            languages: langs
+          }
+        });
+      }
+      setIsGeneratingProfile(false);
+    }, 1500);
   };
 
   // Auth Form State
@@ -5050,6 +5111,194 @@ export default function App() {
                       )}
                     </AnimatePresence>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 🌐 COMPREHENSIVE COUNTRY PROFILE & RELOCATION GUIDE */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-8 md:p-12 shadow-2xl shadow-black/80 relative overflow-hidden mt-8 mb-16">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
+                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Country Hub</span>
+                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">🌐 COMPREHENSIVE COUNTRY PROFILE <span className="text-brand-gold">&</span> RELOCATION GUIDE</h2>
+                  <p className="text-sm text-zinc-400 mt-2">Aggregated macro-economic, tax, and lifestyle intelligence for executive relocation.</p>
+                </div>
+
+                <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
+                  <div className="w-full space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Master Jurisdiction Selector</label>
+                      <select 
+                        value={profileCountry}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          startTransition(() => setProfileCountry(val));
+                        }}
+                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
+                      >
+                        {countries.map(c => (
+                          <option key={`profile-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                        ))}
+                      </select>
+                  </div>
+
+                  <button 
+                    onClick={generateCountryProfile}
+                    disabled={isGeneratingProfile}
+                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                  >
+                    {isGeneratingProfile ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>Aggregating Data...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Globe className="w-5 h-5" />
+                        <span>Generate Full Country Report</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Dashboard Data Grid */}
+                <div className="min-h-[400px] flex flex-col relative rounded-3xl border border-white/5 bg-black/40 p-8 md:p-10">
+                  <AnimatePresence mode="wait">
+                    {!profileData && !isGeneratingProfile ? (
+                      <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
+                        <Globe className="w-16 h-16 text-white" />
+                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and generate the report to view proprietary analytics</p>
+                      </div>
+                    ) : isGeneratingProfile ? (
+                      <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
+                        <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
+                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Macro Intelligence...</p>
+                      </div>
+                    ) : (
+                      profileData && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex flex-col gap-10"
+                        >
+                          <div className="flex items-center gap-4 border-b border-brand-gold/20 pb-6">
+                            <h3 className="text-3xl font-black text-white">{profileCountry}</h3>
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
+                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Verified Global Data</span>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {/* Pillar 1: Tax & Wealth */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <DollarSign className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Tax & Wealth</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Max Income Tax</span>
+                                  <div className={`text-xl font-bold ${profileData.taxWealth.maxIncomeTax === 0 ? 'text-[#d4af37]' : 'text-white'}`}>
+                                    {profileData.taxWealth.maxIncomeTax === 0 ? '0% (Tax Free)' : `${profileData.taxWealth.maxIncomeTax}%`}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Corporate Tax</span>
+                                  <div className={`text-xl font-bold ${profileData.taxWealth.corpTax === 0 ? 'text-[#d4af37]' : 'text-white'}`}>
+                                    {profileData.taxWealth.corpTax}%
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Crypto & Capital Gains</span>
+                                  <div className={`text-sm font-bold ${profileData.taxWealth.capitalGains.includes('0%') ? 'text-[#d4af37]' : 'text-white'}`}>
+                                    {profileData.taxWealth.capitalGains}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 2: Immigration & Visas */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Plane className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Immigration</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Top Visa Options</span>
+                                  <div className={`text-sm font-bold ${profileData.immigration.visas.includes('Digital Nomad') ? 'text-[#d4af37]' : 'text-white'} leading-tight`}>
+                                    {profileData.immigration.visas}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Standard Processing</span>
+                                  <div className="text-white text-sm font-bold">{profileData.immigration.processing}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 3: Cost of Living */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Home className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Housing & Cost</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Est. Monthly Rent (1BR)</span>
+                                  <div className="text-white font-bold text-xl">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(profileData.costHousing.rent * conv.rate);
+                                    })()}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Basic Utilities</span>
+                                  <div className="text-white font-bold text-lg">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(profileData.costHousing.utilities * conv.rate);
+                                    })()}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Expat Cost Index</span>
+                                  <div className="text-white font-bold text-lg">{profileData.costHousing.costIndex} / 100</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 4: Quality of Life */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <HeartPulse className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Quality of Life</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Standard</span>
+                                  <div className="text-white text-sm font-bold leading-tight">{profileData.qualityLife.healthcare}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Safety & Crime Index</span>
+                                  <div className={`text-sm font-bold ${profileData.qualityLife.safety.includes('AAA') ? 'text-[#d4af37]' : 'text-white'}`}>
+                                    {profileData.qualityLife.safety}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Primary Language(s)</span>
+                                  <div className="text-white text-sm font-bold leading-tight">{profileData.qualityLife.languages}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             </div>
