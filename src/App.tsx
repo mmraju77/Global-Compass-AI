@@ -260,6 +260,17 @@ export default function App() {
   } | null>(null);
   const [isCalculatingTax, setIsCalculatingTax] = useState(false);
 
+  // Forex & Currency Exchange Engine State
+  const [fxAmount, setFxAmount] = useState<number | string>(1000);
+  const [fxFrom, setFxFrom] = useState<string>("USD");
+  const [fxTo, setFxTo] = useState<string>("EUR");
+  const [fxResult, setFxResult] = useState<{
+    convertedAmount: number;
+    rateText: string;
+    symbol: string;
+  } | null>(null);
+  const [isCalculatingFx, setIsCalculatingFx] = useState(false);
+
   // Neural Matching Engine
   const runAiMatch = () => {
     if (!countries || countries.length === 0) return;
@@ -596,6 +607,30 @@ export default function App() {
     NZD: { rate: 1.63, symbol: '$', name: 'New Zealand Dollar' }
   };
   
+  // Strategic Forex & Currency Exchange Engine
+  const calculateFx = () => {
+    setIsCalculatingFx(true);
+    
+    setTimeout(() => {
+      const amount = Number(fxAmount) || 0;
+      const fromRateObj = CONVERSION_RATES[fxFrom] || CONVERSION_RATES['USD'];
+      const toRateObj = CONVERSION_RATES[fxTo] || CONVERSION_RATES['EUR'];
+      
+      // Calculate cross rate (both are relative to USD where USD=1)
+      const crossRate = toRateObj.rate / fromRateObj.rate;
+      const convertedAmount = amount * crossRate;
+      
+      const rateText = `1 ${fxFrom} = ${crossRate.toFixed(4)} ${fxTo}`;
+      
+      setFxResult({
+        convertedAmount,
+        rateText,
+        symbol: toRateObj.symbol
+      });
+      setIsCalculatingFx(false);
+    }, 1200);
+  };
+
   // Auth Form State
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -2784,6 +2819,141 @@ export default function App() {
                                   const conv = CONVERSION_RATES[selectedCurrency];
                                   return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(taxResult.netRetained * conv.rate);
                                 })()}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 💱 PROPRIETARY FOREX & CURRENCY EXCHANGE ENGINE */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/80 relative overflow-hidden mt-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                      <DollarSign className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight uppercase">💱 PROPRIETARY FOREX & CURRENCY EXCHANGE ENGINE</h3>
+                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border FX Routing Engine</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Parameter Inputs */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div className="space-y-2 md:col-span-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Amount to Convert</label>
+                        <input 
+                          type="number"
+                          value={fxAmount}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setFxAmount(val === "" ? "" : Number(val)));
+                          }}
+                          onFocus={(e) => e.target.select()}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">From Currency</label>
+                        <select 
+                          value={fxFrom}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setFxFrom(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['USD', 'EUR', 'GBP', 'INR', 'AED', 'CHF', 'SGD', 'CAD', 'AUD', 'JPY'].map(c => (
+                            <option key={`from-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">To Currency</label>
+                        <select 
+                          value={fxTo}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            startTransition(() => setFxTo(val));
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
+                        >
+                          {['USD', 'EUR', 'GBP', 'INR', 'AED', 'CHF', 'SGD', 'CAD', 'AUD', 'JPY'].map(c => (
+                            <option key={`to-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                          ))}
+                        </select>
+                    </div>
+
+                    <button 
+                      onClick={calculateFx}
+                      disabled={isCalculatingFx}
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                    >
+                      {isCalculatingFx ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Routing FX Request...</span>
+                        </>
+                      ) : (
+                        <>
+                          <TrendingUp className="w-5 h-5" />
+                          <span>Calculate Exchange Rate</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Allocation Display */}
+                  <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {!fxResult && !isCalculatingFx ? (
+                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
+                          <DollarSign className="w-12 h-12" />
+                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select currencies to compute exchange delta</p>
+                        </div>
+                      ) : isCalculatingFx ? (
+                        <div className="flex flex-col items-center justify-center h-full space-y-4">
+                          <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
+                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Exchange Parity...</p>
+                        </div>
+                      ) : (
+                        fxResult && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col gap-6"
+                          >
+                            <div>
+                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-4">Final Converted Amount</span>
+                                
+                                <div className="p-6 bg-gradient-to-r from-amber-900/40 to-brand-gold/10 border border-brand-gold/30 rounded-2xl">
+                                  <div className="text-white text-4xl font-black tracking-tighter">
+                                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: fxTo, maximumFractionDigits: 2 }).format(fxResult.convertedAmount)}
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div className="h-px bg-white/5 w-full mt-2" />
+
+                            <div className="bg-brand-gold/5 border border-brand-gold/10 p-4 rounded-xl flex items-center gap-4">
+                              <Brain className="w-6 h-6 text-brand-gold shrink-0" />
+                              <div className="flex flex-col">
+                                <span className="text-brand-gold text-[9px] font-black uppercase tracking-[0.2em] mb-0.5">Applied Exchange Rate</span>
+                                <span className="text-zinc-200 text-xs font-medium leading-relaxed">
+                                  {fxResult.rateText}
+                                </span>
                               </div>
                             </div>
                           </motion.div>
