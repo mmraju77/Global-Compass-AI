@@ -357,6 +357,7 @@ export default function App() {
 
   // Comprehensive Country Profile & Relocation Dashboard State
   const [profileCountry, setProfileCountry] = useState<string>("United States");
+  const [availableCountries, setAvailableCountries] = useState<string[]>([]);
   const [profileData, setProfileData] = useState<{
     taxWealth: { maxIncomeTax: number, corpTax: number, capitalGains: string },
     immigration: { visas: string, processing: string },
@@ -1512,6 +1513,26 @@ export default function App() {
   };
 
   useEffect(() => {
+    const fetchDropdownCountries = async () => {
+      const supabase = getSupabase();
+      if (!supabase) return;
+      try {
+        const { data, error } = await supabase
+          .from('countries')
+          .select('country_name')
+          .order('country_name', { ascending: true });
+        
+        if (data && !error) {
+          setAvailableCountries(data.map(d => d.country_name));
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchDropdownCountries();
+  }, []);
+
+  useEffect(() => {
     fetchCountries();
 
     // Set up Auth listener
@@ -1884,9 +1905,14 @@ export default function App() {
                         }}
                         className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
                       >
-                        {countries.map(c => (
-                          <option key={`profile-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
-                        ))}
+                        {availableCountries.length > 0 
+                          ? availableCountries.map(name => (
+                              <option key={`profile-country-${name}`} value={name} className="bg-[#1a1a1a]">{name}</option>
+                            ))
+                          : countries.map(c => (
+                              <option key={`profile-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                            ))
+                        }
                       </select>
                   </div>
 
