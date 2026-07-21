@@ -1830,61 +1830,60 @@ export default function App() {
 
       <div className="relative z-10">
         
-        {/* Premium Executive Navigation Bar */}
-        <div className="sticky top-0 z-50 bg-black/90 backdrop-blur border-b border-[#d4af37]/30">
-          <div className="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-6">
+        {/* Unified Premium Navigation Bar */}
+        <nav className="sticky top-0 z-50 bg-black/90 backdrop-blur border-b border-[#d4af37]/30">
+          <div className="container mx-auto px-6 py-4 flex justify-between items-center gap-4">
+            <div className="flex items-center gap-3">
+              <CompassIcon className="w-8 h-8 text-[#d4af37]" />
               <Link to="/" className="font-display text-xl md:text-2xl font-bold tracking-tight text-white hover:text-[#d4af37] transition-colors">
                 GLOBAL COMPASS AI
               </Link>
             </div>
-            <div className="flex items-center gap-6 text-xs font-bold uppercase tracking-widest text-slate-400">
+            
+            <div className="hidden md:flex flex-wrap items-center gap-6 text-xs font-bold uppercase tracking-widest text-slate-400">
+              {/* Routing Links */}
               <Link to="/" className="hover:text-[#d4af37] transition-colors">Dashboard & Tools</Link>
               <Link to="/country" className="hover:text-[#d4af37] transition-colors">Country Profiles</Link>
               <Link to="/city" className="hover:text-[#d4af37] transition-colors">City Guides</Link>
               <Link to="/salary" className="hover:text-[#d4af37] transition-colors">Global Salaries</Link>
-            </div>
-          </div>
-        </div>
+              
+              <div className="w-px h-4 bg-white/20"></div>
 
-        {/* Navigation */}
-        <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <img src="/logo.png" className="h-16 w-auto object-contain rounded-xl shadow-2xl shadow-amber-600/20 bg-gradient-to-br from-amber-600/20 to-terracotta-end/20 p-2 border border-amber-600/30" alt="Logo" />
-            <span className="font-display text-2xl md:text-4xl font-bold tracking-tight text-slate-400">GLOBAL COMPASS AI</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-            <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-slate-400 transition-colors">About Us</a>
-            <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-slate-400 transition-colors">Jurisdictions</a>
-            {user && (
-              <a href="#archives" onClick={(e) => { e.preventDefault(); scrollToId('archives'); }} className="hover:text-amber-600 transition-colors">My Archives</a>
-            )}
-            {user ? (
-              <div className="flex items-center gap-4">
-                <span className="text-amber-600 font-bold">Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'Member'}</span>
-                {user?.email?.toLowerCase() === "moovi7g@gmail.com" && (
+              {/* Original Utility Links */}
+              <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-[#d4af37] transition-colors">About Us</a>
+              <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-[#d4af37] transition-colors">Jurisdictions</a>
+              
+              {user && (
+                <a href="#archives" onClick={(e) => { e.preventDefault(); scrollToId('archives'); }} className="hover:text-amber-600 transition-colors">My Archives</a>
+              )}
+              
+              {user ? (
+                <div className="flex items-center gap-4 ml-2">
+                  <span className="text-amber-600 font-bold">Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'Member'}</span>
+                  {user?.email?.toLowerCase() === "moovi7g@gmail.com" && (
+                    <button 
+                      onClick={() => setIsAdminPanelOpen(!isAdminPanelOpen)}
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-600/30 text-amber-600 text-[10px] font-bold hover:bg-amber-600/10 transition-all uppercase tracking-widest cursor-pointer"
+                    >
+                      <Lock className="w-3 h-3" /> Admin
+                    </button>
+                  )}
                   <button 
-                    onClick={() => setIsAdminPanelOpen(!isAdminPanelOpen)}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-amber-600/30 text-amber-600 text-xs font-bold hover:bg-amber-600/10 transition-all uppercase tracking-widest cursor-pointer"
+                    onClick={handleLogout}
+                    className="px-4 py-1.5 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-white transition-all cursor-pointer text-[10px]"
                   >
-                    <Lock className="w-3 h-3" /> Admin Panel
+                    Logout
                   </button>
-                )}
+                </div>
+              ) : (
                 <button 
-                  onClick={handleLogout}
-                  className="px-5 py-2 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-slate-400 transition-all cursor-pointer"
+                  onClick={() => setIsLoginOpen(true)}
+                  className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-white transition-all ml-2"
                 >
-                  Logout
+                  Login
                 </button>
-              </div>
-            ) : (
-              <button 
-                onClick={() => setIsLoginOpen(true)}
-                className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-slate-400 transition-all"
-              >
-                Login
-              </button>
-            )}
+              )}
+            </div>
           </div>
         </nav>
 
