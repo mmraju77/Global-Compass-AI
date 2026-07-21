@@ -1840,37 +1840,37 @@ export default function App() {
               </Link>
             </div>
             
-            <div className="hidden md:flex flex-wrap items-center gap-8 text-sm font-semibold uppercase tracking-widest text-slate-400">
+            <div className="hidden xl:flex flex-row items-center whitespace-nowrap gap-6 text-sm font-semibold uppercase tracking-widest text-slate-400">
               {/* Routing Links */}
-              <Link to="/" className="hover:text-[#d4af37] transition-colors">Dashboard & Tools</Link>
-              <Link to="/country" className="hover:text-[#d4af37] transition-colors">Country Profiles</Link>
-              <Link to="/city" className="hover:text-[#d4af37] transition-colors">City Guides</Link>
-              <Link to="/salary" className="hover:text-[#d4af37] transition-colors">Global Salaries</Link>
+              <Link to="/" className="hover:text-[#d4af37] transition-colors whitespace-nowrap">Dashboard & Tools</Link>
+              <Link to="/country" className="hover:text-[#d4af37] transition-colors whitespace-nowrap">Country Profiles</Link>
+              <Link to="/city" className="hover:text-[#d4af37] transition-colors whitespace-nowrap">City Guides</Link>
+              <Link to="/salary" className="hover:text-[#d4af37] transition-colors whitespace-nowrap">Global Salaries</Link>
               
               <div className="w-px h-4 bg-white/20"></div>
 
               {/* Original Utility Links */}
-              <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-[#d4af37] transition-colors">About Us</a>
-              <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-[#d4af37] transition-colors">Jurisdictions</a>
+              <a href="#about" onClick={(e) => { e.preventDefault(); scrollToId('about'); }} className="hover:text-[#d4af37] transition-colors whitespace-nowrap">About Us</a>
+              <a href="#compare" onClick={(e) => { e.preventDefault(); scrollToId('compare'); }} className="hover:text-[#d4af37] transition-colors whitespace-nowrap">Jurisdictions</a>
               
               {user && (
-                <a href="#archives" onClick={(e) => { e.preventDefault(); scrollToId('archives'); }} className="hover:text-amber-600 transition-colors">My Archives</a>
+                <a href="#archives" onClick={(e) => { e.preventDefault(); scrollToId('archives'); }} className="hover:text-amber-600 transition-colors whitespace-nowrap">My Archives</a>
               )}
               
               {user ? (
-                <div className="flex items-center gap-4 ml-2">
-                  <span className="text-amber-600 font-bold">Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'Member'}</span>
+                <div className="flex flex-row items-center whitespace-nowrap gap-4 ml-2">
+                  <span className="text-amber-600 font-bold whitespace-nowrap">Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'Member'}</span>
                   {user?.email?.toLowerCase() === "moovi7g@gmail.com" && (
                     <button 
                       onClick={() => setIsAdminPanelOpen(!isAdminPanelOpen)}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-600/30 text-amber-600 text-[10px] font-bold hover:bg-amber-600/10 transition-all uppercase tracking-widest cursor-pointer"
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-600/30 text-amber-600 text-[10px] font-bold hover:bg-amber-600/10 transition-all uppercase tracking-widest cursor-pointer whitespace-nowrap flex-shrink-0"
                     >
                       <Lock className="w-3 h-3" /> Admin
                     </button>
                   )}
                   <button 
                     onClick={handleLogout}
-                    className="px-4 py-1.5 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-white transition-all cursor-pointer text-[10px]"
+                    className="px-4 py-1.5 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-white transition-all cursor-pointer text-[10px] whitespace-nowrap flex-shrink-0"
                   >
                     Logout
                   </button>
@@ -1878,7 +1878,7 @@ export default function App() {
               ) : (
                 <button 
                   onClick={() => setIsLoginOpen(true)}
-                  className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-white transition-all ml-2"
+                  className="px-5 py-2 rounded-full border border-white/10 hover:border-brand-gold/50 hover:text-white transition-all ml-2 whitespace-nowrap flex-shrink-0"
                 >
                   Login
                 </button>
