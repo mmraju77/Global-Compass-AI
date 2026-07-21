@@ -1,0 +1,41 @@
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchSavedReports();
+    } else {
+      setSavedReports([]);
+    }
+    const handleSaveReport = async () => {
+    const activeUser = user;
+    if (!activeUser) {
+      triggerNotification("Please request private access to save reports.");
+      return;
+    }
+    if (!compareA || !compareB) {
+      triggerNotification("Please select two jurisdictions to compare first.");
+      return;
+    }
+
+    setIsSaving(true);
+    setTimeout(() => {
+      triggerNotification("Strategic Intelligence Saved to Archives.");
+      fetchSavedReports(activeUser);
+      setIsSaving(false);
+    }, 600);
+  };);
+    }
+  };
+
+  const loadSavedReport = (report: any) => {
+    const countryA = countries.find(c => c.country_name === report.country_a);
+    const countryB = countries.find(c => c.country_name === report.country_b);
+
+    if (countryA && countryB) {
+      setCompareA(countryA);
+      setCompareB(countryB);
+      scrollToId('compare');
+      triggerNotification(`Reloading: ${report.country_a} vs ${report.country_b}`);
+    } else {
+      triggerNotification("One or more jurisdictions have been updated in the neural engine.");
+    }

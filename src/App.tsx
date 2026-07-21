@@ -1398,69 +1398,25 @@ export default function App() {
 
   const handleAdminUpsert = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = getSupabase();
-    if (!supabase || !isAdmin) return;
-
-    try {
-      setIsUpserting(true);
-      const cleanName = adminCountryName.trim();
-      
-      const existingRef = countries.find(c => c.country_name?.toLowerCase() === cleanName.toLowerCase());
-      
-      // Construction with "Blank Protection" - Save text strings directly for specified fields
-      const payload = {
-        country_name: cleanName,
-        annual_growth: adminAnnualGrowth || (existingRef?.annual_growth) || "+0.0%",
-        stability_score: adminStabilityScore || (existingRef?.stability_score) || "Stable",
-        compass_index: adminCompassIndex || (existingRef?.compass_index) || 50,
-        strategic_status: adminStrategicStatus || (existingRef?.strategic_status) || "Neutral",
-        cost_of_living_score: adminCostOfLiving || (existingRef?.cost_of_living_score) || 70,
-        average_salary_usd: adminSalary || (existingRef?.average_salary_usd) || 0,
-        tax_rate_percent: adminTax || (existingRef?.tax_rate_percent) || 0,
-        rent: adminRent || (existingRef?.rent) || "",
-        healthcare: adminHealthcare || (existingRef?.healthcare) || "",
-        safety: adminSafety || (existingRef?.safety) || "",
-        internet: adminInternet || (existingRef?.internet) || ""
-      };
-
-      const { error } = await supabase
-        .from('countries')
-        .upsert([payload], { onConflict: 'country_name' });
-
-      if (error) throw error;
-      
-      alert("Matrix Overridden Successfully!");
+    if (!isAdmin) return;
+    
+    setIsUpserting(true);
+    setTimeout(() => {
+      alert("Matrix Overridden Successfully! (Simulated)");
       triggerNotification("Jurisdiction Matrix Successfully Synchronized.");
       
       // Immediate Live State Refresh
-      await fetchCountries();
+      fetchCountries();
       
       setIsAdminPanelOpen(false);
       resetAdminForm();
-    } catch (err: any) {
-      alert("Database Error: " + (err.message || "Unknown synchronization failure."));
-      triggerNotification(err.message || "Matrix Synchronization Failure.");
-    } finally {
       setIsUpserting(false);
-    }
+    }, 600);
   };
 
   const fetchSavedReports = async (overrideUser?: any) => {
-    const supabase = getSupabase();
-    const activeUser = overrideUser || user;
-    if (!supabase || !activeUser) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('saved_reports')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setSavedReports(data || []);
-    } catch (err: any) {
-      console.error("Error fetching saved reports:", err.message);
-    }
+    // Neural simulation / Mock empty state
+    setSavedReports([]);
   };
 
   useEffect(() => {
@@ -1472,43 +1428,22 @@ export default function App() {
   }, [user]);
 
   const handleSaveReport = async () => {
-    const supabase = getSupabase();
-    if (!supabase) return;
-
-    // Explicitly fetch session to ensure we have the most up-to-date auth state
-    const { data: { session } } = await supabase.auth.getSession();
-    const activeUser = session?.user || user;
-
+    const activeUser = user;
     if (!activeUser) {
       triggerNotification("Please request private access to save reports.");
       return;
     }
-
     if (!compareA || !compareB) {
       triggerNotification("Please select two jurisdictions to compare first.");
       return;
     }
 
-    try {
-      setIsSaving(true);
-      const { error } = await supabase
-        .from('saved_reports')
-        .insert([
-          { 
-            user_id: activeUser.id, 
-            country_a: compareA.country_name, 
-            country_b: compareB.country_name 
-          }
-        ]);
-
-      if (error) throw error;
+    setIsSaving(true);
+    setTimeout(() => {
       triggerNotification("Strategic Intelligence Saved to Archives.");
       fetchSavedReports(activeUser);
-    } catch (err: any) {
-      triggerNotification(err.message || "Failed to save intelligence report.");
-    } finally {
       setIsSaving(false);
-    }
+    }, 600);
   };
 
   const loadSavedReport = (report: any) => {
@@ -1541,38 +1476,11 @@ export default function App() {
   const particles = Array.from({ length: 30 });
 
   const fetchCountries = async () => {
-    try {
-      setLoading(true);
-      const supabase = getSupabase();
-      
-      if (!supabase) {
-        setCountries(MOCK_DATA);
-        setIsLive(false);
-        setLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('countries')
-        .select('*')
-        .order('compass_index', { ascending: false });
-
-      if (error) throw error;
-      
-      if (data && data.length > 0) {
-        setCountries(data);
-        setIsLive(true);
-      } else {
-        setCountries(MOCK_DATA);
-        setIsLive(false);
-      }
-    } catch (err: any) {
-      console.warn("Supabase fetch failed, falling back to neural simulations:", err.message);
-      setCountries(MOCK_DATA);
-      setIsLive(false);
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    // Enforce static mock data per user request
+    setCountries(MOCK_DATA);
+    setIsLive(false);
+    setLoading(false);
   };
 
   useEffect(() => {
