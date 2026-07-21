@@ -8,6 +8,7 @@ import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRi
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState, useTransition } from "react";
 import { jsPDF } from "jspdf";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 const MOCK_DATA: CountryData[] = [
   { 
@@ -1805,6 +1806,7 @@ export default function App() {
   };
 
   return (
+    <BrowserRouter>
     <div className="relative min-h-screen overflow-x-hidden selection:bg-brand-gold/20">
       {/* Dynamic Background Particles */}
       <div className="particles">
@@ -1827,6 +1829,24 @@ export default function App() {
       </div>
 
       <div className="relative z-10">
+        
+        {/* Premium Executive Navigation Bar */}
+        <div className="sticky top-0 z-50 bg-black/90 backdrop-blur border-b border-[#d4af37]/30">
+          <div className="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-6">
+              <Link to="/" className="font-display text-xl md:text-2xl font-bold tracking-tight text-white hover:text-[#d4af37] transition-colors">
+                GLOBAL COMPASS AI
+              </Link>
+            </div>
+            <div className="flex items-center gap-6 text-xs font-bold uppercase tracking-widest text-slate-400">
+              <Link to="/" className="hover:text-[#d4af37] transition-colors">Dashboard & Tools</Link>
+              <Link to="/country" className="hover:text-[#d4af37] transition-colors">Country Profiles</Link>
+              <Link to="/city" className="hover:text-[#d4af37] transition-colors">City Guides</Link>
+              <Link to="/salary" className="hover:text-[#d4af37] transition-colors">Global Salaries</Link>
+            </div>
+          </div>
+        </div>
+
         {/* Navigation */}
         <nav className="container mx-auto px-6 py-8 flex justify-between items-center">
           <div className="flex items-center gap-6">
@@ -1868,6 +1888,567 @@ export default function App() {
           </div>
         </nav>
 
+        {/* Global Currency Control Toolbar (Visible on all pages) */}
+        <div className="container mx-auto px-6 py-6 mt-6">
+            {/* Global Currency Control Toolbar */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-5 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl shadow-black/60 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
+                  <DollarSign className="w-5 h-5 text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold tracking-tight">GLOBAL DATA LOCALIZATION</h3>
+                  <div className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                    <span className="animate-pulse">✨</span> PLATFORM DISPLAY CURRENCY:
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="relative flex items-center gap-3 bg-[#111111]/90 backdrop-blur-xl px-5 py-3 rounded-xl border border-[#d4af37]/40 hover:border-[#d4af37] transition-all group/select shadow-inner shadow-black">
+                  <select 
+                    value={selectedCurrency}
+                    onChange={(e) => setSelectedCurrency(e.target.value)}
+                    className="bg-transparent border-none text-sm font-bold text-white focus:outline-none cursor-pointer tracking-wider min-w-[200px] appearance-none z-10"
+                    style={{ backgroundImage: 'none' }}
+                  >
+                    {Object.entries(CONVERSION_RATES).map(([code, config]) => (
+                      <option key={code} value={code} className="bg-[#111111] text-white text-base py-2">
+                        {code} ({config.symbol}) — {config.name}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute right-5 w-2.5 h-2.5 border-r-2 border-b-2 border-[#d4af37]/60 rotate-45 transform -translate-y-0.5 group-hover/select:border-[#d4af37] transition-all pointer-events-none" />
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+        <Routes>
+          <Route path="/country" element={<div className="container mx-auto px-6 py-10">            {/* 🌐 COMPREHENSIVE COUNTRY PROFILE & RELOCATION GUIDE */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-8 md:p-12 shadow-2xl shadow-black/80 relative overflow-hidden mt-8 mb-16">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
+                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Country Hub</span>
+                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">🌐 COMPREHENSIVE COUNTRY PROFILE <span className="text-brand-gold">&</span> RELOCATION GUIDE</h2>
+                  <p className="text-sm text-zinc-400 mt-2">Aggregated macro-economic, tax, and lifestyle intelligence for executive relocation.</p>
+                </div>
+
+                <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
+                  <div className="w-full space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Master Jurisdiction Selector</label>
+                      <select 
+                        value={profileCountry}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          startTransition(() => setProfileCountry(val));
+                        }}
+                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
+                      >
+                        {countries.map(c => (
+                          <option key={`profile-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                        ))}
+                      </select>
+                  </div>
+
+                  <button 
+                    onClick={generateCountryProfile}
+                    disabled={isGeneratingProfile}
+                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                  >
+                    {isGeneratingProfile ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>Aggregating Data...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Globe className="w-5 h-5" />
+                        <span>Generate Full Country Report</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Dashboard Data Grid */}
+                <div className="min-h-[400px] flex flex-col relative rounded-3xl border border-white/5 bg-black/40 p-8 md:p-10">
+                  <AnimatePresence mode="wait">
+                    {!profileData && !isGeneratingProfile ? (
+                      <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
+                        <Globe className="w-16 h-16 text-white" />
+                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and generate the report to view proprietary analytics</p>
+                      </div>
+                    ) : isGeneratingProfile ? (
+                      <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
+                        <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
+                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Macro Intelligence...</p>
+                      </div>
+                    ) : (
+                      profileData && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex flex-col gap-10"
+                        >
+                          <div className="flex items-center gap-4 border-b border-brand-gold/20 pb-6">
+                            <h3 className="text-3xl font-black text-white">{profileCountry}</h3>
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
+                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Verified Global Data</span>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {/* Pillar 1: Tax & Wealth */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <DollarSign className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Tax & Wealth</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Max Income Tax</span>
+                                  <div className={`text-xl font-bold ${profileData.taxWealth.maxIncomeTax === 0 ? 'text-[#d4af37]' : 'text-white'}`}>
+                                    {profileData.taxWealth.maxIncomeTax === 0 ? '0% (Tax Free)' : `${profileData.taxWealth.maxIncomeTax}%`}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Corporate Tax</span>
+                                  <div className={`text-xl font-bold ${profileData.taxWealth.corpTax === 0 ? 'text-[#d4af37]' : 'text-white'}`}>
+                                    {profileData.taxWealth.corpTax}%
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Crypto & Capital Gains</span>
+                                  <div className={`text-sm font-bold ${profileData.taxWealth.capitalGains.includes('0%') ? 'text-[#d4af37]' : 'text-white'}`}>
+                                    {profileData.taxWealth.capitalGains}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 2: Immigration & Visas */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Plane className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Immigration</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Top Visa Options</span>
+                                  <div className={`text-sm font-bold ${profileData.immigration.visas.includes('Digital Nomad') ? 'text-[#d4af37]' : 'text-white'} leading-tight`}>
+                                    {profileData.immigration.visas}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Standard Processing</span>
+                                  <div className="text-white text-sm font-bold">{profileData.immigration.processing}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 3: Cost of Living */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Home className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Housing & Cost</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Est. Monthly Rent (1BR)</span>
+                                  <div className="text-white font-bold text-xl">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(profileData.costHousing.rent * conv.rate);
+                                    })()}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Basic Utilities</span>
+                                  <div className="text-white font-bold text-lg">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(profileData.costHousing.utilities * conv.rate);
+                                    })()}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Expat Cost Index</span>
+                                  <div className="text-white font-bold text-lg">{profileData.costHousing.costIndex} / 100</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 4: Quality of Life */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <HeartPulse className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Quality of Life</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Standard</span>
+                                  <div className="text-white text-sm font-bold leading-tight">{profileData.qualityLife.healthcare}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Safety & Crime Index</span>
+                                  <div className={`text-sm font-bold ${profileData.qualityLife.safety.includes('AAA') ? 'text-[#d4af37]' : 'text-white'}`}>
+                                    {profileData.qualityLife.safety}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Primary Language(s)</span>
+                                  <div className="text-white text-sm font-bold leading-tight">{profileData.qualityLife.languages}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+</div>} />
+          <Route path="/city" element={<div className="container mx-auto px-6 py-10">            {/* 🏙️ COMPREHENSIVE CITY GUIDE & NEIGHBORHOOD PROFILES */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-8 md:p-12 shadow-2xl shadow-black/80 relative overflow-hidden mt-8 mb-16">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
+                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Urban Intelligence</span>
+                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">🏙️ COMPREHENSIVE CITY GUIDE <span className="text-brand-gold">&</span> NEIGHBORHOOD PROFILES</h2>
+                  <p className="text-sm text-zinc-400 mt-2">Curated localized metrics and luxury expat housing data.</p>
+                </div>
+
+                <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
+                  <div className="w-full space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction (Country)</label>
+                      <select 
+                        value={cityGuideCountry}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          startTransition(() => setCityGuideCountry(val));
+                        }}
+                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
+                      >
+                        {countries.map(c => (
+                          <option key={`city-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
+                        ))}
+                      </select>
+                  </div>
+                  
+                  <div className="w-full space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Top Tier City / Expat Hub</label>
+                      <select 
+                        value={cityGuideCity}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          startTransition(() => setCityGuideCity(val));
+                        }}
+                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
+                      >
+                        {['Financial Capital', 'Tech Hub', 'Coastal/Luxury Hub'].map(c => (
+                          <option key={`city-hub-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                        ))}
+                      </select>
+                  </div>
+
+                  <button 
+                    onClick={generateCityGuide}
+                    disabled={isGeneratingCity}
+                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                  >
+                    {isGeneratingCity ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>Aggregating Data...</span>
+                      </>
+                    ) : (
+                      <>
+                        <MapPin className="w-5 h-5" />
+                        <span>Generate Full City Report</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Dashboard Data Grid */}
+                <div className="min-h-[400px] flex flex-col relative rounded-3xl border border-white/5 bg-black/40 p-8 md:p-10">
+                  <AnimatePresence mode="wait">
+                    {!cityGuideData && !isGeneratingCity ? (
+                      <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
+                        <MapPin className="w-16 h-16 text-white" />
+                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and city hub to generate the localized report</p>
+                      </div>
+                    ) : isGeneratingCity ? (
+                      <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
+                        <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
+                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Local Intelligence...</p>
+                      </div>
+                    ) : (
+                      cityGuideData && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex flex-col gap-10"
+                        >
+                          <div className="flex items-center gap-4 border-b border-brand-gold/20 pb-6">
+                            <h3 className="text-3xl font-black text-white">{cityGuideCity}, {cityGuideCountry}</h3>
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
+                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Verified Expat Data</span>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {/* Pillar 1: Top Neighborhoods */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Home className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Top Neighborhoods</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n1}</span>
+                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v1}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n2}</span>
+                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v2}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n3}</span>
+                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v3}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 2: Housing Market */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Landmark className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Housing Market</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (1BR Premium)</span>
+                                  <div className="text-white font-bold text-xl">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(cityGuideData.housing.rent1br * conv.rate);
+                                    })()}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (3BR Family)</span>
+                                  <div className="text-white font-bold text-xl">
+                                    {(() => {
+                                      const conv = CONVERSION_RATES[selectedCurrency];
+                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(cityGuideData.housing.rent3br * conv.rate);
+                                    })()}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 3: Lifestyle & Amenities */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Sparkles className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Lifestyle & Amenities</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">International Schools</span>
+                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.schools}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Quality</span>
+                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.healthcare}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Entertainment & Dining</span>
+                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.dining}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Pillar 4: Connectivity */}
+                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
+                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
+                                <Truck className="w-5 h-5 text-amber-600" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Connectivity</h4>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Public Transit Score</span>
+                                  <div className="text-white font-bold text-xl">{cityGuideData.connectivity.transitScore} / 100</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Airport Access</span>
+                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.connectivity.airport}</div>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Walkability Index</span>
+                                  <div className="text-white font-bold text-xl">{cityGuideData.connectivity.walkability} / 100</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+</div>} />
+          <Route path="/salary" element={<div className="container mx-auto px-6 py-10">            {/* 💰 COMPREHENSIVE GLOBAL SALARY DASHBOARD */}
+            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-8 md:p-12 shadow-2xl shadow-black/80 relative overflow-hidden mt-8 mb-16">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 blur-[120px] -z-10" />
+              
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
+                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Benchmarking</span>
+                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">💰 COMPREHENSIVE GLOBAL SALARY DASHBOARD</h2>
+                  <p className="text-sm text-zinc-400 mt-2">Executive compensation analysis across premium global jurisdictions.</p>
+                </div>
+
+                <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
+                  <div className="w-full space-y-2">
+                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Executive Profession / Tech Role</label>
+                      <select 
+                        value={salaryDashboardRole}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          startTransition(() => setSalaryDashboardRole(val));
+                        }}
+                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
+                      >
+                        {['AI/ML Engineering', 'Investment Banking (VP)', 'Chief Marketing Officer', 'Senior Product Manager'].map(c => (
+                          <option key={`salary-role-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
+                        ))}
+                      </select>
+                  </div>
+
+                  <button 
+                    onClick={generateSalaryDashboard}
+                    disabled={isGeneratingSalaryDashboard}
+                    className="w-full md:w-auto md:min-w-[340px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                  >
+                    {isGeneratingSalaryDashboard ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>Aggregating Data...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Briefcase className="w-5 h-5" />
+                        <span>Generate Global Salary Report</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Dashboard Data Grid */}
+                <div className="min-h-[400px] flex flex-col relative rounded-3xl border border-white/5 bg-black/40 p-8 md:p-10">
+                  <AnimatePresence mode="wait">
+                    {!salaryDashboardData && !isGeneratingSalaryDashboard ? (
+                      <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
+                        <DollarSign className="w-16 h-16 text-white" />
+                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select an executive role to view cross-border salary benchmarks</p>
+                      </div>
+                    ) : isGeneratingSalaryDashboard ? (
+                      <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
+                        <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
+                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Benchmarking Compensation...</p>
+                      </div>
+                    ) : (
+                      salaryDashboardData && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex flex-col gap-10"
+                        >
+                          <div className="flex items-center gap-4 border-b border-brand-gold/20 pb-6">
+                            <h3 className="text-3xl font-black text-white">{salaryDashboardRole}</h3>
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-600/10 border border-amber-600/30 rounded-full">
+                              <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
+                              <span className="text-[9px] font-bold text-amber-500 uppercase tracking-widest">Verified Benchmark</span>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {salaryDashboardData.map((data, idx) => (
+                              <div key={`salary-card-${idx}`} className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col hover:border-brand-gold/40 transition-colors relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                  <Globe className="w-24 h-24 text-brand-gold" />
+                                </div>
+                                
+                                <div className="relative z-10">
+                                  <div className="flex items-start justify-between pb-4 border-b border-white/5 mb-5">
+                                    <div>
+                                      <h4 className="text-xl font-black text-white tracking-tight">{data.country}</h4>
+                                      <span className="text-[9px] font-bold text-amber-600 uppercase tracking-widest block mt-1">{data.demand}</span>
+                                    </div>
+                                    <Globe className="w-6 h-6 text-zinc-600" />
+                                  </div>
+                                  
+                                  <div className="flex flex-col gap-5">
+                                    <div>
+                                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg Base Salary</span>
+                                      <div className="text-white font-bold text-xl">
+                                        {(() => {
+                                          const conv = CONVERSION_RATES[selectedCurrency];
+                                          return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(data.avgBase * conv.rate);
+                                        })()}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Expected Equity/Bonus</span>
+                                      <div className="text-white font-bold text-lg">
+                                        {(() => {
+                                          const conv = CONVERSION_RATES[selectedCurrency];
+                                          return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(data.bonus * conv.rate);
+                                        })()}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Est. Effective Tax</span>
+                                      <div className={`text-xl font-bold ${data.taxRate === 0 ? 'text-amber-500' : 'text-white'}`}>
+                                        {data.taxRate}%
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="mt-2 p-4 bg-brand-gold/10 border border-brand-gold/20 rounded-xl">
+                                      <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mb-1">Net Take-Home Pay</span>
+                                      <div className="text-brand-gold font-black text-2xl tracking-tight">
+                                        {(() => {
+                                          const conv = CONVERSION_RATES[selectedCurrency];
+                                          return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(data.netTakeHome * conv.rate);
+                                        })()}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+</div>} />
+          <Route path="/" element={<>
         {/* Hero Section */}
         <header className="container mx-auto px-6 pt-20 pb-20 flex flex-col items-center text-center">
           <motion.div
@@ -1913,40 +2494,6 @@ export default function App() {
         {/* Global Hub: Comparison Tool & Index Table */}
         <section id="compare" className="py-20 bg-black/40 border-y border-white/5">
           <div className="container mx-auto px-6 flex flex-col gap-10">
-            {/* Global Currency Control Toolbar */}
-            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-5 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl shadow-black/60 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
-                  <DollarSign className="w-5 h-5 text-amber-600" />
-                </div>
-                <div>
-                  <h3 className="text-white font-bold tracking-tight">GLOBAL DATA LOCALIZATION</h3>
-                  <div className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <span className="animate-pulse">✨</span> PLATFORM DISPLAY CURRENCY:
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="relative flex items-center gap-3 bg-[#111111]/90 backdrop-blur-xl px-5 py-3 rounded-xl border border-[#d4af37]/40 hover:border-[#d4af37] transition-all group/select shadow-inner shadow-black">
-                  <select 
-                    value={selectedCurrency}
-                    onChange={(e) => setSelectedCurrency(e.target.value)}
-                    className="bg-transparent border-none text-sm font-bold text-white focus:outline-none cursor-pointer tracking-wider min-w-[200px] appearance-none z-10"
-                    style={{ backgroundImage: 'none' }}
-                  >
-                    {Object.entries(CONVERSION_RATES).map(([code, config]) => (
-                      <option key={code} value={code} className="bg-[#111111] text-white text-base py-2">
-                        {code} ({config.symbol}) — {config.name}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="absolute right-5 w-2.5 h-2.5 border-r-2 border-b-2 border-[#d4af37]/60 rotate-45 transform -translate-y-0.5 group-hover/select:border-[#d4af37] transition-all pointer-events-none" />
-                </div>
-              </div>
-            </div>
-
             {/* 🧮 EXECUTIVE TAX & TAKE-HOME PAY CALCULATOR */}
             <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/30 p-8 shadow-2xl shadow-black/60 relative overflow-hidden">
               <div className="absolute top-0 left-0 w-32 h-32 bg-brand-gold/5 blur-[80px] -z-10" />
@@ -5212,527 +5759,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* 🌐 COMPREHENSIVE COUNTRY PROFILE & RELOCATION GUIDE */}
-            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-8 md:p-12 shadow-2xl shadow-black/80 relative overflow-hidden mt-8 mb-16">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 blur-[120px] -z-10" />
-              
-              <div className="flex flex-col gap-10">
-                <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
-                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Country Hub</span>
-                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">🌐 COMPREHENSIVE COUNTRY PROFILE <span className="text-brand-gold">&</span> RELOCATION GUIDE</h2>
-                  <p className="text-sm text-zinc-400 mt-2">Aggregated macro-economic, tax, and lifestyle intelligence for executive relocation.</p>
-                </div>
-
-                <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
-                  <div className="w-full space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Master Jurisdiction Selector</label>
-                      <select 
-                        value={profileCountry}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          startTransition(() => setProfileCountry(val));
-                        }}
-                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
-                      >
-                        {countries.map(c => (
-                          <option key={`profile-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
-                        ))}
-                      </select>
-                  </div>
-
-                  <button 
-                    onClick={generateCountryProfile}
-                    disabled={isGeneratingProfile}
-                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
-                  >
-                    {isGeneratingProfile ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>Aggregating Data...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Globe className="w-5 h-5" />
-                        <span>Generate Full Country Report</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {/* Dashboard Data Grid */}
-                <div className="min-h-[400px] flex flex-col relative rounded-3xl border border-white/5 bg-black/40 p-8 md:p-10">
-                  <AnimatePresence mode="wait">
-                    {!profileData && !isGeneratingProfile ? (
-                      <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
-                        <Globe className="w-16 h-16 text-white" />
-                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and generate the report to view proprietary analytics</p>
-                      </div>
-                    ) : isGeneratingProfile ? (
-                      <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
-                        <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
-                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Macro Intelligence...</p>
-                      </div>
-                    ) : (
-                      profileData && (
-                        <motion.div 
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="flex flex-col gap-10"
-                        >
-                          <div className="flex items-center gap-4 border-b border-brand-gold/20 pb-6">
-                            <h3 className="text-3xl font-black text-white">{profileCountry}</h3>
-                            <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
-                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Verified Global Data</span>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {/* Pillar 1: Tax & Wealth */}
-                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
-                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
-                                <DollarSign className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Tax & Wealth</h4>
-                              </div>
-                              <div className="flex flex-col gap-4">
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Max Income Tax</span>
-                                  <div className={`text-xl font-bold ${profileData.taxWealth.maxIncomeTax === 0 ? 'text-[#d4af37]' : 'text-white'}`}>
-                                    {profileData.taxWealth.maxIncomeTax === 0 ? '0% (Tax Free)' : `${profileData.taxWealth.maxIncomeTax}%`}
-                                  </div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Corporate Tax</span>
-                                  <div className={`text-xl font-bold ${profileData.taxWealth.corpTax === 0 ? 'text-[#d4af37]' : 'text-white'}`}>
-                                    {profileData.taxWealth.corpTax}%
-                                  </div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Crypto & Capital Gains</span>
-                                  <div className={`text-sm font-bold ${profileData.taxWealth.capitalGains.includes('0%') ? 'text-[#d4af37]' : 'text-white'}`}>
-                                    {profileData.taxWealth.capitalGains}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Pillar 2: Immigration & Visas */}
-                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
-                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
-                                <Plane className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Immigration</h4>
-                              </div>
-                              <div className="flex flex-col gap-4">
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Top Visa Options</span>
-                                  <div className={`text-sm font-bold ${profileData.immigration.visas.includes('Digital Nomad') ? 'text-[#d4af37]' : 'text-white'} leading-tight`}>
-                                    {profileData.immigration.visas}
-                                  </div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Standard Processing</span>
-                                  <div className="text-white text-sm font-bold">{profileData.immigration.processing}</div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Pillar 3: Cost of Living */}
-                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
-                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
-                                <Home className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Housing & Cost</h4>
-                              </div>
-                              <div className="flex flex-col gap-4">
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Est. Monthly Rent (1BR)</span>
-                                  <div className="text-white font-bold text-xl">
-                                    {(() => {
-                                      const conv = CONVERSION_RATES[selectedCurrency];
-                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(profileData.costHousing.rent * conv.rate);
-                                    })()}
-                                  </div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Basic Utilities</span>
-                                  <div className="text-white font-bold text-lg">
-                                    {(() => {
-                                      const conv = CONVERSION_RATES[selectedCurrency];
-                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(profileData.costHousing.utilities * conv.rate);
-                                    })()}
-                                  </div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Expat Cost Index</span>
-                                  <div className="text-white font-bold text-lg">{profileData.costHousing.costIndex} / 100</div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Pillar 4: Quality of Life */}
-                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
-                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
-                                <HeartPulse className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Quality of Life</h4>
-                              </div>
-                              <div className="flex flex-col gap-4">
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Standard</span>
-                                  <div className="text-white text-sm font-bold leading-tight">{profileData.qualityLife.healthcare}</div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Safety & Crime Index</span>
-                                  <div className={`text-sm font-bold ${profileData.qualityLife.safety.includes('AAA') ? 'text-[#d4af37]' : 'text-white'}`}>
-                                    {profileData.qualityLife.safety}
-                                  </div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Primary Language(s)</span>
-                                  <div className="text-white text-sm font-bold leading-tight">{profileData.qualityLife.languages}</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-            </div>
-
-            {/* 🏙️ COMPREHENSIVE CITY GUIDE & NEIGHBORHOOD PROFILES */}
-            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-8 md:p-12 shadow-2xl shadow-black/80 relative overflow-hidden mt-8 mb-16">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 blur-[120px] -z-10" />
-              
-              <div className="flex flex-col gap-10">
-                <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
-                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Urban Intelligence</span>
-                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">🏙️ COMPREHENSIVE CITY GUIDE <span className="text-brand-gold">&</span> NEIGHBORHOOD PROFILES</h2>
-                  <p className="text-sm text-zinc-400 mt-2">Curated localized metrics and luxury expat housing data.</p>
-                </div>
-
-                <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
-                  <div className="w-full space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction (Country)</label>
-                      <select 
-                        value={cityGuideCountry}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          startTransition(() => setCityGuideCountry(val));
-                        }}
-                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
-                      >
-                        {countries.map(c => (
-                          <option key={`city-country-${c.country_name}`} value={c.country_name} className="bg-[#1a1a1a]">{c.country_name}</option>
-                        ))}
-                      </select>
-                  </div>
-                  
-                  <div className="w-full space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Top Tier City / Expat Hub</label>
-                      <select 
-                        value={cityGuideCity}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          startTransition(() => setCityGuideCity(val));
-                        }}
-                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
-                      >
-                        {['Financial Capital', 'Tech Hub', 'Coastal/Luxury Hub'].map(c => (
-                          <option key={`city-hub-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
-                        ))}
-                      </select>
-                  </div>
-
-                  <button 
-                    onClick={generateCityGuide}
-                    disabled={isGeneratingCity}
-                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
-                  >
-                    {isGeneratingCity ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>Aggregating Data...</span>
-                      </>
-                    ) : (
-                      <>
-                        <MapPin className="w-5 h-5" />
-                        <span>Generate Full City Report</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {/* Dashboard Data Grid */}
-                <div className="min-h-[400px] flex flex-col relative rounded-3xl border border-white/5 bg-black/40 p-8 md:p-10">
-                  <AnimatePresence mode="wait">
-                    {!cityGuideData && !isGeneratingCity ? (
-                      <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
-                        <MapPin className="w-16 h-16 text-white" />
-                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and city hub to generate the localized report</p>
-                      </div>
-                    ) : isGeneratingCity ? (
-                      <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
-                        <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
-                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Local Intelligence...</p>
-                      </div>
-                    ) : (
-                      cityGuideData && (
-                        <motion.div 
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="flex flex-col gap-10"
-                        >
-                          <div className="flex items-center gap-4 border-b border-brand-gold/20 pb-6">
-                            <h3 className="text-3xl font-black text-white">{cityGuideCity}, {cityGuideCountry}</h3>
-                            <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
-                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Verified Expat Data</span>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {/* Pillar 1: Top Neighborhoods */}
-                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
-                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
-                                <Home className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Top Neighborhoods</h4>
-                              </div>
-                              <div className="flex flex-col gap-4">
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n1}</span>
-                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v1}</div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n2}</span>
-                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v2}</div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n3}</span>
-                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v3}</div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Pillar 2: Housing Market */}
-                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
-                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
-                                <Landmark className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Housing Market</h4>
-                              </div>
-                              <div className="flex flex-col gap-4">
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (1BR Premium)</span>
-                                  <div className="text-white font-bold text-xl">
-                                    {(() => {
-                                      const conv = CONVERSION_RATES[selectedCurrency];
-                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(cityGuideData.housing.rent1br * conv.rate);
-                                    })()}
-                                  </div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (3BR Family)</span>
-                                  <div className="text-white font-bold text-xl">
-                                    {(() => {
-                                      const conv = CONVERSION_RATES[selectedCurrency];
-                                      return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(cityGuideData.housing.rent3br * conv.rate);
-                                    })()}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Pillar 3: Lifestyle & Amenities */}
-                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
-                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
-                                <Sparkles className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Lifestyle & Amenities</h4>
-                              </div>
-                              <div className="flex flex-col gap-4">
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">International Schools</span>
-                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.schools}</div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Quality</span>
-                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.healthcare}</div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Entertainment & Dining</span>
-                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.dining}</div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Pillar 4: Connectivity */}
-                            <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
-                              <div className="flex items-center gap-3 pb-4 border-b border-white/5">
-                                <Truck className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Connectivity</h4>
-                              </div>
-                              <div className="flex flex-col gap-4">
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Public Transit Score</span>
-                                  <div className="text-white font-bold text-xl">{cityGuideData.connectivity.transitScore} / 100</div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Airport Access</span>
-                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.connectivity.airport}</div>
-                                </div>
-                                <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Walkability Index</span>
-                                  <div className="text-white font-bold text-xl">{cityGuideData.connectivity.walkability} / 100</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-            </div>
-
-            {/* 💰 COMPREHENSIVE GLOBAL SALARY DASHBOARD */}
-            <div className="w-full bg-[#1a1a1a] rounded-2xl border border-[#d4af37]/40 p-8 md:p-12 shadow-2xl shadow-black/80 relative overflow-hidden mt-8 mb-16">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 blur-[120px] -z-10" />
-              
-              <div className="flex flex-col gap-10">
-                <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
-                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Benchmarking</span>
-                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">💰 COMPREHENSIVE GLOBAL SALARY DASHBOARD</h2>
-                  <p className="text-sm text-zinc-400 mt-2">Executive compensation analysis across premium global jurisdictions.</p>
-                </div>
-
-                <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
-                  <div className="w-full space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Executive Profession / Tech Role</label>
-                      <select 
-                        value={salaryDashboardRole}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          startTransition(() => setSalaryDashboardRole(val));
-                        }}
-                        className="w-full bg-black/60 border border-brand-gold/30 rounded-xl px-6 py-4 text-white font-bold focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer shadow-inner shadow-black"
-                      >
-                        {['AI/ML Engineering', 'Investment Banking (VP)', 'Chief Marketing Officer', 'Senior Product Manager'].map(c => (
-                          <option key={`salary-role-${c}`} value={c} className="bg-[#1a1a1a]">{c}</option>
-                        ))}
-                      </select>
-                  </div>
-
-                  <button 
-                    onClick={generateSalaryDashboard}
-                    disabled={isGeneratingSalaryDashboard}
-                    className="w-full md:w-auto md:min-w-[340px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
-                  >
-                    {isGeneratingSalaryDashboard ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>Aggregating Data...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Briefcase className="w-5 h-5" />
-                        <span>Generate Global Salary Report</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {/* Dashboard Data Grid */}
-                <div className="min-h-[400px] flex flex-col relative rounded-3xl border border-white/5 bg-black/40 p-8 md:p-10">
-                  <AnimatePresence mode="wait">
-                    {!salaryDashboardData && !isGeneratingSalaryDashboard ? (
-                      <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
-                        <DollarSign className="w-16 h-16 text-white" />
-                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select an executive role to view cross-border salary benchmarks</p>
-                      </div>
-                    ) : isGeneratingSalaryDashboard ? (
-                      <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
-                        <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
-                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Benchmarking Compensation...</p>
-                      </div>
-                    ) : (
-                      salaryDashboardData && (
-                        <motion.div 
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="flex flex-col gap-10"
-                        >
-                          <div className="flex items-center gap-4 border-b border-brand-gold/20 pb-6">
-                            <h3 className="text-3xl font-black text-white">{salaryDashboardRole}</h3>
-                            <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-600/10 border border-amber-600/30 rounded-full">
-                              <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
-                              <span className="text-[9px] font-bold text-amber-500 uppercase tracking-widest">Verified Benchmark</span>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {salaryDashboardData.map((data, idx) => (
-                              <div key={`salary-card-${idx}`} className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col hover:border-brand-gold/40 transition-colors relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                                  <Globe className="w-24 h-24 text-brand-gold" />
-                                </div>
-                                
-                                <div className="relative z-10">
-                                  <div className="flex items-start justify-between pb-4 border-b border-white/5 mb-5">
-                                    <div>
-                                      <h4 className="text-xl font-black text-white tracking-tight">{data.country}</h4>
-                                      <span className="text-[9px] font-bold text-amber-600 uppercase tracking-widest block mt-1">{data.demand}</span>
-                                    </div>
-                                    <Globe className="w-6 h-6 text-zinc-600" />
-                                  </div>
-                                  
-                                  <div className="flex flex-col gap-5">
-                                    <div>
-                                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg Base Salary</span>
-                                      <div className="text-white font-bold text-xl">
-                                        {(() => {
-                                          const conv = CONVERSION_RATES[selectedCurrency];
-                                          return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(data.avgBase * conv.rate);
-                                        })()}
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Expected Equity/Bonus</span>
-                                      <div className="text-white font-bold text-lg">
-                                        {(() => {
-                                          const conv = CONVERSION_RATES[selectedCurrency];
-                                          return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(data.bonus * conv.rate);
-                                        })()}
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Est. Effective Tax</span>
-                                      <div className={`text-xl font-bold ${data.taxRate === 0 ? 'text-amber-500' : 'text-white'}`}>
-                                        {data.taxRate}%
-                                      </div>
-                                    </div>
-                                    
-                                    <div className="mt-2 p-4 bg-brand-gold/10 border border-brand-gold/20 rounded-xl">
-                                      <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mb-1">Net Take-Home Pay</span>
-                                      <div className="text-brand-gold font-black text-2xl tracking-tight">
-                                        {(() => {
-                                          const conv = CONVERSION_RATES[selectedCurrency];
-                                          return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(data.netTakeHome * conv.rate);
-                                        })()}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-            </div>
-
             {/* Headline */}
             <div className="flex flex-col md:flex-row justify-between items-end gap-8 font-display relative">
               <div className="max-w-xl">
@@ -6134,6 +6160,96 @@ export default function App() {
           </section>
         )}
 
+
+        {/* Global Registration Section */}
+        <section id="join" className="py-24 relative overflow-hidden bg-gradient-to-b from-transparent to-brand-midnight">
+          <div className="container mx-auto px-6">
+            <div className="max-w-4xl mx-auto rounded-[2.5rem] bg-white/[0.02] border border-white/5 p-8 md:p-16 backdrop-blur-xl relative overflow-hidden">
+              {/* Accents */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-terracotta-start/5 blur-[100px] -z-10" />
+              
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                  <h2 className="font-display text-4xl font-bold mb-6 text-slate-400">Begin Your Wealth Journey</h2>
+                  <p className="text-gray-400 text-lg mb-8">
+                    Join our exclusive network of global growth seekers. Intelligence that moves as fast as the markets.
+                  </p>
+                  <div className="space-y-4">
+                    {[
+                      "Neural Jurisdiction Analysis",
+                      "Daily Resource Allocation Insights",
+                      "Tax Optimization Strategies",
+                      "Confidential Growth Network"
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-3 text-sm text-slate-400">
+                        <CheckCircle2 className="w-5 h-5 text-amber-600" />
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <form className="space-y-4" onSubmit={handleRegister}>
+                  {/* Autofill Honeypot */}
+                  <div className="absolute -top-[1000px] -left-[1000px] pointer-events-none" aria-hidden="true">
+                    <input type="text" name="dummy_name" tabIndex={-1} />
+                    <input type="email" name="dummy_email" tabIndex={-1} />
+                    <input type="password" name="dummy_password" tabIndex={-1} />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Full Name</label>
+                    <input 
+                      type="text" 
+                      required
+                      autoComplete="one-time-code"
+                      value={regName}
+                      onChange={(e) => setRegName(e.target.value)}
+                      placeholder="John Doe" 
+                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-slate-400" 
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Neural Email Address</label>
+                    <input 
+                      type="email" 
+                      required
+                      readOnly
+                      onFocus={(e) => e.target.removeAttribute('readOnly')}
+                      autoComplete="one-time-code"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      placeholder="john@nebula.com" 
+                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-slate-400" 
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Secure Password</label>
+                    <input 
+                      type="password" 
+                      required
+                      autoComplete="one-time-code"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      placeholder="••••••••" 
+                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-slate-400" 
+                    />
+                  </div>
+                  <button 
+                    disabled={authLoading}
+                    className="w-full py-4 bg-amber-600 text-brand-midnight font-bold rounded-xl hover:bg-slate-400 transition-all shadow-xl shadow-brand-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {authLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "REQUEST PRIVATE ACCESS"}
+                  </button>
+                  <p className="text-[10px] text-center text-slate-400 uppercase tracking-widest">Initial allocation limited to premium cohorts</p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+          </>} />
+        </Routes>
         {/* About: Leadership Profile - Premium Fintech UI */}
         <section id="about" className="py-24 relative overflow-hidden bg-[#0A0B0D]">
           <div className="absolute inset-0">
@@ -6226,94 +6342,6 @@ export default function App() {
             </div>
           </div>
         </section>
-
-        {/* Global Registration Section */}
-        <section id="join" className="py-24 relative overflow-hidden bg-gradient-to-b from-transparent to-brand-midnight">
-          <div className="container mx-auto px-6">
-            <div className="max-w-4xl mx-auto rounded-[2.5rem] bg-white/[0.02] border border-white/5 p-8 md:p-16 backdrop-blur-xl relative overflow-hidden">
-              {/* Accents */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-terracotta-start/5 blur-[100px] -z-10" />
-              
-              <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                  <h2 className="font-display text-4xl font-bold mb-6 text-slate-400">Begin Your Wealth Journey</h2>
-                  <p className="text-gray-400 text-lg mb-8">
-                    Join our exclusive network of global growth seekers. Intelligence that moves as fast as the markets.
-                  </p>
-                  <div className="space-y-4">
-                    {[
-                      "Neural Jurisdiction Analysis",
-                      "Daily Resource Allocation Insights",
-                      "Tax Optimization Strategies",
-                      "Confidential Growth Network"
-                    ].map((item, i) => (
-                      <div key={i} className="flex items-center gap-3 text-sm text-slate-400">
-                        <CheckCircle2 className="w-5 h-5 text-amber-600" />
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <form className="space-y-4" onSubmit={handleRegister}>
-                  {/* Autofill Honeypot */}
-                  <div className="absolute -top-[1000px] -left-[1000px] pointer-events-none" aria-hidden="true">
-                    <input type="text" name="dummy_name" tabIndex={-1} />
-                    <input type="email" name="dummy_email" tabIndex={-1} />
-                    <input type="password" name="dummy_password" tabIndex={-1} />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Full Name</label>
-                    <input 
-                      type="text" 
-                      required
-                      autoComplete="one-time-code"
-                      value={regName}
-                      onChange={(e) => setRegName(e.target.value)}
-                      placeholder="John Doe" 
-                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-slate-400" 
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Neural Email Address</label>
-                    <input 
-                      type="email" 
-                      required
-                      readOnly
-                      onFocus={(e) => e.target.removeAttribute('readOnly')}
-                      autoComplete="one-time-code"
-                      value={regEmail}
-                      onChange={(e) => setRegEmail(e.target.value)}
-                      placeholder="john@nebula.com" 
-                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-slate-400" 
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Secure Password</label>
-                    <input 
-                      type="password" 
-                      required
-                      autoComplete="one-time-code"
-                      value={regPassword}
-                      onChange={(e) => setRegPassword(e.target.value)}
-                      placeholder="••••••••" 
-                      className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all text-slate-400" 
-                    />
-                  </div>
-                  <button 
-                    disabled={authLoading}
-                    className="w-full py-4 bg-amber-600 text-brand-midnight font-bold rounded-xl hover:bg-slate-400 transition-all shadow-xl shadow-brand-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    {authLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "REQUEST PRIVATE ACCESS"}
-                  </button>
-                  <p className="text-[10px] text-center text-slate-400 uppercase tracking-widest">Initial allocation limited to premium cohorts</p>
-                </form>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Footer: Institutional Compliance */}
         <footer className="pt-24 pb-12 bg-black border-t border-white/5">
           <div className="container mx-auto px-6">
@@ -6849,6 +6877,7 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
+    </BrowserRouter>
   );
 }
 
