@@ -1832,15 +1832,15 @@ export default function App() {
         
         {/* Unified Premium Navigation Bar */}
         <nav className="sticky top-0 z-50 bg-black/90 backdrop-blur border-b border-[#d4af37]/30">
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center gap-4">
+          <div className="container mx-auto px-6 py-6 flex justify-between items-center gap-4">
             <div className="flex items-center gap-3">
-              <CompassIcon className="w-8 h-8 text-[#d4af37]" />
-              <Link to="/" className="font-display text-xl md:text-2xl font-bold tracking-tight text-white hover:text-[#d4af37] transition-colors">
+              <CompassIcon className="w-10 h-10 text-[#d4af37]" />
+              <Link to="/" className="font-display text-2xl md:text-3xl font-extrabold tracking-widest text-white hover:text-[#d4af37] transition-colors">
                 GLOBAL COMPASS AI
               </Link>
             </div>
             
-            <div className="hidden md:flex flex-wrap items-center gap-6 text-xs font-bold uppercase tracking-widest text-slate-400">
+            <div className="hidden md:flex flex-wrap items-center gap-8 text-sm font-semibold uppercase tracking-widest text-slate-400">
               {/* Routing Links */}
               <Link to="/" className="hover:text-[#d4af37] transition-colors">Dashboard & Tools</Link>
               <Link to="/country" className="hover:text-[#d4af37] transition-colors">Country Profiles</Link>
