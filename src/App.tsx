@@ -1832,7 +1832,7 @@ export default function App() {
         
         {/* Unified Premium Navigation Bar */}
         <nav className="sticky top-0 z-50 bg-black/90 backdrop-blur border-b border-[#d4af37]/30">
-          <div className="container mx-auto px-6 py-6 flex justify-between items-center gap-4">
+          <div className="w-full max-w-[96%] mx-auto px-4 md:px-8 py-6 flex justify-between items-center gap-4">
             <div className="flex flex-row items-center gap-3 whitespace-nowrap">
               <CompassIcon className="w-10 h-10 text-[#d4af37] flex-shrink-0" />
               <Link to="/" className="font-display text-2xl md:text-3xl font-extrabold tracking-widest text-white hover:text-[#d4af37] transition-colors whitespace-nowrap">
