@@ -1412,7 +1412,7 @@ export default function App() {
         tax_rate_percent: adminTax || existingRef?.tax_rate_percent || 0,
         annual_growth: adminAnnualGrowth || existingRef?.annual_growth || "+0.0%",
         stability_score: adminStabilityScore || existingRef?.stability_score || "Stable",
-        monthly_rent: adminRent || existingRef?.rent || "",
+        rent: adminRent || existingRef?.rent || "",
         healthcare: adminHealthcare || existingRef?.healthcare || "",
         compass_index: adminCompassIndex || existingRef?.compass_index || 50,
         strategic_status: adminStrategicStatus || existingRef?.strategic_status || "Neutral",
