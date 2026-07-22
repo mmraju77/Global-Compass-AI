@@ -1812,7 +1812,7 @@ function HomeDashboard() {
               </Link>
             </div>
             
-            <div className="hidden xl:flex flex-row items-center whitespace-nowrap gap-6 text-sm font-semibold uppercase tracking-widest text-slate-400">
+            <div className="hidden xl:flex flex-row items-center whitespace-nowrap gap-6 text-base font-semibold uppercase tracking-widest text-slate-400">
               {/* Routing Links */}
               <Link to="/" className="hover:text-[#d4af37] transition-colors whitespace-nowrap">Dashboard & Tools</Link>
               <Link to="/country" className="hover:text-[#d4af37] transition-colors whitespace-nowrap">Country Profiles</Link>
@@ -1835,14 +1835,14 @@ function HomeDashboard() {
                   {user?.email?.toLowerCase() === "moovi7g@gmail.com" && (
                     <button 
                       onClick={() => setIsAdminPanelOpen(!isAdminPanelOpen)}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-600/30 text-amber-600 text-[10px] font-bold hover:bg-amber-600/10 transition-all uppercase tracking-widest cursor-pointer whitespace-nowrap flex-shrink-0"
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-600/30 text-amber-600 text-sm font-bold hover:bg-amber-600/10 transition-all uppercase tracking-widest cursor-pointer whitespace-nowrap flex-shrink-0"
                     >
                       <Lock className="w-3 h-3" /> Admin
                     </button>
                   )}
                   <button 
                     onClick={handleLogout}
-                    className="px-4 py-1.5 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-white transition-all cursor-pointer text-[10px] whitespace-nowrap flex-shrink-0"
+                    className="px-4 py-1.5 rounded-full border border-white/10 hover:border-terracotta-start/50 hover:text-white transition-all cursor-pointer text-sm whitespace-nowrap flex-shrink-0"
                   >
                     Logout
                   </button>
@@ -1870,7 +1870,7 @@ function HomeDashboard() {
                 </div>
                 <div>
                   <h3 className="text-white font-bold tracking-tight">GLOBAL DATA LOCALIZATION</h3>
-                  <div className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                  <div className="text-sm font-bold text-amber-600 uppercase tracking-[0.2em] flex items-center gap-2">
                     <span className="animate-pulse">✨</span> PLATFORM DISPLAY CURRENCY:
                   </div>
                 </div>
@@ -1881,7 +1881,7 @@ function HomeDashboard() {
                   <select 
                     value={selectedCurrency}
                     onChange={(e) => setSelectedCurrency(e.target.value)}
-                    className="bg-transparent border-none text-sm font-bold text-white focus:outline-none cursor-pointer tracking-wider min-w-[200px] appearance-none z-10"
+                    className="bg-transparent border-none text-base font-bold text-white focus:outline-none cursor-pointer tracking-wider min-w-[200px] appearance-none z-10"
                     style={{ backgroundImage: 'none' }}
                   >
                     {Object.entries(CONVERSION_RATES).map(([code, config]) => (
@@ -1904,14 +1904,14 @@ function HomeDashboard() {
               
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
-                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Country Hub</span>
+                  <span className="text-sm text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Country Hub</span>
                   <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">🌐 COMPREHENSIVE COUNTRY PROFILE <span className="text-brand-gold">&</span> RELOCATION GUIDE</h2>
-                  <p className="text-sm text-zinc-400 mt-2">Aggregated macro-economic, tax, and lifestyle intelligence for executive relocation.</p>
+                  <p className="text-base text-zinc-400 mt-2">Aggregated macro-economic, tax, and lifestyle intelligence for executive relocation.</p>
                 </div>
 
                 <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
                   <div className="w-full space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Master Jurisdiction Selector</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Master Jurisdiction Selector</label>
                       <select 
                         value={profileCountry}
                         onChange={(e) => {
@@ -1934,7 +1934,7 @@ function HomeDashboard() {
                   <button 
                     onClick={generateCountryProfile}
                     disabled={isGeneratingProfile}
-                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isGeneratingProfile ? (
                       <>
@@ -1956,12 +1956,12 @@ function HomeDashboard() {
                     {!profileData && !isGeneratingProfile ? (
                       <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
                         <Globe className="w-16 h-16 text-white" />
-                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and generate the report to view proprietary analytics</p>
+                        <p className="text-sm font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and generate the report to view proprietary analytics</p>
                       </div>
                     ) : isGeneratingProfile ? (
                       <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
                         <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
-                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Macro Intelligence...</p>
+                        <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Macro Intelligence...</p>
                       </div>
                     ) : (
                       profileData && (
@@ -1974,7 +1974,7 @@ function HomeDashboard() {
                             <h3 className="text-3xl font-black text-white">{profileCountry}</h3>
                             <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
                               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Verified Global Data</span>
+                              <span className="text-sm font-bold text-emerald-400 uppercase tracking-widest">Verified Global Data</span>
                             </div>
                           </div>
 
@@ -1983,24 +1983,24 @@ function HomeDashboard() {
                             <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
                               <div className="flex items-center gap-3 pb-4 border-b border-white/5">
                                 <DollarSign className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Tax & Wealth</h4>
+                                <h4 className="text-base font-bold text-white uppercase tracking-widest">Tax & Wealth</h4>
                               </div>
                               <div className="flex flex-col gap-4">
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Max Income Tax</span>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Max Income Tax</span>
                                   <div className={`text-xl font-bold ${profileData.taxWealth.maxIncomeTax === 0 ? 'text-[#d4af37]' : 'text-white'}`}>
                                     {profileData.taxWealth.maxIncomeTax === 0 ? '0% (Tax Free)' : `${profileData.taxWealth.maxIncomeTax}%`}
                                   </div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Corporate Tax</span>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Corporate Tax</span>
                                   <div className={`text-xl font-bold ${profileData.taxWealth.corpTax === 0 ? 'text-[#d4af37]' : 'text-white'}`}>
                                     {profileData.taxWealth.corpTax}%
                                   </div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Crypto & Capital Gains</span>
-                                  <div className={`text-sm font-bold ${profileData.taxWealth.capitalGains.includes('0%') ? 'text-[#d4af37]' : 'text-white'}`}>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Crypto & Capital Gains</span>
+                                  <div className={`text-base font-bold ${profileData.taxWealth.capitalGains.includes('0%') ? 'text-[#d4af37]' : 'text-white'}`}>
                                     {profileData.taxWealth.capitalGains}
                                   </div>
                                 </div>
@@ -2011,18 +2011,18 @@ function HomeDashboard() {
                             <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
                               <div className="flex items-center gap-3 pb-4 border-b border-white/5">
                                 <Plane className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Immigration</h4>
+                                <h4 className="text-base font-bold text-white uppercase tracking-widest">Immigration</h4>
                               </div>
                               <div className="flex flex-col gap-4">
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Top Visa Options</span>
-                                  <div className={`text-sm font-bold ${profileData.immigration.visas.includes('Digital Nomad') ? 'text-[#d4af37]' : 'text-white'} leading-tight`}>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Top Visa Options</span>
+                                  <div className={`text-base font-bold ${profileData.immigration.visas.includes('Digital Nomad') ? 'text-[#d4af37]' : 'text-white'} leading-tight`}>
                                     {profileData.immigration.visas}
                                   </div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Standard Processing</span>
-                                  <div className="text-white text-sm font-bold">{profileData.immigration.processing}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Standard Processing</span>
+                                  <div className="text-white text-base font-bold">{profileData.immigration.processing}</div>
                                 </div>
                               </div>
                             </div>
@@ -2031,11 +2031,11 @@ function HomeDashboard() {
                             <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
                               <div className="flex items-center gap-3 pb-4 border-b border-white/5">
                                 <Home className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Housing & Cost</h4>
+                                <h4 className="text-base font-bold text-white uppercase tracking-widest">Housing & Cost</h4>
                               </div>
                               <div className="flex flex-col gap-4">
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Est. Monthly Rent (1BR)</span>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Est. Monthly Rent (1BR)</span>
                                   <div className="text-white font-bold text-xl">
                                     {(() => {
                                       const conv = CONVERSION_RATES[selectedCurrency];
@@ -2044,7 +2044,7 @@ function HomeDashboard() {
                                   </div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Basic Utilities</span>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Basic Utilities</span>
                                   <div className="text-white font-bold text-lg">
                                     {(() => {
                                       const conv = CONVERSION_RATES[selectedCurrency];
@@ -2053,7 +2053,7 @@ function HomeDashboard() {
                                   </div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Expat Cost Index</span>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Expat Cost Index</span>
                                   <div className="text-white font-bold text-lg">{profileData.costHousing.costIndex} / 100</div>
                                 </div>
                               </div>
@@ -2063,22 +2063,22 @@ function HomeDashboard() {
                             <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
                               <div className="flex items-center gap-3 pb-4 border-b border-white/5">
                                 <HeartPulse className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Quality of Life</h4>
+                                <h4 className="text-base font-bold text-white uppercase tracking-widest">Quality of Life</h4>
                               </div>
                               <div className="flex flex-col gap-4">
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Standard</span>
-                                  <div className="text-white text-sm font-bold leading-tight">{profileData.qualityLife.healthcare}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Standard</span>
+                                  <div className="text-white text-base font-bold leading-tight">{profileData.qualityLife.healthcare}</div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Safety & Crime Index</span>
-                                  <div className={`text-sm font-bold ${profileData.qualityLife.safety.includes('AAA') ? 'text-[#d4af37]' : 'text-white'}`}>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Safety & Crime Index</span>
+                                  <div className={`text-base font-bold ${profileData.qualityLife.safety.includes('AAA') ? 'text-[#d4af37]' : 'text-white'}`}>
                                     {profileData.qualityLife.safety}
                                   </div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Primary Language(s)</span>
-                                  <div className="text-white text-sm font-bold leading-tight">{profileData.qualityLife.languages}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Primary Language(s)</span>
+                                  <div className="text-white text-base font-bold leading-tight">{profileData.qualityLife.languages}</div>
                                 </div>
                               </div>
                             </div>
@@ -2097,14 +2097,14 @@ function HomeDashboard() {
               
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
-                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Urban Intelligence</span>
+                  <span className="text-sm text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Urban Intelligence</span>
                   <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">🏙️ COMPREHENSIVE CITY GUIDE <span className="text-brand-gold">&</span> NEIGHBORHOOD PROFILES</h2>
-                  <p className="text-sm text-zinc-400 mt-2">Curated localized metrics and luxury expat housing data.</p>
+                  <p className="text-base text-zinc-400 mt-2">Curated localized metrics and luxury expat housing data.</p>
                 </div>
 
                 <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
                   <div className="w-full space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction (Country)</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction (Country)</label>
                       <select 
                         value={cityGuideCountry}
                         onChange={(e) => {
@@ -2120,7 +2120,7 @@ function HomeDashboard() {
                   </div>
                   
                   <div className="w-full space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Top Tier City / Expat Hub</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Top Tier City / Expat Hub</label>
                       <select 
                         value={cityGuideCity}
                         onChange={(e) => {
@@ -2138,7 +2138,7 @@ function HomeDashboard() {
                   <button 
                     onClick={generateCityGuide}
                     disabled={isGeneratingCity}
-                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full md:w-auto md:min-w-[320px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isGeneratingCity ? (
                       <>
@@ -2160,12 +2160,12 @@ function HomeDashboard() {
                     {!cityGuideData && !isGeneratingCity ? (
                       <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
                         <MapPin className="w-16 h-16 text-white" />
-                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and city hub to generate the localized report</p>
+                        <p className="text-sm font-bold text-white uppercase tracking-widest max-w-sm">Select a jurisdiction and city hub to generate the localized report</p>
                       </div>
                     ) : isGeneratingCity ? (
                       <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
                         <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
-                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Local Intelligence...</p>
+                        <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Synthesizing Local Intelligence...</p>
                       </div>
                     ) : (
                       cityGuideData && (
@@ -2178,7 +2178,7 @@ function HomeDashboard() {
                             <h3 className="text-3xl font-black text-white">{cityGuideCity}, {cityGuideCountry}</h3>
                             <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full">
                               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                              <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest">Verified Expat Data</span>
+                              <span className="text-sm font-bold text-emerald-400 uppercase tracking-widest">Verified Expat Data</span>
                             </div>
                           </div>
 
@@ -2187,20 +2187,20 @@ function HomeDashboard() {
                             <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
                               <div className="flex items-center gap-3 pb-4 border-b border-white/5">
                                 <Home className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Top Neighborhoods</h4>
+                                <h4 className="text-base font-bold text-white uppercase tracking-widest">Top Neighborhoods</h4>
                               </div>
                               <div className="flex flex-col gap-4">
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n1}</span>
-                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v1}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n1}</span>
+                                  <div className="text-base font-bold text-white leading-tight">{cityGuideData.neighborhoods.v1}</div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n2}</span>
-                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v2}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n2}</span>
+                                  <div className="text-base font-bold text-white leading-tight">{cityGuideData.neighborhoods.v2}</div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n3}</span>
-                                  <div className="text-sm font-bold text-white leading-tight">{cityGuideData.neighborhoods.v3}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">{cityGuideData.neighborhoods.n3}</span>
+                                  <div className="text-base font-bold text-white leading-tight">{cityGuideData.neighborhoods.v3}</div>
                                 </div>
                               </div>
                             </div>
@@ -2209,11 +2209,11 @@ function HomeDashboard() {
                             <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
                               <div className="flex items-center gap-3 pb-4 border-b border-white/5">
                                 <Landmark className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Housing Market</h4>
+                                <h4 className="text-base font-bold text-white uppercase tracking-widest">Housing Market</h4>
                               </div>
                               <div className="flex flex-col gap-4">
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (1BR Premium)</span>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (1BR Premium)</span>
                                   <div className="text-white font-bold text-xl">
                                     {(() => {
                                       const conv = CONVERSION_RATES[selectedCurrency];
@@ -2222,7 +2222,7 @@ function HomeDashboard() {
                                   </div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (3BR Family)</span>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg. Est. Rent (3BR Family)</span>
                                   <div className="text-white font-bold text-xl">
                                     {(() => {
                                       const conv = CONVERSION_RATES[selectedCurrency];
@@ -2237,20 +2237,20 @@ function HomeDashboard() {
                             <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
                               <div className="flex items-center gap-3 pb-4 border-b border-white/5">
                                 <Sparkles className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Lifestyle & Amenities</h4>
+                                <h4 className="text-base font-bold text-white uppercase tracking-widest">Lifestyle & Amenities</h4>
                               </div>
                               <div className="flex flex-col gap-4">
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">International Schools</span>
-                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.schools}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">International Schools</span>
+                                  <div className="text-white font-bold text-base leading-tight">{cityGuideData.lifestyle.schools}</div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Quality</span>
-                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.healthcare}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Healthcare Quality</span>
+                                  <div className="text-white font-bold text-base leading-tight">{cityGuideData.lifestyle.healthcare}</div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Entertainment & Dining</span>
-                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.lifestyle.dining}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Entertainment & Dining</span>
+                                  <div className="text-white font-bold text-base leading-tight">{cityGuideData.lifestyle.dining}</div>
                                 </div>
                               </div>
                             </div>
@@ -2259,19 +2259,19 @@ function HomeDashboard() {
                             <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-brand-gold/30 transition-colors">
                               <div className="flex items-center gap-3 pb-4 border-b border-white/5">
                                 <Truck className="w-5 h-5 text-amber-600" />
-                                <h4 className="text-sm font-bold text-white uppercase tracking-widest">Connectivity</h4>
+                                <h4 className="text-base font-bold text-white uppercase tracking-widest">Connectivity</h4>
                               </div>
                               <div className="flex flex-col gap-4">
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Public Transit Score</span>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Public Transit Score</span>
                                   <div className="text-white font-bold text-xl">{cityGuideData.connectivity.transitScore} / 100</div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Airport Access</span>
-                                  <div className="text-white font-bold text-sm leading-tight">{cityGuideData.connectivity.airport}</div>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Airport Access</span>
+                                  <div className="text-white font-bold text-base leading-tight">{cityGuideData.connectivity.airport}</div>
                                 </div>
                                 <div>
-                                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Walkability Index</span>
+                                  <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Walkability Index</span>
                                   <div className="text-white font-bold text-xl">{cityGuideData.connectivity.walkability} / 100</div>
                                 </div>
                               </div>
@@ -2291,14 +2291,14 @@ function HomeDashboard() {
               
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-2 border-b border-white/5 pb-6">
-                  <span className="text-[10px] text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Benchmarking</span>
+                  <span className="text-sm text-amber-600 font-bold uppercase tracking-[0.3em] ml-1">Proprietary Benchmarking</span>
                   <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase">💰 COMPREHENSIVE GLOBAL SALARY DASHBOARD</h2>
-                  <p className="text-sm text-zinc-400 mt-2">Executive compensation analysis across premium global jurisdictions.</p>
+                  <p className="text-base text-zinc-400 mt-2">Executive compensation analysis across premium global jurisdictions.</p>
                 </div>
 
                 <div className="flex flex-col md:flex-row items-end gap-6 bg-white/5 p-6 rounded-2xl border border-white/10">
                   <div className="w-full space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Executive Profession / Tech Role</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Executive Profession / Tech Role</label>
                       <select 
                         value={salaryDashboardRole}
                         onChange={(e) => {
@@ -2316,7 +2316,7 @@ function HomeDashboard() {
                   <button 
                     onClick={generateSalaryDashboard}
                     disabled={isGeneratingSalaryDashboard}
-                    className="w-full md:w-auto md:min-w-[340px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full md:w-auto md:min-w-[340px] h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isGeneratingSalaryDashboard ? (
                       <>
@@ -2338,12 +2338,12 @@ function HomeDashboard() {
                     {!salaryDashboardData && !isGeneratingSalaryDashboard ? (
                       <div className="flex flex-col items-center justify-center text-center space-y-6 h-full opacity-40 my-auto py-20">
                         <DollarSign className="w-16 h-16 text-white" />
-                        <p className="text-xs font-bold text-white uppercase tracking-widest max-w-sm">Select an executive role to view cross-border salary benchmarks</p>
+                        <p className="text-sm font-bold text-white uppercase tracking-widest max-w-sm">Select an executive role to view cross-border salary benchmarks</p>
                       </div>
                     ) : isGeneratingSalaryDashboard ? (
                       <div className="flex flex-col items-center justify-center h-full space-y-6 my-auto py-20">
                         <Loader2 className="w-12 h-12 animate-spin text-brand-gold" />
-                        <p className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Benchmarking Compensation...</p>
+                        <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.4em] animate-pulse">Benchmarking Compensation...</p>
                       </div>
                     ) : (
                       salaryDashboardData && (
@@ -2356,7 +2356,7 @@ function HomeDashboard() {
                             <h3 className="text-3xl font-black text-white">{salaryDashboardRole}</h3>
                             <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-600/10 border border-amber-600/30 rounded-full">
                               <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
-                              <span className="text-[9px] font-bold text-amber-500 uppercase tracking-widest">Verified Benchmark</span>
+                              <span className="text-sm font-bold text-amber-500 uppercase tracking-widest">Verified Benchmark</span>
                             </div>
                           </div>
 
@@ -2371,14 +2371,14 @@ function HomeDashboard() {
                                   <div className="flex items-start justify-between pb-4 border-b border-white/5 mb-5">
                                     <div>
                                       <h4 className="text-xl font-black text-white tracking-tight">{data.country}</h4>
-                                      <span className="text-[9px] font-bold text-amber-600 uppercase tracking-widest block mt-1">{data.demand}</span>
+                                      <span className="text-sm font-bold text-amber-600 uppercase tracking-widest block mt-1">{data.demand}</span>
                                     </div>
-                                    <Globe className="w-6 h-6 text-zinc-600" />
+                                    <Globe className="w-6 h-6 text-gray-300" />
                                   </div>
                                   
                                   <div className="flex flex-col gap-5">
                                     <div>
-                                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg Base Salary</span>
+                                      <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Avg Base Salary</span>
                                       <div className="text-white font-bold text-xl">
                                         {(() => {
                                           const conv = CONVERSION_RATES[selectedCurrency];
@@ -2387,7 +2387,7 @@ function HomeDashboard() {
                                       </div>
                                     </div>
                                     <div>
-                                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Expected Equity/Bonus</span>
+                                      <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Expected Equity/Bonus</span>
                                       <div className="text-white font-bold text-lg">
                                         {(() => {
                                           const conv = CONVERSION_RATES[selectedCurrency];
@@ -2396,14 +2396,14 @@ function HomeDashboard() {
                                       </div>
                                     </div>
                                     <div>
-                                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">Est. Effective Tax</span>
+                                      <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest block mb-1">Est. Effective Tax</span>
                                       <div className={`text-xl font-bold ${data.taxRate === 0 ? 'text-amber-500' : 'text-white'}`}>
                                         {data.taxRate}%
                                       </div>
                                     </div>
                                     
                                     <div className="mt-2 p-4 bg-brand-gold/10 border border-brand-gold/20 rounded-xl">
-                                      <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mb-1">Net Take-Home Pay</span>
+                                      <span className="text-sm font-bold text-amber-600 uppercase tracking-widest block mb-1">Net Take-Home Pay</span>
                                       <div className="text-brand-gold font-black text-2xl tracking-tight">
                                         {(() => {
                                           const conv = CONVERSION_RATES[selectedCurrency];
@@ -2433,7 +2433,7 @@ function HomeDashboard() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-amber-600 text-xs font-bold tracking-widest uppercase mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-amber-600 text-sm font-bold tracking-widest uppercase mb-6">
               <Cpu className="w-3 h-3" /> AI-Powered Strategic Intelligence
             </div>
             <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
@@ -2486,7 +2486,7 @@ function HomeDashboard() {
                   {/* Inputs */}
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Select Jurisdiction</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Select Jurisdiction</label>
                       <div className="relative group/select">
                         <select 
                           value={calcCountry}
@@ -2503,7 +2503,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Annual Income ({CONVERSION_RATES[selectedCurrency]?.symbol || '$'})</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Annual Income ({CONVERSION_RATES[selectedCurrency]?.symbol || '$'})</label>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600 font-bold">{CONVERSION_RATES[selectedCurrency]?.symbol || '$'}</div>
                         <input 
@@ -2525,7 +2525,7 @@ function HomeDashboard() {
                         return (
                           <div className="flex flex-col items-center justify-center p-10 text-center space-y-3">
                             <Loader2 className="w-6 h-6 animate-spin text-brand-gold" />
-                            <span className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Synchronizing Neural Matrix...</span>
+                            <span className="text-gray-400 text-sm uppercase tracking-widest font-bold">Synchronizing Neural Matrix...</span>
                           </div>
                         );
                       }
@@ -2546,22 +2546,22 @@ function HomeDashboard() {
                       return (
                         <>
                           <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/5">
-                            <span className="text-slate-400 text-sm font-medium">Total Annual Salary</span>
+                            <span className="text-slate-400 text-base font-medium">Total Annual Salary</span>
                             <span className="text-white font-bold text-xl">{formatPlain(incomeNum)}</span>
                           </div>
                           <div className="flex justify-between items-center border-b border-white/5 pb-4 px-2">
                             <div className="flex flex-col">
-                              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                              <span className="text-gray-400 text-sm font-bold uppercase tracking-widest">
                                 Estimated Tax Logic
                               </span>
-                              <span className="text-slate-400 text-xs">{calcCountry} Statutory Rate: {taxRate}%</span>
+                              <span className="text-slate-400 text-sm">{calcCountry} Statutory Rate: {taxRate}%</span>
                             </div>
                             <span className="text-red-400 font-bold">{formatPlain(totalTax)}</span>
                           </div>
                           <div className="flex justify-between items-center bg-brand-gold/10 p-5 rounded-xl border border-brand-gold/20 shadow-lg shadow-amber-600/5">
                             <div className="flex flex-col">
-                              <span className="text-amber-600 text-[10px] font-bold uppercase tracking-[0.2em]">Net Take-Home Pay</span>
-                              <span className="text-white text-xs font-medium opacity-60">Post-Tax Optimization</span>
+                              <span className="text-amber-600 text-sm font-bold uppercase tracking-[0.2em]">Net Take-Home Pay</span>
+                              <span className="text-white text-sm font-medium opacity-60">Post-Tax Optimization</span>
                             </div>
                             <span className="text-white font-extrabold text-3xl tracking-tighter">
                               {formatPlain(takeHomePay)}
@@ -2591,7 +2591,7 @@ function HomeDashboard() {
                   {/* Inputs */}
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Estimated Monthly Income</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Estimated Monthly Income</label>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600 font-bold">{CONVERSION_RATES[selectedCurrency]?.symbol || '$'}</div>
                         <input 
@@ -2606,7 +2606,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Estimated Monthly Expenses</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Estimated Monthly Expenses</label>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600 font-bold">{CONVERSION_RATES[selectedCurrency]?.symbol || '$'}</div>
                         <input 
@@ -2661,21 +2661,21 @@ function HomeDashboard() {
                         <>
                           <div className="grid grid-cols-2 gap-4">
                             <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest block mb-1">Monthly Net Savings</span>
+                              <span className="text-gray-400 text-sm font-bold uppercase tracking-widest block mb-1">Monthly Net Savings</span>
                               <span className="text-white font-bold text-lg">{formatPlain(netSavings)}</span>
                             </div>
                             <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest block mb-1">Annualized Accumulation</span>
+                              <span className="text-gray-400 text-sm font-bold uppercase tracking-widest block mb-1">Annualized Accumulation</span>
                               <span className="text-white font-bold text-lg">{formatPlain(annualSavings)}</span>
                             </div>
                           </div>
                           
                           <div className="bg-brand-gold/10 p-5 rounded-xl border border-brand-gold/20 shadow-lg shadow-amber-600/5 text-center">
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-[0.2em] block mb-2">TIME TO REACH {formatPlain(milestone)} MILESTONE</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-[0.2em] block mb-2">TIME TO REACH {formatPlain(milestone)} MILESTONE</span>
                             <span className="text-white font-extrabold text-3xl tracking-tighter">
                               {timeToMilestone}
                             </span>
-                            <div className="mt-2 text-white/40 text-[9px] uppercase tracking-widest">Calculated at current savings velocity</div>
+                            <div className="mt-2 text-white/40 text-sm uppercase tracking-widest">Calculated at current savings velocity</div>
                           </div>
                         </>
                       );
@@ -2701,7 +2701,7 @@ function HomeDashboard() {
                   {/* Inputs */}
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Select Jurisdiction</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Select Jurisdiction</label>
                       <div className="relative group/select">
                         <select 
                           value={estCountry}
@@ -2717,13 +2717,13 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Lifestyle Tier Selection</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Lifestyle Tier Selection</label>
                       <div className="flex gap-2 p-1 bg-black/40 border border-white/5 rounded-xl">
                         {(['Basic', 'Executive', 'Luxury'] as const).map((tier) => (
                           <button
                             key={tier}
                             onClick={() => setLifestyleTier(tier)}
-                            className={`flex-1 py-3 rounded-lg text-xs font-bold transition-all uppercase tracking-widest ${lifestyleTier === tier ? 'bg-brand-gold text-black shadow-lg shadow-amber-600/20' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                            className={`flex-1 py-3 rounded-lg text-sm font-bold transition-all uppercase tracking-widest ${lifestyleTier === tier ? 'bg-brand-gold text-black shadow-lg shadow-amber-600/20' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
                           >
                             {tier === 'Luxury' ? 'Ultra Luxury' : tier === 'Executive' ? 'Executive' : 'Basic'}
                           </button>
@@ -2739,7 +2739,7 @@ function HomeDashboard() {
                         return (
                           <div className="flex flex-col items-center justify-center p-10 text-center space-y-3">
                             <Loader2 className="w-6 h-6 animate-spin text-brand-gold" />
-                            <span className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Calculating Life Vectors...</span>
+                            <span className="text-gray-400 text-sm uppercase tracking-widest font-bold">Calculating Life Vectors...</span>
                           </div>
                         );
                       }
@@ -2777,11 +2777,11 @@ function HomeDashboard() {
                         <>
                           <div className="space-y-4">
                             <div className="flex justify-between items-center border-b border-white/5 pb-3">
-                              <span className="text-slate-400 text-sm font-medium">Estimated Housing / Rent</span>
+                              <span className="text-slate-400 text-base font-medium">Estimated Housing / Rent</span>
                               <span className="text-white font-bold">{formatWithConv(housing)}</span>
                             </div>
                             <div className="flex justify-between items-center border-b border-white/5 pb-3">
-                              <span className="text-slate-400 text-sm font-medium">Estimated Utilities & Food</span>
+                              <span className="text-slate-400 text-base font-medium">Estimated Utilities & Food</span>
                               <span className="text-white font-bold">{formatWithConv(utilities)}</span>
                             </div>
                           </div>
@@ -2789,8 +2789,8 @@ function HomeDashboard() {
                           <div className="bg-brand-gold/10 p-5 rounded-xl border border-brand-gold/20 shadow-lg shadow-amber-600/5 mt-2">
                             <div className="flex justify-between items-center">
                               <div className="flex flex-col">
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-[0.15em]">Total Monthly Cost-of-Living</span>
-                                <span className="text-white text-xs font-medium opacity-60">Estimated {lifestyleTier} Tier</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-[0.15em]">Total Monthly Cost-of-Living</span>
+                                <span className="text-white text-sm font-medium opacity-60">Estimated {lifestyleTier} Tier</span>
                               </div>
                               <span className="text-white font-extrabold text-3xl tracking-tighter">
                                 {formatWithConv(totalCost)}
@@ -2821,7 +2821,7 @@ function HomeDashboard() {
                   {/* Inputs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:col-span-1">
                     <div className="space-y-2 md:col-span-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Relocation Jurisdiction</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Relocation Jurisdiction</label>
                       <div className="relative group/select">
                         <select 
                           value={relocCountry}
@@ -2837,7 +2837,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Moving Party Size</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Moving Party Size</label>
                       <div className="relative group/select">
                         <select 
                           value={partySize}
@@ -2853,7 +2853,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Logistics & Shipping Volume</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Logistics & Shipping Volume</label>
                       <div className="relative group/select">
                         <select 
                           value={shippingVolume}
@@ -2876,7 +2876,7 @@ function HomeDashboard() {
                         return (
                           <div className="flex flex-col items-center justify-center p-10 text-center space-y-3">
                             <Loader2 className="w-6 h-6 animate-spin text-brand-gold" />
-                            <span className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Assembling Sovereign Assets...</span>
+                            <span className="text-gray-400 text-sm uppercase tracking-widest font-bold">Assembling Sovereign Assets...</span>
                           </div>
                         );
                       }
@@ -2912,33 +2912,33 @@ function HomeDashboard() {
                           <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-4">
                               <div className="flex flex-col border-b border-white/5 pb-2">
-                                <span className="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Visa & Admin Fees</span>
-                                <span className="text-white font-bold text-sm">{formatWithConv(visaFees)}</span>
+                                <span className="text-gray-400 text-sm font-bold uppercase tracking-widest">Visa & Admin Fees</span>
+                                <span className="text-white font-bold text-base">{formatWithConv(visaFees)}</span>
                               </div>
                               <div className="flex flex-col border-b border-white/5 pb-2">
-                                <span className="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Flights & Travel</span>
-                                <span className="text-white font-bold text-sm">{formatWithConv(flightCosts)}</span>
+                                <span className="text-gray-400 text-sm font-bold uppercase tracking-widest">Flights & Travel</span>
+                                <span className="text-white font-bold text-base">{formatWithConv(flightCosts)}</span>
                               </div>
                             </div>
                             <div className="space-y-4">
                               <div className="flex flex-col border-b border-white/5 pb-2">
-                                <span className="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Logistics & Freight</span>
-                                <span className="text-white font-bold text-sm">{formatWithConv(shippingCost)}</span>
+                                <span className="text-gray-400 text-sm font-bold uppercase tracking-widest">Logistics & Freight</span>
+                                <span className="text-white font-bold text-base">{formatWithConv(shippingCost)}</span>
                               </div>
                               <div className="flex flex-col border-b border-white/5 pb-2">
-                                <span className="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Housing Security Deposit</span>
-                                <span className="text-white font-bold text-sm">{formatWithConv(securityDeposit)}</span>
+                                <span className="text-gray-400 text-sm font-bold uppercase tracking-widest">Housing Security Deposit</span>
+                                <span className="text-white font-bold text-base">{formatWithConv(securityDeposit)}</span>
                               </div>
                             </div>
                           </div>
 
                           <div className="bg-brand-gold/10 p-5 rounded-xl border border-brand-gold/20 shadow-lg shadow-amber-600/5 mt-2">
                             <div className="flex flex-col text-center">
-                              <span className="text-amber-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Total Estimated Capital Required</span>
+                              <span className="text-amber-600 text-sm font-bold uppercase tracking-[0.2em] mb-1">Total Estimated Capital Required</span>
                               <span className="text-white font-extrabold text-4xl tracking-tighter">
                                 {formatWithConv(totalUpfront)}
                               </span>
-                              <div className="mt-2 text-white/40 text-[8px] uppercase tracking-widest">Estimated upfront deployment for {partySize} relocation</div>
+                              <div className="mt-2 text-white/40 text-sm uppercase tracking-widest">Estimated upfront deployment for {partySize} relocation</div>
                             </div>
                           </div>
                         </>
@@ -2961,7 +2961,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🧠 PROPRIETARY AI RELOCATION ADVISOR & MATCH ENGINE</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Powered by M M Raju Neural Infrastructure</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Powered by M M Raju Neural Infrastructure</p>
                     </div>
                   </div>
                   <Sparkles className="w-5 h-5 text-brand-gold/40 animate-pulse" />
@@ -2972,8 +2972,8 @@ function HomeDashboard() {
                   <div className="space-y-8">
                     <div className="space-y-3">
                       <div className="flex justify-between items-end">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest ml-1">Target Annual Salary Goal</label>
-                        <span className="text-white/40 text-[10px] font-mono">{CONVERSION_RATES[selectedCurrency].symbol}</span>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest ml-1">Target Annual Salary Goal</label>
+                        <span className="text-white/40 text-sm font-mono">{CONVERSION_RATES[selectedCurrency].symbol}</span>
                       </div>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-gold/60 font-bold">{CONVERSION_RATES[selectedCurrency].symbol}</div>
@@ -2990,7 +2990,7 @@ function HomeDashboard() {
 
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest ml-1">Max Acceptable Tax Rate</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest ml-1">Max Acceptable Tax Rate</label>
                         <span className="text-brand-gold font-bold font-mono">{aiMaxTax}%</span>
                       </div>
                       <input 
@@ -3001,20 +3001,20 @@ function HomeDashboard() {
                         onChange={(e) => setAiMaxTax(Number(e.target.value))}
                         className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-gold"
                       />
-                      <div className="flex justify-between text-[10px] text-white font-bold uppercase tracking-widest">
+                      <div className="flex justify-between text-sm text-white font-bold uppercase tracking-widest">
                         <span>Tax Haven (0%)</span>
                         <span>High Utility (50%)</span>
                       </div>
                     </div>
 
                     <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest ml-1">Core Strategic Priority</label>
+                      <label className="text-sm font-bold text-amber-600 uppercase tracking-widest ml-1">Core Strategic Priority</label>
                       <div className="grid grid-cols-3 gap-2">
                         {(["Wealth", "Safety", "Healthcare"] as const).map(p => (
                           <button
                             key={p}
                             onClick={() => setAiPriority(p)}
-                            className={`py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border ${aiPriority === p ? 'bg-brand-gold border-brand-gold text-black shadow-xl shadow-amber-600/20' : 'bg-transparent border-white/10 text-white/40 hover:border-white/20 hover:text-white'}`}
+                            className={`py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-all border ${aiPriority === p ? 'bg-brand-gold border-brand-gold text-black shadow-xl shadow-amber-600/20' : 'bg-transparent border-white/10 text-white/40 hover:border-white/20 hover:text-white'}`}
                           >
                             <div className="flex flex-col items-center">
                               {p === "Wealth" ? <TrendingUp className="w-3 h-3 mb-1" /> : p === "Safety" ? <Shield className="w-3 h-3 mb-1" /> : <HeartPulse className="w-3 h-3 mb-1" />}
@@ -3028,7 +3028,7 @@ function HomeDashboard() {
                     <button 
                       onClick={runAiMatch}
                       disabled={isAiCalculating}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-2xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-2xl shadow-amber-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
                     >
                       {isAiCalculating ? (
                         <>
@@ -3056,7 +3056,7 @@ function HomeDashboard() {
                           className="h-full flex flex-col items-center justify-center text-center p-8 bg-black/20 rounded-3xl border border-dashed border-white/10"
                         >
                           <Cpu className="w-12 h-12 text-white/10 mb-4" />
-                          <p className="text-white/30 text-[10px] font-medium uppercase tracking-widest leading-relaxed">
+                          <p className="text-white/30 text-sm font-medium uppercase tracking-widest leading-relaxed">
                             Configure your strategic parameters and initiate neural matching to identify your optimal sovereign destination.
                           </p>
                         </motion.div>
@@ -3074,8 +3074,8 @@ function HomeDashboard() {
                             <Brain className="absolute inset-0 m-auto w-8 h-8 text-brand-gold animate-pulse" />
                           </div>
                           <div className="space-y-2 text-center">
-                            <h4 className="text-white font-bold uppercase tracking-[0.3em] text-xs">Analyzing 32 Global Jurisdictions</h4>
-                            <p className="text-brand-gold/60 text-[8px] uppercase tracking-widest animate-pulse">Filtering Stability Indices & Fiscal Profiles</p>
+                            <h4 className="text-white font-bold uppercase tracking-[0.3em] text-sm">Analyzing 32 Global Jurisdictions</h4>
+                            <p className="text-brand-gold/60 text-sm uppercase tracking-widest animate-pulse">Filtering Stability Indices & Fiscal Profiles</p>
                           </div>
                         </motion.div>
                       ) : (
@@ -3088,32 +3088,32 @@ function HomeDashboard() {
                           >
                             <div className="flex justify-between items-start">
                               <div>
-                                <span className="bg-brand-gold/10 text-brand-gold text-[8px] font-black uppercase tracking-[0.3em] px-3 py-1 rounded-full border border-brand-gold/20">Optimal Match Found</span>
+                                <span className="bg-brand-gold/10 text-brand-gold text-sm font-black uppercase tracking-[0.3em] px-3 py-1 rounded-full border border-brand-gold/20">Optimal Match Found</span>
                                 <h4 className="text-4xl font-black text-white tracking-tighter mt-3 uppercase">{aiResult.country.country_name}</h4>
                               </div>
                               <div className="text-right">
                                 <span className="text-brand-gold text-3xl font-black">{aiResult.score}%</span>
-                                <p className="text-white/40 text-[8px] uppercase tracking-widest font-bold">Compatibility Score</p>
+                                <p className="text-white/40 text-sm uppercase tracking-widest font-bold">Compatibility Score</p>
                               </div>
                             </div>
 
                             <div className="bg-white/5 p-5 rounded-2xl border border-white/10 relative group shadow-2xl shadow-black/40">
-                              <div className="absolute -top-3 left-6 px-2 bg-[#1a1a1a] text-brand-gold text-[10px] font-bold uppercase tracking-[0.2em] opacity-100">Executive AI Summary</div>
-                              <p className="text-[#ffffff] text-sm md:text-base leading-relaxed font-semibold italic opacity-100">
+                              <div className="absolute -top-3 left-6 px-2 bg-[#1a1a1a] text-brand-gold text-sm font-bold uppercase tracking-[0.2em] opacity-100">Executive AI Summary</div>
+                              <p className="text-[#ffffff] text-base md:text-base leading-relaxed font-semibold italic opacity-100">
                                 "{aiResult.summary}"
                               </p>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4 mt-auto">
                               <div className="bg-black/40 p-4 rounded-xl border border-white/5">
-                                <span className="text-slate-300 text-[8px] font-bold uppercase tracking-widest block mb-1">Fiscal Efficiency</span>
+                                <span className="text-slate-300 text-sm font-bold uppercase tracking-widest block mb-1">Fiscal Efficiency</span>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden mt-2">
                                   <div className="h-full bg-brand-gold" style={{ width: `${100 - (aiResult.country.tax_rate_percent || 0) * 2}%` }} />
                                 </div>
                               </div>
                               <div className="bg-black/40 p-4 rounded-xl border border-white/5">
-                                <span className="text-slate-300 text-[8px] font-bold uppercase tracking-widest block mb-1">Strategic Index</span>
-                                <div className="text-white font-bold text-sm">Level {Math.ceil((aiResult.country.compass_index || 50) / 10)} / 10</div>
+                                <span className="text-slate-300 text-sm font-bold uppercase tracking-widest block mb-1">Strategic Index</span>
+                                <div className="text-white font-bold text-base">Level {Math.ceil((aiResult.country.compass_index || 50) / 10)} / 10</div>
                               </div>
                             </div>
                           </motion.div>
@@ -3137,7 +3137,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">📈 PROPRIETARY AI GLOBAL SALARY PREDICTOR</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Advanced Industry-Weight Alignment Engine</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Advanced Industry-Weight Alignment Engine</p>
                     </div>
                   </div>
                 </div>
@@ -3146,7 +3146,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
                     <div className="space-y-2 md:col-span-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Market Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Market Jurisdiction</label>
                         <select 
                           value={salaryCountry}
                           onChange={(e) => {
@@ -3164,7 +3164,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Core Industry / Profession</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Core Industry / Profession</label>
                         <select 
                           value={industry}
                           onChange={(e) => {
@@ -3183,7 +3183,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Years of Experience</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Years of Experience</label>
                         <input 
                           type="number"
                           value={experience}
@@ -3196,7 +3196,7 @@ function HomeDashboard() {
                     <button 
                       onClick={predictSalary}
                       disabled={isPredicting}
-                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                     >
                       {isPredicting ? (
                         <>
@@ -3218,12 +3218,12 @@ function HomeDashboard() {
                       {!predictedSalaryResult && !isPredicting ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 opacity-40">
                           <BarChart3 className="w-12 h-12" />
-                          <p className="text-[10px] font-bold uppercase tracking-widest">Select parameters to generate market predictions</p>
+                          <p className="text-sm font-bold uppercase tracking-widest">Select parameters to generate market predictions</p>
                         </div>
                       ) : isPredicting ? (
                         <div className="flex flex-col items-center justify-center space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Monte Carlo Simulations...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Monte Carlo Simulations...</p>
                         </div>
                       ) : (
                         predictedSalaryResult && (
@@ -3234,7 +3234,7 @@ function HomeDashboard() {
                           >
                             <div className="flex justify-between items-end">
                               <div className="space-y-1">
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Estimated Market Range</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-widest">Estimated Market Range</span>
                                 <div className="text-white text-3xl font-black tracking-tighter">
                                   {(() => {
                                     const conv = CONVERSION_RATES[selectedCurrency];
@@ -3242,7 +3242,7 @@ function HomeDashboard() {
                                     return `${f(predictedSalaryResult.low)} — ${f(predictedSalaryResult.high)}`;
                                   })()}
                                 </div>
-                                <p className="text-white/40 text-[9px] uppercase tracking-widest leading-relaxed">Annual recurring compensation estimate for {industry}</p>
+                                <p className="text-white/40 text-sm uppercase tracking-widest leading-relaxed">Annual recurring compensation estimate for {industry}</p>
                               </div>
                             </div>
 
@@ -3250,17 +3250,17 @@ function HomeDashboard() {
 
                             <div className="flex items-center justify-between">
                               <div className="flex flex-col">
-                                <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest">Talent Demand Index</span>
-                                <span className="text-white font-bold text-sm mt-1">{predictedSalaryResult.demand}</span>
+                                <span className="text-gray-400 text-sm font-bold uppercase tracking-widest">Talent Demand Index</span>
+                                <span className="text-white font-bold text-base mt-1">{predictedSalaryResult.demand}</span>
                               </div>
-                              <div className={`px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-widest ${predictedSalaryResult.demand === 'CRITICAL SHORTAGE' ? 'bg-red-500/10 border-red-500/20 text-red-500' : 'bg-brand-gold/10 border-brand-gold/20 text-brand-gold'}`}>
+                              <div className={`px-4 py-2 rounded-full border text-sm font-black uppercase tracking-widest ${predictedSalaryResult.demand === 'CRITICAL SHORTAGE' ? 'bg-red-500/10 border-red-500/20 text-red-500' : 'bg-brand-gold/10 border-brand-gold/20 text-brand-gold'}`}>
                                 {predictedSalaryResult.demand === 'CRITICAL SHORTAGE' ? 'HIGHEST PRIORITY' : 'High Market Index'}
                               </div>
                             </div>
 
                             <div className="bg-brand-gold/5 border border-brand-gold/10 p-4 rounded-xl flex items-center gap-3">
                               <ShieldCheck className="w-5 h-5 text-brand-gold" />
-                              <p className="text-[10px] text-white/60 font-medium leading-relaxed italic">
+                              <p className="text-sm text-white/60 font-medium leading-relaxed italic">
                                 Prediction assumes Tier-1 corporate presence and aligns with the top 25th percentile of the local executive market in {salaryCountry}.
                               </p>
                             </div>
@@ -3285,7 +3285,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🗺️ PROPRIETARY AI VISA ROADMAP & IMMIGRATION ENGINE</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Sovereign Jurisdictional Mobility Protocol</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Sovereign Jurisdictional Mobility Protocol</p>
                     </div>
                   </div>
                 </div>
@@ -3294,7 +3294,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={visaCountry}
                           onChange={(e) => {
@@ -3310,7 +3310,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Visa Pathway Stream</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Visa Pathway Stream</label>
                         <select 
                           value={visaPathway}
                           onChange={(e) => {
@@ -3328,7 +3328,7 @@ function HomeDashboard() {
                     <button 
                       onClick={generateVisaRoadmap}
                       disabled={isGeneratingRoadmap}
-                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                     >
                       {isGeneratingRoadmap ? (
                         <>
@@ -3350,12 +3350,12 @@ function HomeDashboard() {
                       {!visaRoadmap && !isGeneratingRoadmap ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Plane className="w-12 h-12" />
-                          <p className="text-[10px] font-bold uppercase tracking-widest">Select stream to synchronize mobility data</p>
+                          <p className="text-sm font-bold uppercase tracking-widest">Select stream to synchronize mobility data</p>
                         </div>
                       ) : isGeneratingRoadmap ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Sequential Sovereignty Matches...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Sequential Sovereignty Matches...</p>
                         </div>
                       ) : (
                         visaRoadmap && (
@@ -3366,12 +3366,12 @@ function HomeDashboard() {
                           >
                             <div className="flex justify-between items-start">
                               <div>
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Strategic Implementation Timeline</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-widest">Strategic Implementation Timeline</span>
                                 <div className="text-white text-xl font-bold mt-1 uppercase tracking-tight">{visaPathway}</div>
                               </div>
                               <div className="text-right">
-                                <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block">Est. Duration</span>
-                                <span className="text-brand-gold font-black text-sm">{visaRoadmap.totalTime}</span>
+                                <span className="text-gray-400 text-sm font-bold uppercase tracking-widest block">Est. Duration</span>
+                                <span className="text-brand-gold font-black text-base">{visaRoadmap.totalTime}</span>
                               </div>
                             </div>
 
@@ -3380,8 +3380,8 @@ function HomeDashboard() {
                                 <div key={idx} className="relative">
                                   <div className="absolute -left-[31px] top-1.5 w-2 h-2 rounded-full bg-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.5)]" />
                                   <div className="space-y-0.5">
-                                    <div className="text-white font-bold text-xs uppercase tracking-wider">{item.step}</div>
-                                    <p className="text-white/40 text-[10px] italic">{item.detail}</p>
+                                    <div className="text-white font-bold text-sm uppercase tracking-wider">{item.step}</div>
+                                    <p className="text-white/40 text-sm italic">{item.detail}</p>
                                   </div>
                                 </div>
                               ))}
@@ -3390,12 +3390,12 @@ function HomeDashboard() {
                             <div className="h-px bg-white/5 w-full" />
 
                             <div className="space-y-3">
-                              <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block">Executive Document Checklist</span>
+                              <span className="text-gray-400 text-sm font-bold uppercase tracking-widest block">Executive Document Checklist</span>
                               <div className="grid grid-cols-2 gap-2">
                                 {visaRoadmap.documents.map((doc, idx) => (
                                   <div key={idx} className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg border border-white/5">
                                     <CheckCircle2 className="w-3 h-3 text-brand-gold" />
-                                    <span className="text-white/80 text-[9px] font-medium uppercase tracking-tight">{doc}</span>
+                                    <span className="text-white/80 text-sm font-medium uppercase tracking-tight">{doc}</span>
                                   </div>
                                 ))}
                               </div>
@@ -3421,7 +3421,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🤖 PROPRIETARY NEURAL AI SAVINGS PLANNER</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Asset Allocation & Wealth Velocity Engine</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Asset Allocation & Wealth Velocity Engine</p>
                     </div>
                   </div>
                 </div>
@@ -3430,7 +3430,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Optimization Strategy</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Optimization Strategy</label>
                         <select 
                           value={savingsStrategy}
                           onChange={(e) => {
@@ -3446,7 +3446,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Additional Monthly AI Injection</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Additional Monthly AI Injection</label>
                         <input 
                           type="number"
                           value={savingsMonthly}
@@ -3462,7 +3462,7 @@ function HomeDashboard() {
                     <button 
                       onClick={optimizeSavingsDistribution}
                       disabled={isOptimizingSavings}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isOptimizingSavings ? (
                         <>
@@ -3484,12 +3484,12 @@ function HomeDashboard() {
                       {!savingsAllocation && !isOptimizingSavings ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Cpu className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select strategy to compute asset velocity</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select strategy to compute asset velocity</p>
                         </div>
                       ) : isOptimizingSavings ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Monte Carlo Simulations...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Monte Carlo Simulations...</p>
                         </div>
                       ) : (
                         savingsAllocation && (
@@ -3499,11 +3499,11 @@ function HomeDashboard() {
                             className="flex flex-col gap-6"
                           >
                             <div>
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Dynamic Asset Allocation Breakdown</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-widest">Dynamic Asset Allocation Breakdown</span>
                                 
                                 <div className="space-y-4 mt-6">
                                   <div className="space-y-1">
-                                    <div className="flex justify-between text-xs font-bold text-white uppercase tracking-wider">
+                                    <div className="flex justify-between text-sm font-bold text-white uppercase tracking-wider">
                                       <span>Safe Sovereign Havens</span>
                                       <span>{savingsAllocation.safe}%</span>
                                     </div>
@@ -3513,7 +3513,7 @@ function HomeDashboard() {
                                   </div>
 
                                   <div className="space-y-1">
-                                    <div className="flex justify-between text-xs font-bold text-white uppercase tracking-wider">
+                                    <div className="flex justify-between text-sm font-bold text-white uppercase tracking-wider">
                                       <span>High-Yield Cash Deposits</span>
                                       <span>{savingsAllocation.cash}%</span>
                                     </div>
@@ -3523,7 +3523,7 @@ function HomeDashboard() {
                                   </div>
 
                                   <div className="space-y-1">
-                                    <div className="flex justify-between text-xs font-bold text-white uppercase tracking-wider">
+                                    <div className="flex justify-between text-sm font-bold text-white uppercase tracking-wider">
                                       <span>Strategic Growth Assets</span>
                                       <span>{savingsAllocation.growth}%</span>
                                     </div>
@@ -3539,8 +3539,8 @@ function HomeDashboard() {
                             <div className="bg-brand-gold/10 border border-brand-gold/20 p-4 rounded-xl flex items-center gap-4">
                               <Sparkles className="w-8 h-8 text-brand-gold shrink-0" />
                               <div className="flex flex-col">
-                                <span className="text-brand-gold text-[9px] font-black uppercase tracking-[0.2em] mb-0.5">AI Timeline Compression Alert</span>
-                                <span className="text-white text-sm font-bold leading-snug">
+                                <span className="text-brand-gold text-sm font-black uppercase tracking-[0.2em] mb-0.5">AI Timeline Compression Alert</span>
+                                <span className="text-white text-base font-bold leading-snug">
                                   {savingsAllocation.timeline} based on a monthly injection of <span className="text-brand-gold">{(() => {
                                     const conv = CONVERSION_RATES[selectedCurrency];
                                     const val = Number(savingsMonthly) || 0;
@@ -3570,7 +3570,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🌐 PROPRIETARY AI REMOTE-WORK & NOMAD ADVISOR</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Digital Infrastructure & Remote Compliance Engine</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Digital Infrastructure & Remote Compliance Engine</p>
                     </div>
                   </div>
                 </div>
@@ -3579,7 +3579,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={nomadCountry}
                           onChange={(e) => {
@@ -3595,7 +3595,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Monthly Remote Revenue</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Monthly Remote Revenue</label>
                         <div className="relative">
                           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">
                             {CONVERSION_RATES[selectedCurrency]?.symbol || '$'}
@@ -3616,7 +3616,7 @@ function HomeDashboard() {
                     <button 
                       onClick={analyzeRemoteFeasibility}
                       disabled={isAnalyzingNomad}
-                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                     >
                       {isAnalyzingNomad ? (
                         <>
@@ -3638,12 +3638,12 @@ function HomeDashboard() {
                       {!nomadResult && !isAnalyzingNomad ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Wifi className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select parameters to compute remote viability</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select parameters to compute remote viability</p>
                         </div>
                       ) : isAnalyzingNomad ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Computing Infrastructure Feasibility...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Computing Infrastructure Feasibility...</p>
                         </div>
                       ) : (
                         nomadResult && (
@@ -3654,26 +3654,26 @@ function HomeDashboard() {
                           >
                             <div className="flex justify-between items-end">
                               <div>
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Remote Feasibility Score</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-widest">Remote Feasibility Score</span>
                                 <div className="text-white text-2xl font-black mt-1 uppercase tracking-tight">{nomadResult.score}</div>
                               </div>
                             </div>
 
                             <div className="space-y-3">
-                              <span className="text-slate-500 text-[8px] font-bold uppercase tracking-widest block">Infrastructure Checklist</span>
+                              <span className="text-gray-400 text-sm font-bold uppercase tracking-widest block">Infrastructure Checklist</span>
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div className="flex flex-col justify-center bg-white/5 px-4 py-3 rounded-lg border border-white/5">
-                                  <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-1">Internet Speed</span>
+                                  <span className="text-white/40 text-sm font-bold uppercase tracking-widest mb-1">Internet Speed</span>
                                   <div className="flex items-center gap-2">
                                     <Wifi className="w-4 h-4 text-emerald-500" />
-                                    <span className="text-white text-xs font-bold">{nomadResult.internet} Mbps Avg</span>
+                                    <span className="text-white text-sm font-bold">{nomadResult.internet} Mbps Avg</span>
                                   </div>
                                 </div>
                                 <div className="flex flex-col justify-center bg-white/5 px-4 py-3 rounded-lg border border-white/5">
-                                  <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-1">Nomad Program</span>
+                                  <span className="text-white/40 text-sm font-bold uppercase tracking-widest mb-1">Nomad Program</span>
                                   <div className="flex items-center gap-2">
                                     <ShieldCheck className="w-4 h-4 text-brand-gold" />
-                                    <span className="text-white text-xs font-bold">{nomadResult.visaStatus}</span>
+                                    <span className="text-white text-sm font-bold">{nomadResult.visaStatus}</span>
                                   </div>
                                 </div>
                               </div>
@@ -3684,8 +3684,8 @@ function HomeDashboard() {
                             <div className="bg-brand-gold/5 border border-brand-gold/10 p-4 rounded-xl flex items-center gap-4">
                               <Brain className="w-6 h-6 text-brand-gold shrink-0" />
                               <div className="flex flex-col">
-                                <span className="text-brand-gold text-[9px] font-black uppercase tracking-[0.2em] mb-0.5">AI Executive Nomad Insight</span>
-                                <span className="text-white text-xs font-medium leading-relaxed">
+                                <span className="text-brand-gold text-sm font-black uppercase tracking-[0.2em] mb-0.5">AI Executive Nomad Insight</span>
+                                <span className="text-white text-sm font-medium leading-relaxed">
                                   {nomadResult.insight}
                                 </span>
                               </div>
@@ -3711,7 +3711,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">📊 EXECUTIVE PURCHASING POWER & PPP CALCULATOR</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border Wealth Parity Engine</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border Wealth Parity Engine</p>
                     </div>
                   </div>
                 </div>
@@ -3720,7 +3720,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Base Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Base Jurisdiction</label>
                         <select 
                           value={pppBaseCountry}
                           onChange={(e) => {
@@ -3736,7 +3736,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={pppTargetCountry}
                           onChange={(e) => {
@@ -3752,7 +3752,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2 md:col-span-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Base Annual Salary</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Base Annual Salary</label>
                         <div className="relative">
                           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">
                             {CONVERSION_RATES[selectedCurrency]?.symbol || '$'}
@@ -3773,7 +3773,7 @@ function HomeDashboard() {
                     <button 
                       onClick={calculatePPP}
                       disabled={isCalculatingPPP}
-                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isCalculatingPPP ? (
                         <>
@@ -3795,12 +3795,12 @@ function HomeDashboard() {
                       {!pppResult && !isCalculatingPPP ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Scale className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select jurisdictions to compute purchasing power delta</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select jurisdictions to compute purchasing power delta</p>
                         </div>
                       ) : isCalculatingPPP ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Parity Indexing...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Parity Indexing...</p>
                         </div>
                       ) : (
                         pppResult && (
@@ -3810,7 +3810,7 @@ function HomeDashboard() {
                             className="flex flex-col gap-6"
                           >
                             <div>
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest">Real Purchasing Power Equivalent</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-widest">Real Purchasing Power Equivalent</span>
                                 <div className="mt-4 p-6 bg-gradient-to-r from-amber-900/40 to-brand-gold/10 border border-brand-gold/30 rounded-2xl">
                                   <div className="text-white text-4xl font-black tracking-tighter">
                                     {(() => {
@@ -3818,7 +3818,7 @@ function HomeDashboard() {
                                       return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(pppResult.equivalentSalary * conv.rate);
                                     })()}
                                   </div>
-                                  <div className="text-white/60 text-xs font-medium mt-2">
+                                  <div className="text-white/60 text-sm font-medium mt-2">
                                     Equivalent salary required in <span className="text-white font-bold">{pppTargetCountry}</span>
                                   </div>
                                 </div>
@@ -3829,8 +3829,8 @@ function HomeDashboard() {
                             <div className="bg-brand-gold/5 border border-brand-gold/10 p-4 rounded-xl flex items-center gap-4">
                               <Brain className="w-6 h-6 text-brand-gold shrink-0" />
                               <div className="flex flex-col">
-                                <span className="text-brand-gold text-[9px] font-black uppercase tracking-[0.2em] mb-0.5">Parity Intelligence Alert</span>
-                                <span className="text-white text-xs font-medium leading-relaxed">
+                                <span className="text-brand-gold text-sm font-black uppercase tracking-[0.2em] mb-0.5">Parity Intelligence Alert</span>
+                                <span className="text-white text-sm font-medium leading-relaxed">
                                   {pppResult.insight}
                                 </span>
                               </div>
@@ -3856,7 +3856,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🏛️ PROPRIETARY CORPORATE & CAPITAL GAINS TAX ENGINE</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Strategic Tax Liability & Retained Profit Calculator</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Strategic Tax Liability & Retained Profit Calculator</p>
                     </div>
                   </div>
                 </div>
@@ -3865,7 +3865,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={taxTargetCountry}
                           onChange={(e) => {
@@ -3881,7 +3881,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Annual Business Revenue / Corporate Income</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Annual Business Revenue / Corporate Income</label>
                         <div className="relative">
                           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">
                             {CONVERSION_RATES[selectedCurrency]?.symbol || '$'}
@@ -3900,7 +3900,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Annual Capital Gains / Investment Profit</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Annual Capital Gains / Investment Profit</label>
                         <div className="relative">
                           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">
                             {CONVERSION_RATES[selectedCurrency]?.symbol || '$'}
@@ -3921,7 +3921,7 @@ function HomeDashboard() {
                     <button 
                       onClick={calculateTaxLiability}
                       disabled={isCalculatingTax}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isCalculatingTax ? (
                         <>
@@ -3943,12 +3943,12 @@ function HomeDashboard() {
                       {!taxResult && !isCalculatingTax ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Landmark className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select parameters to compute tax exposure</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select parameters to compute tax exposure</p>
                         </div>
                       ) : isCalculatingTax ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Sovereign Tax Matrices...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Sovereign Tax Matrices...</p>
                         </div>
                       ) : (
                         taxResult && (
@@ -3958,12 +3958,12 @@ function HomeDashboard() {
                             className="flex flex-col gap-6"
                           >
                             <div>
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-4">Liability Breakdown</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-4">Liability Breakdown</span>
                                 
                                 <div className="space-y-4">
                                   <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/5">
                                     <div className="flex flex-col">
-                                      <span className="text-white/60 text-[10px] font-bold uppercase tracking-widest">Corporate Tax Burden ({taxResult.corpRate}%)</span>
+                                      <span className="text-white/60 text-sm font-bold uppercase tracking-widest">Corporate Tax Burden ({taxResult.corpRate}%)</span>
                                       <span className="text-white text-lg font-bold">
                                         {(() => {
                                           const conv = CONVERSION_RATES[selectedCurrency];
@@ -3976,7 +3976,7 @@ function HomeDashboard() {
 
                                   <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/5">
                                     <div className="flex flex-col">
-                                      <span className="text-white/60 text-[10px] font-bold uppercase tracking-widest">Capital Gains Tax ({taxResult.capRate}%)</span>
+                                      <span className="text-white/60 text-sm font-bold uppercase tracking-widest">Capital Gains Tax ({taxResult.capRate}%)</span>
                                       <span className="text-white text-lg font-bold">
                                         {(() => {
                                           const conv = CONVERSION_RATES[selectedCurrency];
@@ -3990,7 +3990,7 @@ function HomeDashboard() {
                             </div>
 
                             <div className="mt-2 p-6 bg-gradient-to-r from-amber-900/40 to-brand-gold/10 border border-brand-gold/30 rounded-2xl">
-                              <span className="text-brand-gold text-[10px] font-black uppercase tracking-[0.2em] mb-2 block">Total Net Retained Profit</span>
+                              <span className="text-brand-gold text-sm font-black uppercase tracking-[0.2em] mb-2 block">Total Net Retained Profit</span>
                               <div className="text-white text-4xl font-black tracking-tighter">
                                 {(() => {
                                   const conv = CONVERSION_RATES[selectedCurrency];
@@ -4019,7 +4019,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">💱 PROPRIETARY FOREX & CURRENCY EXCHANGE ENGINE</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border FX Routing Engine</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border FX Routing Engine</p>
                     </div>
                   </div>
                 </div>
@@ -4028,7 +4028,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
                     <div className="space-y-2 md:col-span-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Amount to Convert</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Amount to Convert</label>
                         <input 
                           type="number"
                           value={fxAmount}
@@ -4042,7 +4042,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">From Currency</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">From Currency</label>
                         <select 
                           value={fxFrom}
                           onChange={(e) => {
@@ -4058,7 +4058,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">To Currency</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">To Currency</label>
                         <select 
                           value={fxTo}
                           onChange={(e) => {
@@ -4076,7 +4076,7 @@ function HomeDashboard() {
                     <button 
                       onClick={calculateFx}
                       disabled={isCalculatingFx}
-                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="md:col-span-2 w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isCalculatingFx ? (
                         <>
@@ -4098,12 +4098,12 @@ function HomeDashboard() {
                       {!fxResult && !isCalculatingFx ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <DollarSign className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select currencies to compute exchange delta</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select currencies to compute exchange delta</p>
                         </div>
                       ) : isCalculatingFx ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Exchange Parity...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Exchange Parity...</p>
                         </div>
                       ) : (
                         fxResult && (
@@ -4113,7 +4113,7 @@ function HomeDashboard() {
                             className="flex flex-col gap-6"
                           >
                             <div>
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-4">Final Converted Amount</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-4">Final Converted Amount</span>
                                 
                                 <div className="p-6 bg-gradient-to-r from-amber-900/40 to-brand-gold/10 border border-brand-gold/30 rounded-2xl">
                                   <div className="text-white text-4xl font-black tracking-tighter">
@@ -4127,8 +4127,8 @@ function HomeDashboard() {
                             <div className="bg-brand-gold/5 border border-brand-gold/10 p-4 rounded-xl flex items-center gap-4">
                               <Brain className="w-6 h-6 text-brand-gold shrink-0" />
                               <div className="flex flex-col">
-                                <span className="text-brand-gold text-[9px] font-black uppercase tracking-[0.2em] mb-0.5">Applied Exchange Rate</span>
-                                <span className="text-zinc-200 text-xs font-medium leading-relaxed">
+                                <span className="text-brand-gold text-sm font-black uppercase tracking-[0.2em] mb-0.5">Applied Exchange Rate</span>
+                                <span className="text-zinc-200 text-sm font-medium leading-relaxed">
                                   {fxResult.rateText}
                                 </span>
                               </div>
@@ -4154,7 +4154,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🛂 TURNKEY IMMIGRATION CONCIERGE SERVICES</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Relocation & Visa Eligibility</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Relocation & Visa Eligibility</p>
                     </div>
                   </div>
                 </div>
@@ -4163,7 +4163,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={immiTargetCountry}
                           onChange={(e) => {
@@ -4179,7 +4179,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Current Citizenship</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Current Citizenship</label>
                         <select 
                           value={immiCitizenship}
                           onChange={(e) => {
@@ -4195,7 +4195,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Desired Concierge Tier</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Desired Concierge Tier</label>
                         <select 
                           value={immiTier}
                           onChange={(e) => {
@@ -4213,7 +4213,7 @@ function HomeDashboard() {
                     <button 
                       onClick={assessImmigration}
                       disabled={isAssessingImmi}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isAssessingImmi ? (
                         <>
@@ -4235,12 +4235,12 @@ function HomeDashboard() {
                       {!immiResult && !isAssessingImmi ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Plane className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select parameters to compute visa eligibility</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select parameters to compute visa eligibility</p>
                         </div>
                       ) : isAssessingImmi ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Consulting Global Immigration Counsel...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Consulting Global Immigration Counsel...</p>
                         </div>
                       ) : (
                         immiResult && (
@@ -4250,26 +4250,26 @@ function HomeDashboard() {
                             className="flex flex-col gap-6"
                           >
                             <div>
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-4">Visa Approval Probability</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-4">Visa Approval Probability</span>
                                 <div className="p-4 bg-gradient-to-r from-amber-900/40 to-brand-gold/10 border border-brand-gold/30 rounded-xl mb-6">
                                   <div className="text-white text-2xl font-black tracking-tighter">
                                     {immiResult.probability}
                                   </div>
                                 </div>
 
-                                <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-4">Dedicated Concierge Deliverables</span>
+                                <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-4">Dedicated Concierge Deliverables</span>
                                 <ul className="space-y-3 mb-8">
                                   {immiResult.deliverables.map((item, idx) => (
                                     <li key={idx} className="flex items-start gap-3">
                                       <CheckCircle2 className="w-5 h-5 text-brand-gold shrink-0 mt-0.5" />
-                                      <span className="text-zinc-200 text-sm font-medium">{item}</span>
+                                      <span className="text-zinc-200 text-base font-medium">{item}</span>
                                     </li>
                                   ))}
                                 </ul>
                                 
                                 <button 
                                   onClick={() => setIsConciergeModalOpen(true)}
-                                  className="w-full bg-transparent border-2 border-brand-gold/50 hover:bg-brand-gold/10 py-4 rounded-xl text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all"
+                                  className="w-full bg-transparent border-2 border-brand-gold/50 hover:bg-brand-gold/10 py-4 rounded-xl text-brand-gold font-bold uppercase tracking-[0.1em] text-sm transition-all"
                                 >
                                   Schedule Initial Consultation
                                 </button>
@@ -4295,7 +4295,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🛡️ PROPRIETARY GLOBAL INSURANCE PARTNERS</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Coverage & Wealth Protection</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Coverage & Wealth Protection</p>
                     </div>
                   </div>
                 </div>
@@ -4304,7 +4304,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={insTargetCountry}
                           onChange={(e) => {
@@ -4320,7 +4320,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Coverage Category</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Coverage Category</label>
                         <select 
                           value={insCategory}
                           onChange={(e) => {
@@ -4344,7 +4344,7 @@ function HomeDashboard() {
                         }, 1500);
                       }}
                       disabled={isAssessingIns || isMatchingInsurance}
-                      className={`w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2 ${isMatchingInsurance ? 'animate-pulse' : ''}`}
+                      className={`w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2 ${isMatchingInsurance ? 'animate-pulse' : ''}`}
                     >
                       {isMatchingInsurance ? (
                         <>
@@ -4371,12 +4371,12 @@ function HomeDashboard() {
                       {!insResult && !isAssessingIns ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Shield className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select coverage requirements</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select coverage requirements</p>
                         </div>
                       ) : isAssessingIns ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Sourcing Global Underwriters...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Sourcing Global Underwriters...</p>
                         </div>
                       ) : (
                         insResult && (
@@ -4385,7 +4385,7 @@ function HomeDashboard() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col gap-4"
                           >
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Verified Tier-1 Partners</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-2">Verified Tier-1 Partners</span>
                             
                             {insResult.map((partner, idx) => (
                               <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-3 hover:border-brand-gold/30 transition-colors">
@@ -4393,7 +4393,7 @@ function HomeDashboard() {
                                   <ShieldCheck className="w-5 h-5 text-brand-gold shrink-0" />
                                   <span className="text-white font-bold text-lg">{partner.name}</span>
                                 </div>
-                                <p className="text-zinc-300 text-sm">{partner.description}</p>
+                                <p className="text-zinc-300 text-base">{partner.description}</p>
                                 <button 
                                   onClick={() => {
                                     if (partner.name.includes('Bupa')) {
@@ -4412,7 +4412,7 @@ function HomeDashboard() {
                                       navigate('/insurance/cigna');
                                     }
                                   }}
-                                  className="w-full mt-2 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all"
+                                  className="w-full mt-2 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-sm transition-all"
                                 >
                                   Request Custom Quote
                                 </button>
@@ -4439,7 +4439,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">💼 PROPRIETARY GLOBAL REMOTE JOB BOARD</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Offshore & Tech Placements</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Offshore & Tech Placements</p>
                     </div>
                   </div>
                 </div>
@@ -4448,7 +4448,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Industry / Profession</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Industry / Profession</label>
                         <select 
                           value={jobIndustry}
                           onChange={(e) => {
@@ -4464,7 +4464,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Desired Annual Salary Bracket</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Desired Annual Salary Bracket</label>
                         <select 
                           value={jobSalary}
                           onChange={(e) => {
@@ -4482,7 +4482,7 @@ function HomeDashboard() {
                     <button 
                       onClick={fetchRemoteJobs}
                       disabled={isFetchingJobs}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isFetchingJobs ? (
                         <>
@@ -4504,12 +4504,12 @@ function HomeDashboard() {
                       {!jobResult && !isFetchingJobs ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Briefcase className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select filters to query headhunter network</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select filters to query headhunter network</p>
                         </div>
                       ) : isFetchingJobs ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Scanning Global Opportunities...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Scanning Global Opportunities...</p>
                         </div>
                       ) : (
                         jobResult && (
@@ -4518,19 +4518,19 @@ function HomeDashboard() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col gap-4"
                           >
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Exclusive Matched Roles</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-2">Exclusive Matched Roles</span>
                             
                             {jobResult.map((job, idx) => (
                               <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-3 hover:border-brand-gold/30 transition-colors">
                                 <div className="flex flex-col gap-1">
                                   <div className="flex items-start justify-between gap-2">
                                     <span className="text-white font-bold text-lg leading-tight">{job.title}</span>
-                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-[9px] font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
+                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-sm font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
                                       <CheckCircle2 className="w-3 h-3" />
                                       Verified Remote
                                     </div>
                                   </div>
-                                  <span className="text-amber-600 text-sm font-medium">{job.company}</span>
+                                  <span className="text-amber-600 text-base font-medium">{job.company}</span>
                                 </div>
                                 
                                 <div className="text-zinc-200 text-base font-bold bg-black/40 px-3 py-2 rounded-lg inline-block w-fit mt-1">
@@ -4538,10 +4538,10 @@ function HomeDashboard() {
                                     const conv = CONVERSION_RATES[selectedCurrency];
                                     return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(job.salary * conv.rate);
                                   })()}
-                                  <span className="text-zinc-500 text-xs font-normal ml-1">/yr</span>
+                                  <span className="text-gray-400 text-sm font-normal ml-1">/yr</span>
                                 </div>
 
-                                <button className="w-full mt-3 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
+                                <button className="w-full mt-3 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-sm transition-all">
                                   Apply via Headhunter
                                 </button>
                               </div>
@@ -4567,7 +4567,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🏦 PROPRIETARY OFFSHORE & INTERNATIONAL BANKING</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Exclusive Wealth & Asset Protection</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Exclusive Wealth & Asset Protection</p>
                     </div>
                   </div>
                 </div>
@@ -4576,7 +4576,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={bankTargetCountry}
                           onChange={(e) => {
@@ -4592,7 +4592,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Account Type & Wealth Tier</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Account Type & Wealth Tier</label>
                         <select 
                           value={bankTier}
                           onChange={(e) => {
@@ -4610,7 +4610,7 @@ function HomeDashboard() {
                     <button 
                       onClick={fetchBankingPartners}
                       disabled={isFetchingBanks}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isFetchingBanks ? (
                         <>
@@ -4632,12 +4632,12 @@ function HomeDashboard() {
                       {!bankResult && !isFetchingBanks ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Landmark className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select requirements to query global reserve network</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select requirements to query global reserve network</p>
                         </div>
                       ) : isFetchingBanks ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Establishing Secure Routing...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Establishing Secure Routing...</p>
                         </div>
                       ) : (
                         bankResult && (
@@ -4646,22 +4646,22 @@ function HomeDashboard() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col gap-4"
                           >
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Verified Banking & Wealth Partners</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-2">Verified Banking & Wealth Partners</span>
                             
                             {bankResult.map((bank, idx) => (
                               <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-3 hover:border-brand-gold/30 transition-colors">
                                 <div className="flex flex-col gap-1">
                                   <div className="flex items-start justify-between gap-2">
                                     <span className="text-white font-bold text-lg leading-tight">{bank.name}</span>
-                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-[9px] font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
+                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-sm font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
                                       <CheckCircle2 className="w-3 h-3" />
                                       Verified Partner
                                     </div>
                                   </div>
-                                  <span className="text-zinc-300 text-sm mt-1">{bank.description}</span>
+                                  <span className="text-zinc-300 text-base mt-1">{bank.description}</span>
                                 </div>
                                 
-                                <button className="w-full mt-3 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
+                                <button className="w-full mt-3 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-sm transition-all">
                                   Request Priority Introduction
                                 </button>
                               </div>
@@ -4687,7 +4687,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🌐 PROPRIETARY GLOBAL EXPAT & ELITE NETWORKING HUB</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Exclusive Communities & Masterminds</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Exclusive Communities & Masterminds</p>
                     </div>
                   </div>
                 </div>
@@ -4696,7 +4696,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={networkTargetCountry}
                           onChange={(e) => {
@@ -4712,7 +4712,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Networking Interest</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Networking Interest</label>
                         <select 
                           value={networkInterest}
                           onChange={(e) => {
@@ -4730,7 +4730,7 @@ function HomeDashboard() {
                     <button 
                       onClick={fetchNetworkingCommunities}
                       disabled={isFetchingNetworks}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isFetchingNetworks ? (
                         <>
@@ -4752,12 +4752,12 @@ function HomeDashboard() {
                       {!networkResult && !isFetchingNetworks ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Users className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select interests to uncover private networks</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select interests to uncover private networks</p>
                         </div>
                       ) : isFetchingNetworks ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Accessing Global Membership Directory...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Accessing Global Membership Directory...</p>
                         </div>
                       ) : (
                         networkResult && (
@@ -4766,22 +4766,22 @@ function HomeDashboard() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col gap-4"
                           >
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Exclusive Matched Communities</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-2">Exclusive Matched Communities</span>
                             
                             {networkResult.map((community, idx) => (
                               <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-3 hover:border-brand-gold/30 transition-colors">
                                 <div className="flex flex-col gap-1">
                                   <div className="flex items-start justify-between gap-2">
                                     <span className="text-white font-bold text-lg leading-tight">{community.name}</span>
-                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-[9px] font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
+                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-sm font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
                                       <CheckCircle2 className="w-3 h-3" />
                                       Verified Network
                                     </div>
                                   </div>
-                                  <span className="text-zinc-300 text-sm mt-1">{community.description}</span>
+                                  <span className="text-zinc-300 text-base mt-1">{community.description}</span>
                                 </div>
                                 
-                                <button className="w-full mt-3 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
+                                <button className="w-full mt-3 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-sm transition-all">
                                   Request Private Invitation
                                 </button>
                               </div>
@@ -4807,7 +4807,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">💬 PROPRIETARY GLOBAL EXPAT DISCUSSION BOARD</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Premium Insights & Relocation Intel</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Premium Insights & Relocation Intel</p>
                     </div>
                   </div>
                 </div>
@@ -4816,7 +4816,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={forumTargetCountry}
                           onChange={(e) => {
@@ -4832,7 +4832,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Discussion Topic</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Discussion Topic</label>
                         <select 
                           value={forumTopic}
                           onChange={(e) => {
@@ -4850,7 +4850,7 @@ function HomeDashboard() {
                     <button 
                       onClick={fetchForumDiscussions}
                       disabled={isFetchingForum}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isFetchingForum ? (
                         <>
@@ -4872,12 +4872,12 @@ function HomeDashboard() {
                       {!forumResult && !isFetchingForum ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <MessageSquare className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select filters to view active elite discussions</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select filters to view active elite discussions</p>
                         </div>
                       ) : isFetchingForum ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Syncing Private Forum Intel...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Syncing Private Forum Intel...</p>
                         </div>
                       ) : (
                         forumResult && (
@@ -4886,13 +4886,13 @@ function HomeDashboard() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col gap-4"
                           >
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Top Trending Threads</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-2">Top Trending Threads</span>
                             
                             {forumResult.map((thread, idx) => (
                               <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-4 hover:border-brand-gold/30 transition-colors">
                                 <h4 className="text-white font-bold text-lg leading-tight">{thread.title}</h4>
                                 
-                                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-zinc-400 text-xs font-medium">
+                                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-zinc-400 text-sm font-medium">
                                   <div className="flex items-center gap-1.5">
                                     <User className="w-3.5 h-3.5 text-brand-gold" />
                                     <span>{thread.author}</span>
@@ -4907,7 +4907,7 @@ function HomeDashboard() {
                                   </div>
                                 </div>
                                 
-                                <button className="w-full mt-2 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all">
+                                <button className="w-full mt-2 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-sm transition-all">
                                   Read & Join Discussion
                                 </button>
                               </div>
@@ -4933,7 +4933,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">💸 PROPRIETARY ANONYMOUS SALARY INSIGHTS</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Compensation & Equity Benchmarks</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive Compensation & Equity Benchmarks</p>
                     </div>
                   </div>
                 </div>
@@ -4942,7 +4942,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={salaryInsightsCountry}
                           onChange={(e) => {
@@ -4958,7 +4958,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Core Industry / Profession</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Core Industry / Profession</label>
                         <select 
                           value={salaryInsightsIndustry}
                           onChange={(e) => {
@@ -4974,7 +4974,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Contribute Your Salary (Anonymous)</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Contribute Your Salary (Anonymous)</label>
                         <div className="relative">
                           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">{CONVERSION_RATES[selectedCurrency]?.symbol || '$'}</span>
                           <input 
@@ -4993,7 +4993,7 @@ function HomeDashboard() {
                     <button 
                       onClick={fetchSalaryInsights}
                       disabled={isFetchingSalaryInsights}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isFetchingSalaryInsights ? (
                         <>
@@ -5015,12 +5015,12 @@ function HomeDashboard() {
                       {!salaryInsightsResult && !isFetchingSalaryInsights ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <DollarSign className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select filters to reveal anonymous compensation data</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select filters to reveal anonymous compensation data</p>
                         </div>
                       ) : isFetchingSalaryInsights ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Aggregating Global Salary Vault...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Aggregating Global Salary Vault...</p>
                         </div>
                       ) : (
                         salaryInsightsResult && (
@@ -5029,19 +5029,19 @@ function HomeDashboard() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col gap-4"
                           >
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Verified Anonymous Contributions</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-2">Verified Anonymous Contributions</span>
                             
                             {salaryInsightsResult.map((insight, idx) => (
                               <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-4 hover:border-brand-gold/30 transition-colors">
                                 <div className="flex flex-col gap-1">
                                   <div className="flex items-start justify-between gap-2">
                                     <span className="text-white font-bold text-lg leading-tight">{insight.role}</span>
-                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-[9px] font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
+                                    <div className="bg-brand-gold/10 border border-brand-gold/30 px-2 py-1 rounded text-sm font-black text-brand-gold uppercase tracking-wider shrink-0 flex items-center gap-1">
                                       <CheckCircle2 className="w-3 h-3" />
                                       Verified Expat
                                     </div>
                                   </div>
-                                  <div className="flex items-center gap-1.5 text-zinc-400 text-xs font-medium mt-1">
+                                  <div className="flex items-center gap-1.5 text-zinc-400 text-sm font-medium mt-1">
                                     <Clock className="w-3.5 h-3.5 text-brand-gold" />
                                     <span>{insight.time}</span>
                                   </div>
@@ -5049,7 +5049,7 @@ function HomeDashboard() {
                                 
                                 <div className="grid grid-cols-2 gap-4">
                                   <div className="bg-black/40 rounded-lg p-3 border border-white/5">
-                                    <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Base Salary</span>
+                                    <span className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-1">Base Salary</span>
                                     <div className="text-white font-bold">
                                       {(() => {
                                         const conv = CONVERSION_RATES[selectedCurrency];
@@ -5058,7 +5058,7 @@ function HomeDashboard() {
                                     </div>
                                   </div>
                                   <div className="bg-brand-gold/5 rounded-lg p-3 border border-brand-gold/10">
-                                    <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mb-1">Bonus / Equity</span>
+                                    <span className="text-sm font-bold text-amber-600 uppercase tracking-widest block mb-1">Bonus / Equity</span>
                                     <div className="text-brand-gold font-bold">
                                       + {(() => {
                                         const conv = CONVERSION_RATES[selectedCurrency];
@@ -5090,7 +5090,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">🏙️ PROPRIETARY EXPAT CITY REVIEWS & RATINGS</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Verified Neighborhood Insights</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Verified Neighborhood Insights</p>
                     </div>
                   </div>
                 </div>
@@ -5099,7 +5099,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={cityReviewCountry}
                           onChange={(e) => {
@@ -5115,7 +5115,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">City & Neighborhood</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">City & Neighborhood</label>
                         <select 
                           value={cityReviewNeighborhood}
                           onChange={(e) => {
@@ -5133,7 +5133,7 @@ function HomeDashboard() {
                     <button 
                       onClick={fetchCityReviews}
                       disabled={isFetchingCityReviews}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isFetchingCityReviews ? (
                         <>
@@ -5155,12 +5155,12 @@ function HomeDashboard() {
                       {!cityReviewResult && !isFetchingCityReviews ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <MapPin className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select filters to view premium neighborhood intelligence</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select filters to view premium neighborhood intelligence</p>
                         </div>
                       ) : isFetchingCityReviews ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Aggregating Verified Reviews...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Aggregating Verified Reviews...</p>
                         </div>
                       ) : (
                         cityReviewResult && (
@@ -5169,53 +5169,53 @@ function HomeDashboard() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col gap-4"
                           >
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2">Premium Expat Intelligence</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-2">Premium Expat Intelligence</span>
                             
                             {cityReviewResult.map((review, idx) => (
                               <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-4 hover:border-brand-gold/30 transition-colors">
                                 <div className="flex items-start justify-between gap-2">
-                                  <span className="text-brand-gold font-bold text-sm tracking-wider uppercase">{review.title}</span>
+                                  <span className="text-brand-gold font-bold text-base tracking-wider uppercase">{review.title}</span>
                                   <div className="flex items-center gap-0.5">
                                     {[...Array(5)].map((_, i) => (
-                                      <span key={i} className="text-xs">⭐</span>
+                                      <span key={i} className="text-sm">⭐</span>
                                     ))}
                                   </div>
                                 </div>
                                 
                                 <div className="grid grid-cols-3 gap-2 border-y border-white/5 py-3">
                                   <div className="flex flex-col items-center gap-1 text-center">
-                                    <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Safety</span>
+                                    <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Safety</span>
                                     <div className="flex items-center gap-0.5">
-                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 1 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 2 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 3 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 4 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 5 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 1 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 2 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 3 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 4 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.safety >= 5 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
                                     </div>
                                   </div>
                                   <div className="flex flex-col items-center gap-1 text-center border-l border-r border-white/5">
-                                    <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Cost</span>
+                                    <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Cost</span>
                                     <div className="flex items-center gap-0.5">
-                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 1 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 2 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 3 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 4 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 5 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 1 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 2 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 3 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 4 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.cost >= 5 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
                                     </div>
                                   </div>
                                   <div className="flex flex-col items-center gap-1 text-center">
-                                    <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Lifestyle</span>
+                                    <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Lifestyle</span>
                                     <div className="flex items-center gap-0.5">
-                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 1 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 2 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 3 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 4 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
-                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 5 ? 'text-amber-500 fill-amber-500' : 'text-zinc-600'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 1 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 2 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 3 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 4 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
+                                      <Star className={`w-3.5 h-3.5 ${review.lifestyle >= 5 ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} />
                                     </div>
                                   </div>
                                 </div>
                                 
-                                <p className="text-zinc-200 text-sm leading-relaxed italic border-l-2 border-brand-gold/50 pl-3">"{review.text}"</p>
+                                <p className="text-zinc-200 text-base leading-relaxed italic border-l-2 border-brand-gold/50 pl-3">"{review.text}"</p>
                               </div>
                             ))}
                           </motion.div>
@@ -5239,7 +5239,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">⚖️ PROPRIETARY JURISDICTION COMPARISON MATRIX</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border Metrics Evaluator</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border Metrics Evaluator</p>
                     </div>
                   </div>
                 </div>
@@ -5248,7 +5248,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Jurisdiction A (Base Country)</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Jurisdiction A (Base Country)</label>
                         <select 
                           value={compareCountryA}
                           onChange={(e) => {
@@ -5264,7 +5264,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Jurisdiction B (Target Country)</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Jurisdiction B (Target Country)</label>
                         <select 
                           value={compareCountryB}
                           onChange={(e) => {
@@ -5282,7 +5282,7 @@ function HomeDashboard() {
                     <button 
                       onClick={compareJurisdictions}
                       disabled={isComparing}
-                      className="w-full h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                      className="w-full h-[58px] bg-gradient-to-r from-amber-600 to-brand-gold rounded-xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                     >
                       {isComparing ? (
                         <>
@@ -5304,12 +5304,12 @@ function HomeDashboard() {
                       {!compareResult && !isComparing ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Scale className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select jurisdictions to synthesize matrix data</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select jurisdictions to synthesize matrix data</p>
                         </div>
                       ) : isComparing ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Comparative Algorithms...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Running Comparative Algorithms...</p>
                         </div>
                       ) : (
                         compareResult && (
@@ -5318,24 +5318,24 @@ function HomeDashboard() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col gap-6"
                           >
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2 text-center md:text-left">Strategic Comparison Matrix</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-2 text-center md:text-left">Strategic Comparison Matrix</span>
                             
                             <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center border-b border-white/10 pb-4">
                               <div className="text-transparent">Metric</div>
                               <div className="text-center">
                                 <h4 className="text-white font-bold text-lg md:text-xl truncate">{compareResult.countryA.name}</h4>
-                                <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mt-1">Jurisdiction A</span>
+                                <span className="text-sm font-bold text-amber-600 uppercase tracking-widest block mt-1">Jurisdiction A</span>
                               </div>
                               <div className="text-center">
                                 <h4 className="text-white font-bold text-lg md:text-xl truncate">{compareResult.countryB.name}</h4>
-                                <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mt-1">Jurisdiction B</span>
+                                <span className="text-sm font-bold text-amber-600 uppercase tracking-widest block mt-1">Jurisdiction B</span>
                               </div>
                             </div>
 
                             <div className="flex flex-col gap-3">
                               {/* Row 1: Cost of Living */}
                               <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-colors">
-                                <div className="text-xs md:text-sm font-bold text-zinc-400 uppercase tracking-wider">Est. Cost of Living</div>
+                                <div className="text-sm md:text-base font-bold text-zinc-400 uppercase tracking-wider">Est. Cost of Living</div>
                                 <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryA.costIndex < compareResult.countryB.costIndex ? 'text-brand-gold' : 'text-white'}`}>
                                   {compareResult.countryA.costIndex}
                                 </div>
@@ -5346,7 +5346,7 @@ function HomeDashboard() {
 
                               {/* Row 2: Standard Tax Rate */}
                               <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-colors">
-                                <div className="text-xs md:text-sm font-bold text-zinc-400 uppercase tracking-wider">Standard Tax Rate</div>
+                                <div className="text-sm md:text-base font-bold text-zinc-400 uppercase tracking-wider">Standard Tax Rate</div>
                                 <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryA.taxRate < compareResult.countryB.taxRate ? 'text-brand-gold' : 'text-white'}`}>
                                   {compareResult.countryA.taxRate}%
                                 </div>
@@ -5357,18 +5357,18 @@ function HomeDashboard() {
 
                               {/* Row 3: Digital Nomad Visa */}
                               <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-colors">
-                                <div className="text-xs md:text-sm font-bold text-zinc-400 uppercase tracking-wider">Digital Nomad Visa</div>
-                                <div className={`text-center text-sm md:text-base font-bold ${compareResult.countryA.digitalNomad === 'Available' ? 'text-emerald-400' : 'text-zinc-500'}`}>
+                                <div className="text-sm md:text-base font-bold text-zinc-400 uppercase tracking-wider">Digital Nomad Visa</div>
+                                <div className={`text-center text-base md:text-base font-bold ${compareResult.countryA.digitalNomad === 'Available' ? 'text-emerald-400' : 'text-gray-400'}`}>
                                   {compareResult.countryA.digitalNomad}
                                 </div>
-                                <div className={`text-center text-sm md:text-base font-bold ${compareResult.countryB.digitalNomad === 'Available' ? 'text-emerald-400' : 'text-zinc-500'}`}>
+                                <div className={`text-center text-base md:text-base font-bold ${compareResult.countryB.digitalNomad === 'Available' ? 'text-emerald-400' : 'text-gray-400'}`}>
                                   {compareResult.countryB.digitalNomad}
                                 </div>
                               </div>
 
                               {/* Row 4: Quality of Life */}
                               <div className="grid grid-cols-3 gap-4 lg:gap-8 items-center bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-colors">
-                                <div className="text-xs md:text-sm font-bold text-zinc-400 uppercase tracking-wider">Quality of Life (100)</div>
+                                <div className="text-sm md:text-base font-bold text-zinc-400 uppercase tracking-wider">Quality of Life (100)</div>
                                 <div className={`text-center text-lg md:text-xl font-bold ${compareResult.countryA.qualityScore > compareResult.countryB.qualityScore ? 'text-brand-gold' : 'text-white'}`}>
                                   {compareResult.countryA.qualityScore}
                                 </div>
@@ -5398,7 +5398,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">📈 PROPRIETARY GLOBAL SALARY TREND TRACKER</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive 5-Year Progression</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Executive 5-Year Progression</p>
                     </div>
                   </div>
                 </div>
@@ -5407,7 +5407,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={trendCountry}
                           onChange={(e) => {
@@ -5423,7 +5423,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Executive Role</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Executive Role</label>
                         <select 
                           value={trendRole}
                           onChange={(e) => {
@@ -5441,7 +5441,7 @@ function HomeDashboard() {
                     <button 
                       onClick={fetchSalaryTrend}
                       disabled={isTrackingTrend}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isTrackingTrend ? (
                         <>
@@ -5463,12 +5463,12 @@ function HomeDashboard() {
                       {!trendResult && !isTrackingTrend ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <TrendingUp className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Select parameters to view 5-year progression</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select parameters to view 5-year progression</p>
                         </div>
                       ) : isTrackingTrend ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Modeling Career Trajectory...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Modeling Career Trajectory...</p>
                         </div>
                       ) : (
                         trendResult && (
@@ -5478,7 +5478,7 @@ function HomeDashboard() {
                             className="flex flex-col gap-6"
                           >
                             <div className="text-center md:text-left border-b border-white/5 pb-4">
-                              <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-1">Estimated Projection</span>
+                              <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-1">Estimated Projection</span>
                               <h4 className="text-white font-bold text-xl">{trendResult.role} in {trendResult.country}</h4>
                             </div>
                             
@@ -5486,7 +5486,7 @@ function HomeDashboard() {
                               {/* Year 1 */}
                               <div className="relative pl-10">
                                 <div className="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-black border-2 border-brand-gold z-10" />
-                                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Year 1 (Entry / Transfer)</span>
+                                <span className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-1">Year 1 (Entry / Transfer)</span>
                                 <div className="text-white font-bold text-xl">
                                   {(() => {
                                     const conv = CONVERSION_RATES[selectedCurrency];
@@ -5498,7 +5498,7 @@ function HomeDashboard() {
                               {/* Year 3 */}
                               <div className="relative pl-10 mt-2">
                                 <div className="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-black border-2 border-brand-gold/60 z-10" />
-                                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Year 3 (Mid-Level Growth)</span>
+                                <span className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-1">Year 3 (Mid-Level Growth)</span>
                                 <div className="text-white font-bold text-2xl">
                                   {(() => {
                                     const conv = CONVERSION_RATES[selectedCurrency];
@@ -5510,7 +5510,7 @@ function HomeDashboard() {
                               {/* Year 5 */}
                               <div className="relative pl-10 mt-2">
                                 <div className="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-brand-gold border-2 border-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.5)] z-10" />
-                                <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block mb-1">Year 5 (Senior / Partner Level)</span>
+                                <span className="text-sm font-bold text-amber-600 uppercase tracking-widest block mb-1">Year 5 (Senior / Partner Level)</span>
                                 <div className="text-brand-gold font-bold text-3xl tracking-tight">
                                   {(() => {
                                     const conv = CONVERSION_RATES[selectedCurrency];
@@ -5540,13 +5540,13 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">📁 PROPRIETARY RELOCATION PORTFOLIO & SAVED PLANS</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Saved Blueprints & Export Options</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Saved Blueprints & Export Options</p>
                     </div>
                   </div>
                   <button
                     onClick={handleSavePlan}
                     disabled={isSavingPlan || saveSuccess}
-                    className={`px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs flex items-center gap-2 transition-all ${
+                    className={`px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm flex items-center gap-2 transition-all ${
                       saveSuccess 
                         ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                         : 'bg-gradient-to-r from-amber-600 to-brand-gold text-black shadow-xl shadow-amber-600/10 hover:scale-[1.02] active:scale-[0.98]'
@@ -5570,14 +5570,14 @@ function HomeDashboard() {
                       </div>
                       <div className="flex flex-col gap-4 relative z-10">
                         <div>
-                          <span className="text-brand-gold text-[10px] font-bold uppercase tracking-widest block mb-1">{plan.target}</span>
+                          <span className="text-brand-gold text-sm font-bold uppercase tracking-widest block mb-1">{plan.target}</span>
                           <h4 className="text-white font-bold text-lg leading-tight">{plan.name}</h4>
                         </div>
                         
                         <div className="bg-black/40 rounded-lg p-3 border border-white/5 flex flex-col gap-2">
                           <div className="flex items-center justify-between">
-                            <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Est. Budget</span>
-                            <span className="text-white text-xs font-bold">
+                            <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Est. Budget</span>
+                            <span className="text-white text-sm font-bold">
                               {(() => {
                                 const conv = CONVERSION_RATES[selectedCurrency];
                                 return new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedCurrency, maximumFractionDigits: 0 }).format(plan.budget * conv.rate);
@@ -5586,18 +5586,18 @@ function HomeDashboard() {
                           </div>
                           <div className="w-full h-px bg-white/5 my-1" />
                           <div className="flex items-center justify-between">
-                            <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Target Visa</span>
-                            <span className="text-amber-600 text-xs font-bold uppercase tracking-wider">{plan.visa}</span>
+                            <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Target Visa</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-wider">{plan.visa}</span>
                           </div>
                         </div>
                       </div>
                       
                       <div className="grid grid-cols-2 gap-3 mt-6 relative z-10">
-                        <button className="py-2.5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
+                        <button className="py-2.5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors text-white text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
                           <History className="w-3.5 h-3.5" />
                           Load
                         </button>
-                        <button className="py-2.5 rounded-lg border border-brand-gold/30 hover:bg-brand-gold/10 transition-colors text-brand-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
+                        <button className="py-2.5 rounded-lg border border-brand-gold/30 hover:bg-brand-gold/10 transition-colors text-brand-gold text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-1.5">
                           <Download className="w-3.5 h-3.5" />
                           PDF
                         </button>
@@ -5620,7 +5620,7 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white tracking-tight uppercase">💼 PROPRIETARY JOB OFFER & TAX BURDEN ANALYZER</h3>
-                      <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border Compensation Simulator</p>
+                      <p className="text-sm text-white/40 uppercase tracking-[0.2em] mt-1 italic">Cross-Border Compensation Simulator</p>
                     </div>
                   </div>
                 </div>
@@ -5629,7 +5629,7 @@ function HomeDashboard() {
                   {/* Parameter Inputs */}
                   <div className="grid grid-cols-1 gap-6 items-end">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Target Jurisdiction</label>
                         <select 
                           value={offerCountry}
                           onChange={(e) => {
@@ -5645,7 +5645,7 @@ function HomeDashboard() {
                     </div>
                     
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Gross Annual Job Offer Salary</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Gross Annual Job Offer Salary</label>
                         <div className="relative">
                           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">{CONVERSION_RATES[selectedCurrency]?.symbol || '$'}</span>
                           <input 
@@ -5662,7 +5662,7 @@ function HomeDashboard() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-amber-600 uppercase tracking-widest block ml-1">Employment Type</label>
+                        <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Employment Type</label>
                         <select 
                           value={offerType}
                           onChange={(e) => {
@@ -5680,7 +5680,7 @@ function HomeDashboard() {
                     <button 
                       onClick={calculateJobOffer}
                       disabled={isCalculatingOffer}
-                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-sm shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
+                      className="w-full bg-gradient-to-r from-amber-600 to-brand-gold py-5 rounded-2xl text-black font-black uppercase tracking-[0.2em] text-base shadow-xl shadow-amber-600/10 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mt-2"
                     >
                       {isCalculatingOffer ? (
                         <>
@@ -5702,12 +5702,12 @@ function HomeDashboard() {
                       {!offerResult && !isCalculatingOffer ? (
                         <div className="flex flex-col items-center justify-center text-center space-y-4 h-full opacity-40">
                           <Calculator className="w-12 h-12" />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">Input offer parameters to calculate net retention</p>
+                          <p className="text-sm font-bold text-white uppercase tracking-widest">Input offer parameters to calculate net retention</p>
                         </div>
                       ) : isCalculatingOffer ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
-                          <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Computing Tax Burden...</p>
+                          <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Computing Tax Burden...</p>
                         </div>
                       ) : (
                         offerResult && (
@@ -5716,15 +5716,15 @@ function HomeDashboard() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col gap-6"
                           >
-                            <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-2 text-center md:text-left">Compensation Analysis</span>
+                            <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-2 text-center md:text-left">Compensation Analysis</span>
                             
                             <div className="grid grid-cols-2 gap-4">
                               <div className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-2">
-                                <span className="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Est. Effective Tax Rate</span>
+                                <span className="text-gray-400 text-sm font-bold uppercase tracking-widest">Est. Effective Tax Rate</span>
                                 <div className="text-white font-bold text-2xl">{offerResult.effectiveTaxRate.toFixed(1)}%</div>
                               </div>
                               <div className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col gap-2">
-                                <span className="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Annual Taxes Deducted</span>
+                                <span className="text-gray-400 text-sm font-bold uppercase tracking-widest">Annual Taxes Deducted</span>
                                 <div className="text-white font-bold text-xl">
                                   {(() => {
                                     const conv = CONVERSION_RATES[selectedCurrency];
@@ -5736,11 +5736,11 @@ function HomeDashboard() {
                             
                             <div className="bg-brand-gold/10 border border-brand-gold/30 rounded-2xl p-6 mt-2 relative overflow-hidden">
                               <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-brand-gold/10 to-transparent pointer-events-none" />
-                              <span className="text-amber-600 text-[10px] font-bold uppercase tracking-widest block mb-4">True Net Take-Home Pay</span>
+                              <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-4">True Net Take-Home Pay</span>
                               
                               <div className="flex flex-col gap-4">
                                 <div className="flex items-baseline justify-between border-b border-brand-gold/20 pb-3">
-                                  <span className="text-white/70 text-xs font-bold uppercase tracking-wider">Annual Net</span>
+                                  <span className="text-white/70 text-sm font-bold uppercase tracking-wider">Annual Net</span>
                                   <span className="text-brand-gold font-black text-3xl tracking-tight">
                                     {(() => {
                                       const conv = CONVERSION_RATES[selectedCurrency];
@@ -5749,7 +5749,7 @@ function HomeDashboard() {
                                   </span>
                                 </div>
                                 <div className="flex items-baseline justify-between">
-                                  <span className="text-white/70 text-xs font-bold uppercase tracking-wider">Monthly Net</span>
+                                  <span className="text-white/70 text-sm font-bold uppercase tracking-wider">Monthly Net</span>
                                   <span className="text-brand-gold font-black text-2xl tracking-tight">
                                     {(() => {
                                       const conv = CONVERSION_RATES[selectedCurrency];
@@ -5781,7 +5781,7 @@ function HomeDashboard() {
               {(compareA || compareB) && (
                 <button 
                   onClick={() => { setCompareA(null); setCompareB(null); }}
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl border border-brand-gold/30 bg-brand-gold/5 hover:bg-brand-gold/10 transition-all text-amber-600 font-bold uppercase tracking-widest text-xs z-20"
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl border border-brand-gold/30 bg-brand-gold/5 hover:bg-brand-gold/10 transition-all text-amber-600 font-bold uppercase tracking-widest text-sm z-20"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back to Dashboard
@@ -5789,11 +5789,11 @@ function HomeDashboard() {
               )}
 
               <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase transition-all duration-500 ${isLive ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-brand-gold/10 text-amber-600 border border-brand-gold/20'}`}>
+                <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold tracking-widest uppercase transition-all duration-500 ${isLive ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-brand-gold/10 text-amber-600 border border-brand-gold/20'}`}>
                   <div className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-emerald-500 animate-pulse' : 'bg-amber-600'}`} />
                   {isLive ? 'Neural Live Engine' : 'Neural Simulation Mode'}
                 </div>
-                <div className="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm">Update: May 2026</div>
+                <div className="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-base">Update: May 2026</div>
               </div>
             </div>
 
@@ -5802,7 +5802,7 @@ function HomeDashboard() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 blur-[100px] -z-10" />
               <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-10">
                 <div className="w-full md:w-1/3">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-3 ml-1">Jurisdiction Alpha</div>
+                  <div className="text-sm font-bold uppercase tracking-widest text-amber-600 mb-3 ml-1">Jurisdiction Alpha</div>
                   <select 
                     value={compareA?.country_name || ""}
                     onChange={(e) => setCompareA(countries.find(c => c.country_name === e.target.value) || null)}
@@ -5820,7 +5820,7 @@ function HomeDashboard() {
                 </div>
 
                 <div className="w-full md:w-1/3">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-3 ml-1">Jurisdiction Beta</div>
+                  <div className="text-sm font-bold uppercase tracking-widest text-amber-600 mb-3 ml-1">Jurisdiction Beta</div>
                   <select 
                     value={compareB?.country_name || ""}
                     onChange={(e) => setCompareB(countries.find(c => c.country_name === e.target.value) || null)}
@@ -5864,14 +5864,14 @@ function HomeDashboard() {
 
                       return (
                         <div key={metric.key} className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 space-y-4">
-                          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                          <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.2em] text-slate-400">
                             <metric.icon className="w-3 h-3 text-amber-600" />
                             {metric.label}
                           </div>
                           
                           <div className="flex items-center justify-between gap-4">
                             <div className="flex-1 text-center space-y-1">
-                              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareA.country_name}</div>
+                              <div className="text-sm font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareA.country_name}</div>
                               <div className={`text-lg font-display font-bold text-amber-600 ${isABetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                                 {displayA || "N/A"}
                               </div>
@@ -5880,7 +5880,7 @@ function HomeDashboard() {
                             <div className="w-px h-8 bg-white/10" />
 
                             <div className="flex-1 text-center space-y-1">
-                              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareB.country_name}</div>
+                              <div className="text-sm font-bold uppercase tracking-wider text-slate-400 truncate mb-1">{compareB.country_name}</div>
                               <div className={`text-lg font-display font-bold text-slate-400 ${isBBetter ? 'scale-110 origin-center transition-transform' : 'opacity-80'}`}>
                                 {displayB || "N/A"}
                               </div>
@@ -5920,8 +5920,8 @@ function HomeDashboard() {
                         <BarChart3 className="w-5 h-5 text-amber-600" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Visual Analytics Comparison</h3>
-                        <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Relative Metric Scaling Optimization</p>
+                        <h3 className="text-base font-bold text-slate-400 uppercase tracking-widest">Visual Analytics Comparison</h3>
+                        <p className="text-sm text-gray-400 uppercase tracking-widest mt-1">Relative Metric Scaling Optimization</p>
                       </div>
                     </div>
 
@@ -5929,11 +5929,11 @@ function HomeDashboard() {
                       {/* Salary Chart */}
                       <div className="space-y-4">
                         <div className="flex justify-between items-end">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Average Annual Salary</span>
+                          <span className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em]">Average Annual Salary</span>
                         </div>
                         <div className="space-y-3">
                           <div className="space-y-1">
-                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                            <div className="flex justify-between text-sm text-gray-400 mb-1">
                               <span>{compareA.country_name}</span>
                               <span>{formatCurrency(compareA.average_salary_usd)}</span>
                             </div>
@@ -5947,7 +5947,7 @@ function HomeDashboard() {
                             </div>
                           </div>
                           <div className="space-y-1">
-                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                            <div className="flex justify-between text-sm text-gray-400 mb-1">
                               <span>{compareB.country_name}</span>
                               <span>{formatCurrency(compareB.average_salary_usd)}</span>
                             </div>
@@ -5966,11 +5966,11 @@ function HomeDashboard() {
                       {/* Tax Rate Chart */}
                       <div className="space-y-4">
                         <div className="flex justify-between items-end">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Optimal Tax Rate</span>
+                          <span className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em]">Optimal Tax Rate</span>
                         </div>
                         <div className="space-y-3">
                           <div className="space-y-1">
-                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                            <div className="flex justify-between text-sm text-gray-400 mb-1">
                               <span>{compareA.country_name}</span>
                               <span>{compareA.tax_rate_percent}%</span>
                             </div>
@@ -5984,7 +5984,7 @@ function HomeDashboard() {
                             </div>
                           </div>
                           <div className="space-y-1">
-                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                            <div className="flex justify-between text-sm text-gray-400 mb-1">
                               <span>{compareB.country_name}</span>
                               <span>{compareB.tax_rate_percent}%</span>
                             </div>
@@ -6020,7 +6020,7 @@ function HomeDashboard() {
                       ) : (
                         <FileText className="w-5 h-5" />
                       )}
-                      <span className="relative tracking-widest text-sm uppercase">Save Comparison Report</span>
+                      <span className="relative tracking-widest text-base uppercase">Save Comparison Report</span>
                     </button>
 
                     <button 
@@ -6029,7 +6029,7 @@ function HomeDashboard() {
                     >
                       <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                       <X className="w-5 h-5" />
-                      <span className="relative tracking-widest text-sm uppercase">Close & Return</span>
+                      <span className="relative tracking-widest text-base uppercase">Close & Return</span>
                     </button>
                   </motion.div>
                 </>
@@ -6039,7 +6039,7 @@ function HomeDashboard() {
                     <Globe className="w-8 h-8" />
                   </div>
                   <h3 className="text-gray-400 font-display text-lg">Select two distinct jurisdictions for neural comparison</h3>
-                  <p className="text-slate-400 text-xs mt-2 uppercase tracking-widest">Awaiting Alpha & Beta Selection</p>
+                  <p className="text-slate-400 text-sm mt-2 uppercase tracking-widest">Awaiting Alpha & Beta Selection</p>
                 </div>
               )}
             </div>
@@ -6048,7 +6048,7 @@ function HomeDashboard() {
             <div className="overflow-x-auto rounded-2xl border border-white/10 bg-brand-midnight/50 backdrop-blur-xl">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-white/10 text-slate-400 text-xs font-bold uppercase tracking-widest">
+                  <tr className="border-b border-white/10 text-slate-400 text-sm font-bold uppercase tracking-widest">
                     <th className="px-8 py-6">Region</th>
                     <th className="px-8 py-6">Annual Growth</th>
                     <th className="px-8 py-6">Stability Score</th>
@@ -6062,7 +6062,7 @@ function HomeDashboard() {
                       <td colSpan={5} className="px-8 py-12 text-center">
                         <div className="flex flex-col items-center gap-3">
                           <Loader2 className="w-8 h-8 text-amber-600 animate-spin" />
-                          <span className="text-slate-400 text-sm animate-pulse">Connecting to Supabase Neural Engine...</span>
+                          <span className="text-slate-400 text-base animate-pulse">Connecting to Supabase Neural Engine...</span>
                         </div>
                       </td>
                     </tr>
@@ -6086,11 +6086,11 @@ function HomeDashboard() {
                             <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
                               <div className="h-full bg-amber-600/70" style={{ width: `${row.compass_index}%` }} />
                             </div>
-                            <span className="text-xs font-bold text-slate-400">{row.compass_index}</span>
+                            <span className="text-sm font-bold text-slate-400">{row.compass_index}</span>
                           </div>
                         </td>
                         <td className="px-8 py-6">
-                          <span className="inline-block px-3 py-1 rounded-full bg-slate-800/40 border border-slate-700/50 text-slate-400 text-xs font-bold">
+                          <span className="inline-block px-3 py-1 rounded-full bg-slate-800/40 border border-slate-700/50 text-slate-400 text-sm font-bold">
                             {row.strategic_status}
                           </span>
                         </td>
@@ -6109,10 +6109,10 @@ function HomeDashboard() {
             <div className="container mx-auto px-6">
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-600/10 border border-amber-600/20 text-amber-600 text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Personal Strategic Vault</div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-600/10 border border-amber-600/20 text-amber-600 text-sm font-bold tracking-[0.2em] uppercase mb-4">Personal Strategic Vault</div>
                   <h2 className="font-display text-4xl font-bold tracking-tight text-slate-400">Saved Intelligence Archives</h2>
                 </div>
-                <p className="text-slate-500 text-sm max-w-sm uppercase tracking-widest leading-relaxed">
+                <p className="text-gray-400 text-base max-w-sm uppercase tracking-widest leading-relaxed">
                   Historical Jurisdictional comparisons curated for your specific neural focus.
                 </p>
               </div>
@@ -6131,25 +6131,25 @@ function HomeDashboard() {
                     
                     <div className="flex items-center justify-between mb-6">
                       <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-amber-600/20 group-hover:border-amber-600/40 transition-all">
-                        <History className="w-5 h-5 text-slate-500 group-hover:text-amber-600" />
+                        <History className="w-5 h-5 text-gray-400 group-hover:text-amber-600" />
                       </div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                      <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">
                         {new Date(report.created_at).toLocaleDateString()}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-4">
                       <div className="flex-1">
-                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Alpha</div>
+                        <div className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Alpha</div>
                         <div className="text-lg font-display font-bold text-slate-400 group-hover:text-amber-600 transition-colors uppercase whitespace-nowrap overflow-hidden text-ellipsis">
                           {report.country_a}
                         </div>
                       </div>
                       
-                      <div className="text-amber-600/30 font-bold italic text-sm">VS</div>
+                      <div className="text-amber-600/30 font-bold italic text-base">VS</div>
 
                       <div className="flex-1 text-right">
-                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Beta</div>
+                        <div className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Beta</div>
                         <div className="text-lg font-display font-bold text-slate-400 group-hover:text-amber-600 transition-colors uppercase whitespace-nowrap overflow-hidden text-ellipsis">
                           {report.country_b}
                         </div>
@@ -6157,10 +6157,10 @@ function HomeDashboard() {
                     </div>
 
                     <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-                      <div className="flex items-center gap-1 text-amber-600 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0">
+                      <div className="flex items-center gap-1 text-amber-600 text-sm font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0">
                         Load Neural Model <ChevronRight className="w-3 h-3" />
                       </div>
-                      <Bookmark className="w-3 h-3 text-slate-600" />
+                      <Bookmark className="w-3 h-3 text-gray-300" />
                     </div>
                   </motion.div>
                 ))}
@@ -6191,7 +6191,7 @@ function HomeDashboard() {
                       "Tax Optimization Strategies",
                       "Confidential Growth Network"
                     ].map((item, i) => (
-                      <div key={i} className="flex items-center gap-3 text-sm text-slate-400">
+                      <div key={i} className="flex items-center gap-3 text-base text-slate-400">
                         <CheckCircle2 className="w-5 h-5 text-amber-600" />
                         {item}
                       </div>
@@ -6207,7 +6207,7 @@ function HomeDashboard() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Full Name</label>
+                    <label className="text-sm font-bold uppercase tracking-widest text-slate-400">Full Name</label>
                     <input 
                       type="text" 
                       required
@@ -6219,7 +6219,7 @@ function HomeDashboard() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Neural Email Address</label>
+                    <label className="text-sm font-bold uppercase tracking-widest text-slate-400">Neural Email Address</label>
                     <input 
                       type="email" 
                       required
@@ -6233,7 +6233,7 @@ function HomeDashboard() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Secure Password</label>
+                    <label className="text-sm font-bold uppercase tracking-widest text-slate-400">Secure Password</label>
                     <input 
                       type="password" 
                       required
@@ -6250,7 +6250,7 @@ function HomeDashboard() {
                   >
                     {authLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "REQUEST PRIVATE ACCESS"}
                   </button>
-                  <p className="text-[10px] text-center text-slate-400 uppercase tracking-widest">Initial allocation limited to premium cohorts</p>
+                  <p className="text-sm text-center text-slate-400 uppercase tracking-widest">Initial allocation limited to premium cohorts</p>
                 </form>
               </div>
             </div>
@@ -6276,7 +6276,7 @@ function HomeDashboard() {
                 viewport={{ once: true }}
                 className="w-full lg:w-1/2 order-2 lg:order-1"
               >
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-600/5 border border-amber-600/20 text-amber-600 text-[10px] font-bold tracking-[0.35em] uppercase mb-8">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-600/5 border border-amber-600/20 text-amber-600 text-sm font-bold tracking-[0.35em] uppercase mb-8">
                   <div className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse" />
                   Chief AI Architect
                 </div>
@@ -6296,11 +6296,11 @@ function HomeDashboard() {
                 <div className="grid grid-cols-2 gap-12 pt-12 mt-12 border-t border-white/5">
                   <div className="space-y-1">
                     <div className="text-3xl font-display font-bold text-white tracking-tight">$4.2B+</div>
-                    <div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">In-Matrix Assets</div>
+                    <div className="text-sm text-gray-400 uppercase tracking-[0.2em] font-bold">In-Matrix Assets</div>
                   </div>
                   <div className="space-y-1">
                     <div className="text-3xl font-display font-bold text-white tracking-tight">99.9%</div>
-                    <div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Predictive Uptime</div>
+                    <div className="text-sm text-gray-400 uppercase tracking-[0.2em] font-bold">Predictive Uptime</div>
                   </div>
                 </div>
 
@@ -6340,8 +6340,8 @@ function HomeDashboard() {
                           <CompassIcon className="w-6 h-6 text-amber-600" />
                         </div>
                         <div>
-                          <div className="text-white text-sm font-bold tracking-tight">Verified Chief Architect</div>
-                          <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Institutional Signature Series</div>
+                          <div className="text-white text-base font-bold tracking-tight">Verified Chief Architect</div>
+                          <div className="text-sm text-gray-400 uppercase tracking-widest mt-1">Institutional Signature Series</div>
                         </div>
                       </div>
                     </div>
@@ -6364,12 +6364,12 @@ function HomeDashboard() {
                     GLOBAL COMPASS<span className="text-amber-600">.</span>
                   </span>
                 </div>
-                <p className="text-slate-500 text-lg max-w-sm mb-10 font-light leading-relaxed">
+                <p className="text-gray-400 text-lg max-w-sm mb-10 font-light leading-relaxed">
                   Strategic intelligence for wealth sovereignty and institutional cross-border migration.
                 </p>
                 <div className="flex gap-4">
                   {[Linkedin, Twitter].map((Icon, idx) => (
-                    <a key={idx} href="#" className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-slate-500 hover:text-amber-600 hover:border-amber-600/30 transition-all">
+                    <a key={idx} href="#" className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-gray-400 hover:text-amber-600 hover:border-amber-600/30 transition-all">
                       <Icon className="w-5 h-5" />
                     </a>
                   ))}
@@ -6377,8 +6377,8 @@ function HomeDashboard() {
               </div>
 
               <div>
-                <h4 className="text-white text-xs font-bold uppercase tracking-[0.3em] mb-8">Ecosystem</h4>
-                <ul className="space-y-4 text-slate-500 text-sm font-medium">
+                <h4 className="text-white text-sm font-bold uppercase tracking-[0.3em] mb-8">Ecosystem</h4>
+                <ul className="space-y-4 text-gray-400 text-base font-medium">
                   <li><a href="#" className="hover:text-amber-600 transition-colors">Jurisdiction Matrix</a></li>
                   <li><a href="#" className="hover:text-amber-600 transition-colors">AI Forecasting</a></li>
                   <li><a href="#" className="hover:text-amber-600 transition-colors">Wealth Vaults</a></li>
@@ -6386,8 +6386,8 @@ function HomeDashboard() {
               </div>
 
               <div>
-                <h4 className="text-white text-xs font-bold uppercase tracking-[0.3em] mb-8">Governance</h4>
-                <ul className="space-y-4 text-slate-500 text-sm font-medium">
+                <h4 className="text-white text-sm font-bold uppercase tracking-[0.3em] mb-8">Governance</h4>
+                <ul className="space-y-4 text-gray-400 text-base font-medium">
                   <li><a href="#" className="hover:text-amber-600 transition-colors">Privacy Sovereignty</a></li>
                   <li><a href="#" className="hover:text-amber-600 transition-colors">Regulatory Policy</a></li>
                   <li><a href="#" className="hover:text-amber-600 transition-colors">Security Audit</a></li>
@@ -6402,9 +6402,9 @@ function HomeDashboard() {
                   <div className="w-10 h-10 rounded-xl bg-amber-600/10 flex items-center justify-center border border-amber-600/20">
                     <Scale className="w-5 h-5 text-amber-600" />
                   </div>
-                  <h4 className="text-white text-[10px] font-bold uppercase tracking-[0.4em]">Strict Global Regulatory & Financial Compliance Registry</h4>
+                  <h4 className="text-white text-base font-bold uppercase tracking-[0.4em]">Strict Global Regulatory & Financial Compliance Registry</h4>
                 </div>
-                <div className="grid md:grid-cols-2 gap-12 text-[10px] text-slate-500 leading-relaxed uppercase tracking-[0.06em] font-medium">
+                <div className="grid md:grid-cols-2 gap-12 text-base text-gray-400 leading-loose uppercase tracking-[0.06em] font-medium">
                   <div className="space-y-6">
                     <p>
                       <span className="text-amber-600/80 font-bold block mb-2">I. NON-ADVISORY STATUS</span>
@@ -6433,7 +6433,7 @@ function HomeDashboard() {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/5 text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/5 text-sm text-gray-400 font-bold uppercase tracking-[0.2em]">
               <p>© {new Date().getFullYear()} Global Strategy Labs • All Strategic Rights Reserved.</p>
               <p className="text-amber-600/50">M M RAJU Signature Architecture Series</p>
             </div>
@@ -6465,12 +6465,12 @@ function HomeDashboard() {
                     </div>
                     <div>
                       <h2 className="text-xl font-display font-bold text-slate-400">Admin Control Center</h2>
-                      <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Jurisdictional Data Override Matrix</p>
+                      <p className="text-sm text-gray-400 uppercase tracking-widest mt-1">Jurisdictional Data Override Matrix</p>
                     </div>
                   </div>
                   <button 
                     onClick={() => setIsAdminPanelOpen(false)}
-                    className="p-2 rounded-full hover:bg-white/5 transition-colors text-slate-500 hover:text-white"
+                    className="p-2 rounded-full hover:bg-white/5 transition-colors text-gray-400 hover:text-white"
                   >
                     <X className="w-6 h-6" />
                   </button>
@@ -6479,138 +6479,138 @@ function HomeDashboard() {
                 <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
                   <form onSubmit={handleAdminUpsert} className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-6">
-                      <h3 className="text-xs font-bold text-amber-600 uppercase tracking-[0.2em] mb-4">Core Identification</h3>
+                      <h3 className="text-sm font-bold text-amber-600 uppercase tracking-[0.2em] mb-4">Core Identification</h3>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Country Name</label>
+                        <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Country Name</label>
                         <input 
                           type="text"
                           required
                           value={adminCountryName}
                           onChange={(e) => handleCountryNameChange(e.target.value)}
-                          className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                          className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                           placeholder="e.g., Switzerland"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Annual Growth</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Annual Growth</label>
                           <input 
                             type="text"
                             value={adminAnnualGrowth}
                             onChange={(e) => setAdminAnnualGrowth(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="+2.4%"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Stability Score</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Stability Score</label>
                           <input 
                             type="text"
                             value={adminStabilityScore}
                             onChange={(e) => setAdminStabilityScore(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="Maximum"
                           />
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Compass Index (0-100)</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Compass Index (0-100)</label>
                           <input 
                             type="text"
                             value={adminCompassIndex}
                             onChange={(e) => setAdminCompassIndex(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="e.g., 95"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Strategic Status</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Strategic Status</label>
                           <input 
                             type="text"
                             value={adminStrategicStatus}
                             onChange={(e) => setAdminStrategicStatus(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="Premium"
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Cost of Living Score (0-100)</label>
+                        <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Cost of Living Score (0-100)</label>
                         <input 
                           type="text"
                           value={adminCostOfLiving}
                           onChange={(e) => setAdminCostOfLiving(e.target.value)}
-                          className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                          className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                           placeholder="e.g., 75"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-6">
-                      <h3 className="text-xs font-bold text-amber-600 uppercase tracking-[0.2em] mb-4">Economic & Living Metrics</h3>
+                      <h3 className="text-sm font-bold text-amber-600 uppercase tracking-[0.2em] mb-4">Economic & Living Metrics</h3>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Avg Annual Salary ($)</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Avg Annual Salary ($)</label>
                           <input 
                             type="text"
                             value={adminSalary}
                             onChange={(e) => setAdminSalary(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="e.g., 85000"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Tax Rate (%)</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Tax Rate (%)</label>
                           <input 
                             type="text"
                             value={adminTax}
                             onChange={(e) => setAdminTax(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="e.g., 20"
                           />
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Monthly Rent ($)</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Monthly Rent ($)</label>
                           <input 
                             type="text"
                             value={adminRent}
                             onChange={(e) => setAdminRent(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="e.g., $1,200 / mo"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Healthcare Score (0-100)</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Healthcare Score (0-100)</label>
                           <input 
                             type="text"
                             value={adminHealthcare}
                             onChange={(e) => setAdminHealthcare(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="e.g., 91 / 100"
                           />
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Safety Rating (0-100)</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Safety Rating (0-100)</label>
                           <input 
                             type="text"
                             value={adminSafety}
                             onChange={(e) => setAdminSafety(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="e.g., 88 / 100"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Internet Speed (Mbps)</label>
+                          <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Internet Speed (Mbps)</label>
                           <input 
                             type="text"
                             value={adminInternet}
                             onChange={(e) => setAdminInternet(e.target.value)}
-                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-slate-600"
+                            className="w-full px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-400 focus:border-amber-600 outline-none transition-all placeholder:text-gray-300"
                             placeholder="e.g., 180 Mbps"
                           />
                         </div>
@@ -6621,14 +6621,14 @@ function HomeDashboard() {
                       <button 
                         type="button"
                         onClick={() => setIsAdminPanelOpen(false)}
-                        className="px-8 py-3 rounded-xl border border-white/10 text-slate-400 font-bold hover:bg-white/5 transition-all uppercase tracking-widest text-xs"
+                        className="px-8 py-3 rounded-xl border border-white/10 text-slate-400 font-bold hover:bg-white/5 transition-all uppercase tracking-widest text-sm"
                       >
                         Cancel
                       </button>
                       <button 
                         type="submit"
                         disabled={isUpserting}
-                        className="px-10 py-3 rounded-xl bg-amber-600 text-brand-midnight font-bold shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-xs flex items-center gap-2"
+                        className="px-10 py-3 rounded-xl bg-amber-600 text-brand-midnight font-bold shadow-xl shadow-amber-600/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-sm flex items-center gap-2"
                       >
                         {isUpserting ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
                         {isUpserting ? "Synchronizing Matrix..." : "Override Jurisdiction Matrix"}
@@ -6679,14 +6679,14 @@ function HomeDashboard() {
                     <Globe className="w-6 h-6" style={{ color: '#d97706' }} />
                   </div>
                   <div>
-                    <div className="text-[10px] font-bold tracking-[0.2em] uppercase" style={{ color: '#d97706' }}>Intelligence Report</div>
+                    <div className="text-sm font-bold tracking-[0.2em] uppercase" style={{ color: '#d97706' }}>Intelligence Report</div>
                     <h3 className="text-3xl font-display font-bold" style={{ color: '#94a3b8' }}>{selectedCountry.country_name}</h3>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
                   <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                    <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
                       <DollarSign className="w-3 h-3" style={{ color: '#d97706' }} /> Avg Salary
                     </div>
                     <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
@@ -6695,7 +6695,7 @@ function HomeDashboard() {
                   </div>
 
                   <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                    <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
                       <Percent className="w-3 h-3" style={{ color: '#d97706' }} /> Tax Rate
                     </div>
                     <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
@@ -6704,7 +6704,7 @@ function HomeDashboard() {
                   </div>
 
                   <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                    <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
                       <Home className="w-3 h-3" style={{ color: '#d97706' }} /> Avg Rent
                     </div>
                     <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
@@ -6713,7 +6713,7 @@ function HomeDashboard() {
                   </div>
 
                   <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                    <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
                       <HeartPulse className="w-3 h-3" style={{ color: '#d97706' }} /> Healthcare
                     </div>
                     <div className="flex items-center gap-2">
@@ -6724,7 +6724,7 @@ function HomeDashboard() {
                   </div>
 
                   <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                    <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
                       <Shield className="w-3 h-3" style={{ color: '#d97706' }} /> Safety
                     </div>
                     <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
@@ -6733,7 +6733,7 @@ function HomeDashboard() {
                   </div>
 
                   <div className="p-4 rounded-xl border space-y-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+                    <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>
                       <Wifi className="w-3 h-3" style={{ color: '#d97706' }} /> Connectivity
                     </div>
                     <div className="text-xl font-display font-bold" style={{ color: '#94a3b8' }}>
@@ -6744,12 +6744,12 @@ function HomeDashboard() {
 
                 <div className="space-y-4">
                   <div className="flex justify-between items-center p-4 rounded-xl border" style={{ backgroundColor: 'rgba(204, 164, 59, 0.05)', borderColor: 'rgba(204, 164, 59, 0.1)' }}>
-                    <div className="text-sm" style={{ color: '#94a3b8' }}>Strategic Stability Score</div>
-                    <div className="text-sm font-bold uppercase" style={{ color: '#d97706' }}>{selectedCountry.stability_score}</div>
+                    <div className="text-base" style={{ color: '#94a3b8' }}>Strategic Stability Score</div>
+                    <div className="text-base font-bold uppercase" style={{ color: '#d97706' }}>{selectedCountry.stability_score}</div>
                   </div>
                   <div className="flex justify-between items-center p-4 rounded-xl border" style={{ backgroundColor: 'rgba(255, 255, 255, 0.02)', borderColor: 'rgba(255, 255, 255, 0.05)' }}>
-                    <div className="text-sm" style={{ color: '#94a3b8' }}>Annual GDP Growth</div>
-                    <div className="text-sm font-bold font-mono" style={{ color: '#94a3b8' }}>{selectedCountry.annual_growth}</div>
+                    <div className="text-base" style={{ color: '#94a3b8' }}>Annual GDP Growth</div>
+                    <div className="text-base font-bold font-mono" style={{ color: '#94a3b8' }}>{selectedCountry.annual_growth}</div>
                   </div>
                 </div>
 
@@ -6796,7 +6796,7 @@ function HomeDashboard() {
               
               <button 
                 onClick={() => setIsLoginOpen(false)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-500 hover:text-slate-400 transition-all z-20"
+                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-slate-400 transition-all z-20"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -6806,7 +6806,7 @@ function HomeDashboard() {
                   <Lock className="text-amber-600 w-8 h-8" />
                 </div>
                 <h3 className="text-3xl font-display font-bold text-slate-400 mb-2">Welcome Back</h3>
-                <p className="text-gray-400 text-sm">Access your neural intelligence dashboard.</p>
+                <p className="text-gray-400 text-base">Access your neural intelligence dashboard.</p>
               </div>
 
               <form className="space-y-6" onSubmit={handleLogin}>
@@ -6817,7 +6817,7 @@ function HomeDashboard() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                  <label className="text-sm font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
                     <Mail className="w-3 h-3" /> Email Address
                   </label>
                   <input 
@@ -6829,11 +6829,11 @@ function HomeDashboard() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@company.com" 
-                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-amber-600/50 focus:outline-none transition-all placeholder:text-slate-500 text-slate-400"
+                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-amber-600/50 focus:outline-none transition-all placeholder:text-gray-400 text-slate-400"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                  <label className="text-sm font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
                     <Lock className="w-3 h-3" /> Secure Password
                   </label>
                   <input 
@@ -6843,7 +6843,7 @@ function HomeDashboard() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••" 
-                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-amber-600/50 focus:outline-none transition-all placeholder:text-slate-500 text-slate-400"
+                    className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-amber-600/50 focus:outline-none transition-all placeholder:text-gray-400 text-slate-400"
                   />
                 </div>
                 <button 
@@ -6854,7 +6854,7 @@ function HomeDashboard() {
                 </button>
               </form>
 
-              <div className="mt-8 flex justify-between items-center text-[10px] text-slate-400 uppercase tracking-widest">
+              <div className="mt-8 flex justify-between items-center text-sm text-slate-400 uppercase tracking-widest">
                 <button className="hover:text-amber-600 transition-colors">Forgot Access?</button>
                 <button 
                   onClick={() => {
@@ -6940,19 +6940,19 @@ function HomeDashboard() {
                 className="space-y-4"
               >
                 <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Full Name</label>
+                  <label className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-2">Full Name</label>
                   <input type="text" required value={conciergeFullName} onChange={(e) => setConciergeFullName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Professional Title</label>
+                  <label className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-2">Professional Title</label>
                   <input type="text" required value={conciergeTitle} onChange={(e) => setConciergeTitle(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Corporate Email</label>
+                  <label className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-2">Corporate Email</label>
                   <input type="email" required value={conciergeEmail} onChange={(e) => setConciergeEmail(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">WhatsApp / Contact Number</label>
+                  <label className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-2">WhatsApp / Contact Number</label>
                   <input type="tel" required value={conciergeWhatsApp} onChange={(e) => setConciergeWhatsApp(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
                 </div>
                 <button 
@@ -6974,7 +6974,7 @@ function HomeDashboard() {
             initial={{ opacity: 0, y: 50, x: '-50%' }}
             animate={{ opacity: 1, y: 0, x: '-50%' }}
             exit={{ opacity: 0, y: 50, x: '-50%' }}
-            className="fixed bottom-12 left-1/2 z-[200] px-6 py-3 bg-brand-midnight border border-brand-gold/30 rounded-full text-amber-600 font-bold text-xs tracking-widest shadow-2xl backdrop-blur-xl flex items-center gap-3"
+            className="fixed bottom-12 left-1/2 z-[200] px-6 py-3 bg-brand-midnight border border-brand-gold/30 rounded-full text-amber-600 font-bold text-sm tracking-widest shadow-2xl backdrop-blur-xl flex items-center gap-3"
           >
             <div className="w-2 h-2 rounded-full bg-amber-600 animate-ping" />
             {notificationMsg}
@@ -7028,7 +7028,7 @@ function InsurancePartnerPage() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h2 className="text-xl font-bold text-white tracking-widest uppercase">Request Premium Global Insurance Quote</h2>
-            <p className="text-amber-500/80 text-xs font-bold uppercase tracking-[0.2em] mt-2">Partner: {partnerId?.toUpperCase()}</p>
+            <p className="text-amber-500/80 text-sm font-bold uppercase tracking-[0.2em] mt-2">Partner: {partnerId?.toUpperCase()}</p>
           </div>
           <button 
             onClick={() => navigate('/')}
@@ -7103,15 +7103,15 @@ function InsurancePartnerPage() {
           className="space-y-4"
         >
           <div>
-            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Full Name</label>
+            <label className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-2">Full Name</label>
             <input type="text" required value={insFullName} onChange={(e) => setInsFullName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Email Address</label>
+            <label className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-2">Email Address</label>
             <input type="email" required value={insEmail} onChange={(e) => setInsEmail(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Age Group</label>
+            <label className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-2">Age Group</label>
             <select required value={insAge} onChange={(e) => setInsAge(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors appearance-none">
               <option value="18-35" className="bg-[#1a1a1a]">18-35</option>
               <option value="36-50" className="bg-[#1a1a1a]">36-50</option>
@@ -7120,11 +7120,11 @@ function InsurancePartnerPage() {
             </select>
           </div>
           <div>
-            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Target Relocation Country</label>
+            <label className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-2">Target Relocation Country</label>
             <input type="text" required value={insCountry} onChange={(e) => setInsCountry(e.target.value)} placeholder="e.g. UAE, Singapore, Switzerland" className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Desired Coverage Type</label>
+            <label className="text-sm font-bold text-gray-400 uppercase tracking-widest block mb-2">Desired Coverage Type</label>
             <select required value={insCoverage} onChange={(e) => setInsCoverage(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors appearance-none">
               <option value="Health & Medical" className="bg-[#1a1a1a]">Health & Medical</option>
               <option value="Wealth Protection" className="bg-[#1a1a1a]">Wealth Protection</option>
