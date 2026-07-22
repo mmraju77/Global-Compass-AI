@@ -182,6 +182,7 @@ export default function App() {
   const [insAge, setInsAge] = useState("18-35");
   const [insCountry, setInsCountry] = useState("");
   const [insCoverage, setInsCoverage] = useState("Health & Medical");
+  const [isSubmittingIns, setIsSubmittingIns] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMsg, setNotificationMsg] = useState("");
   const [user, setUser] = useState<any>(null);
@@ -6874,9 +6875,11 @@ export default function App() {
               <form 
                 onSubmit={async (e) => {
                   e.preventDefault();
+                  setIsSubmittingIns(true);
                   const supabase = getSupabase();
                   if (!supabase) {
                     alert("System error. Please try again later.");
+                    setIsSubmittingIns(false);
                     return;
                   }
                   
@@ -6907,7 +6910,8 @@ export default function App() {
                       console.error("Email automation failed:", emailError);
                     }
                     
-                    alert("Quote Request Received. Our premium partners (Cigna/Bupa) will contact you shortly.");
+                    // Affiliate Auto-Redirect
+                    window.open('https://www.cignaglobal.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
                     
                     setInsFullName("");
                     setInsEmail("");
@@ -6918,6 +6922,8 @@ export default function App() {
                   } catch (err: any) {
                     console.error("Error inserting insurance quote:", err);
                     alert("Error submitting request: " + (err.message || "Unknown error"));
+                  } finally {
+                    setIsSubmittingIns(false);
                   }
                 }} 
                 className="space-y-4"
@@ -6953,9 +6959,17 @@ export default function App() {
                 </div>
                 <button 
                   type="submit"
-                  className="w-full mt-6 py-4 bg-[#d4af37] text-black font-bold uppercase tracking-widest rounded-xl hover:bg-[#b08d29] transition-colors"
+                  disabled={isSubmittingIns}
+                  className="w-full mt-6 py-4 bg-[#d4af37] text-black font-bold uppercase tracking-widest rounded-xl hover:bg-[#b08d29] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
                 >
-                  Submit Quote Request
+                  {isSubmittingIns ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Redirecting to Premium Partner...
+                    </>
+                  ) : (
+                    "Submit Quote Request"
+                  )}
                 </button>
               </form>
             </motion.div>
