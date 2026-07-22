@@ -7155,7 +7155,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomeDashboard />} />
+        <Route path="/*" element={<HomeDashboard />} />
         <Route path="/insurance/:partnerId" element={<InsurancePartnerPage />} />
       </Routes>
     </BrowserRouter>
