@@ -6869,6 +6869,22 @@ export default function App() {
                     
                     if (error) throw error;
                     
+                    // Trigger backend email automation
+                    try {
+                      await fetch('/api/send-email', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                          email: conciergeEmail,
+                          name: conciergeFullName
+                        })
+                      });
+                    } catch (emailError) {
+                      console.error("Email automation failed:", emailError);
+                    }
+                    
                     alert("Request Received. Our AI Concierge is currently analyzing your profile and eligibility parameters. An automated comprehensive report will be generated shortly.");
                     
                     setConciergeFullName("");
