@@ -1,27 +1,18 @@
 const fs = require('fs');
 let code = fs.readFileSync('src/App.tsx', 'utf8');
 
-const targetStr = `      {/* Global Notifications */}`;
-const modalCode = `      {/* Concierge Modal */}
-      <AnimatePresence>
-        {isConciergeModalOpen && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-[#1a1a1a] border border-[#d4af37]/30 max-w-md w-full rounded-2xl p-6 shadow-2xl"
-            >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-white tracking-widest uppercase">Initiate Strategic Consultation</h2>
-                <button 
-                  onClick={() => setIsConciergeModalOpen(false)}
-                  className="text-slate-400 hover:text-white transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-              <form 
+// 1. Add State
+const targetState = `  const [isConciergeModalOpen, setIsConciergeModalOpen] = useState(false);`;
+const newState = `  const [isConciergeModalOpen, setIsConciergeModalOpen] = useState(false);
+  const [conciergeFullName, setConciergeFullName] = useState("");
+  const [conciergeTitle, setConciergeTitle] = useState("");
+  const [conciergeEmail, setConciergeEmail] = useState("");
+  const [conciergeWhatsApp, setConciergeWhatsApp] = useState("");`;
+
+code = code.replace(targetState, newState);
+
+// 2. Replace Modal UI
+const targetModal = `              <form 
                 onSubmit={(e) => {
                   e.preventDefault();
                   alert("Request Received. Our AI Concierge is generating your secure profile...");
@@ -51,18 +42,69 @@ const modalCode = `      {/* Concierge Modal */}
                 >
                   Submit Request
                 </button>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+              </form>`;
 
-      {/* Global Notifications */}`;
+const newModal = `              <form 
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const supabase = getSupabase();
+                  if (!supabase) {
+                    alert("System error. Please try again later.");
+                    return;
+                  }
+                  
+                  try {
+                    const { error } = await supabase.from('consultation_requests').insert([{ 
+                      full_name: conciergeFullName, 
+                      professional_title: conciergeTitle, 
+                      corporate_email: conciergeEmail, 
+                      whatsapp_number: conciergeWhatsApp 
+                    }]);
+                    
+                    if (error) throw error;
+                    
+                    alert("Request Received. Our AI Concierge is currently analyzing your profile and eligibility parameters. An automated comprehensive report will be generated shortly.");
+                    
+                    setConciergeFullName("");
+                    setConciergeTitle("");
+                    setConciergeEmail("");
+                    setConciergeWhatsApp("");
+                    setIsConciergeModalOpen(false);
+                  } catch (err: any) {
+                    console.error("Error inserting consultation request:", err);
+                    alert("Error submitting request: " + (err.message || "Unknown error"));
+                  }
+                }} 
+                className="space-y-4"
+              >
+                <div>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Full Name</label>
+                  <input type="text" required value={conciergeFullName} onChange={(e) => setConciergeFullName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Professional Title</label>
+                  <input type="text" required value={conciergeTitle} onChange={(e) => setConciergeTitle(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Corporate Email</label>
+                  <input type="email" required value={conciergeEmail} onChange={(e) => setConciergeEmail(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">WhatsApp / Contact Number</label>
+                  <input type="tel" required value={conciergeWhatsApp} onChange={(e) => setConciergeWhatsApp(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
+                </div>
+                <button 
+                  type="submit"
+                  className="w-full mt-6 py-4 bg-[#d4af37] text-black font-bold uppercase tracking-widest rounded-xl hover:bg-[#b08d29] transition-colors"
+                >
+                  Submit Request
+                </button>
+              </form>`;
 
-if (code.includes(targetStr)) {
-  code = code.replace(targetStr, modalCode);
+if (code.includes(targetModal)) {
+  code = code.replace(targetModal, newModal);
   fs.writeFileSync('src/App.tsx', code);
-  console.log("Modal patched");
+  console.log("Modal patched successfully");
 } else {
-  console.log("Target not found");
+  console.log("Target modal not found");
 }
