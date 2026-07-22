@@ -8,7 +8,7 @@ import { Globe, Shield, ShieldCheck, TrendingUp, Users, Cpu, FileText, ChevronRi
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState, useTransition } from "react";
 import { jsPDF } from "jspdf";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useNavigate, useParams } from "react-router-dom";
 
 const MOCK_DATA: CountryData[] = [
   { 
@@ -122,7 +122,8 @@ interface CountryData {
   internet?: number | string;
 }
 
-export default function App() {
+function HomeDashboard() {
+  const navigate = useNavigate();
   const CORE_DICTIONARY: Record<string, any> = {
     "monaco": { 
       average_salary_usd: 120000, 
@@ -176,25 +177,15 @@ export default function App() {
   const [conciergeTitle, setConciergeTitle] = useState("");
   const [conciergeEmail, setConciergeEmail] = useState("");
   const [conciergeWhatsApp, setConciergeWhatsApp] = useState("");
-  const [isInsuranceModalOpen, setIsInsuranceModalOpen] = useState(false);
-  const [insFullName, setInsFullName] = useState("");
-  const [insEmail, setInsEmail] = useState("");
-  const [insAge, setInsAge] = useState("18-35");
-  const [insCountry, setInsCountry] = useState("");
-  const [insCoverage, setInsCoverage] = useState("Health & Medical");
 
   // Dynamic SEO Hook
   useEffect(() => {
     if (isConciergeModalOpen) {
       document.title = "Apply for Consultation | Global Compass AI";
-    } else if (isInsuranceModalOpen) {
-      document.title = "Request Premium Quote | Global Compass AI";
     } else {
       document.title = "Global Compass AI | Turnkey Immigration & Premium Wealth Protection";
     }
-  }, [isConciergeModalOpen, isInsuranceModalOpen]);
-  const [isSubmittingIns, setIsSubmittingIns] = useState(false);
-  const [selectedInsuranceProvider, setSelectedInsuranceProvider] = useState('');
+  }, [isConciergeModalOpen]);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMsg, setNotificationMsg] = useState("");
   const [user, setUser] = useState<any>(null);
@@ -1788,7 +1779,6 @@ export default function App() {
   };
 
   return (
-    <BrowserRouter>
     <div className="relative min-h-screen overflow-x-hidden selection:bg-brand-gold/20">
       {/* Dynamic Background Particles */}
       <div className="particles">
@@ -4407,21 +4397,20 @@ export default function App() {
                                 <button 
                                   onClick={() => {
                                     if (partner.name.includes('Bupa')) {
-                                      setSelectedInsuranceProvider('Bupa');
+                                      navigate('/insurance/bupa');
                                     } else if (partner.name.includes('Allianz')) {
-                                      setSelectedInsuranceProvider('Allianz');
+                                      navigate('/insurance/allianz');
                                     } else if (partner.name.includes('Swiss Re')) {
-                                      setSelectedInsuranceProvider('SwissRe');
+                                      navigate('/insurance/swissre');
                                     } else if (partner.name.includes('AIA')) {
-                                      setSelectedInsuranceProvider('AIA');
+                                      navigate('/insurance/aia');
                                     } else if (partner.name.includes('Chubb')) {
-                                      setSelectedInsuranceProvider('Chubb');
+                                      navigate('/insurance/chubb');
                                     } else if (partner.name.includes('AXA')) {
-                                      setSelectedInsuranceProvider('AXA');
+                                      navigate('/insurance/axa');
                                     } else {
-                                      setSelectedInsuranceProvider('Cigna');
+                                      navigate('/insurance/cigna');
                                     }
-                                    setIsInsuranceModalOpen(true);
                                   }}
                                   className="w-full mt-2 bg-transparent border border-brand-gold/30 hover:bg-brand-gold/10 py-3 rounded-lg text-brand-gold font-bold uppercase tracking-[0.1em] text-xs transition-all"
                                 >
@@ -6882,145 +6871,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Insurance Modal */}
-      <AnimatePresence>
-        {isInsuranceModalOpen && (
-          <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-[#1a1a1a] border border-[#d4af37]/30 max-w-md w-full rounded-2xl p-6 shadow-2xl"
-            >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-white tracking-widest uppercase">Request Premium Global Insurance Quote</h2>
-                <button 
-                  onClick={() => setIsInsuranceModalOpen(false)}
-                  className="text-slate-400 hover:text-white transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-              <form 
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  setIsSubmittingIns(true);
-                  const supabase = getSupabase();
-                  if (!supabase) {
-                    alert("System error. Please try again later.");
-                    setIsSubmittingIns(false);
-                    return;
-                  }
-                  
-                  try {
-                    const { error } = await supabase.from('insurance_quotes').insert([{ 
-                      full_name: insFullName, 
-                      email: insEmail, 
-                      age_group: insAge, 
-                      coverage_type: insCoverage, 
-                      target_country: insCountry 
-                    }]);
-                    
-                    if (error) throw error;
-                    
-                    // Trigger backend email automation
-                    try {
-                      await fetch('/api/send-email', {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                          email: insEmail,
-                          name: insFullName
-                        })
-                      });
-                    } catch (emailError) {
-                      console.error("Email automation failed:", emailError);
-                    }
-                    
-                    // Affiliate Auto-Redirect
-                    if (selectedInsuranceProvider === 'Bupa') {
-                      window.open('https://www.bupaglobal.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
-                    } else if (selectedInsuranceProvider === 'Allianz') {
-                      window.open('https://www.allianz.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
-                    } else if (selectedInsuranceProvider === 'SwissRe') {
-                      window.open('https://www.swissre.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
-                    } else if (selectedInsuranceProvider === 'AIA') {
-                      window.open('https://www.aia.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
-                    } else if (selectedInsuranceProvider === 'Chubb') {
-                      window.open('https://www.chubb.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
-                    } else if (selectedInsuranceProvider === 'AXA') {
-                      window.open('https://www.axa.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
-                    } else {
-                      window.open('https://www.cignaglobal.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
-                    }
-                    
-                    setInsFullName("");
-                    setInsEmail("");
-                    setInsAge("18-35");
-                    setInsCoverage("Health & Medical");
-                    setInsCountry("");
-                    setSelectedInsuranceProvider('');
-                    setIsInsuranceModalOpen(false);
-                  } catch (err: any) {
-                    console.error("Error inserting insurance quote:", err);
-                    alert("Error submitting request: " + (err.message || "Unknown error"));
-                  } finally {
-                    setIsSubmittingIns(false);
-                  }
-                }} 
-                className="space-y-4"
-              >
-                <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Full Name</label>
-                  <input type="text" required value={insFullName} onChange={(e) => setInsFullName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Email Address</label>
-                  <input type="email" required value={insEmail} onChange={(e) => setInsEmail(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Age Group</label>
-                  <select required value={insAge} onChange={(e) => setInsAge(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors appearance-none">
-                    <option value="18-35" className="bg-[#1a1a1a]">18-35</option>
-                    <option value="36-50" className="bg-[#1a1a1a]">36-50</option>
-                    <option value="51-65" className="bg-[#1a1a1a]">51-65</option>
-                    <option value="65+" className="bg-[#1a1a1a]">65+</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Target Relocation Country</label>
-                  <input type="text" required value={insCountry} onChange={(e) => setInsCountry(e.target.value)} placeholder="e.g. UAE, Singapore, Switzerland" className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Desired Coverage Type</label>
-                  <select required value={insCoverage} onChange={(e) => setInsCoverage(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors appearance-none">
-                    <option value="Health & Medical" className="bg-[#1a1a1a]">Health & Medical</option>
-                    <option value="Wealth Protection" className="bg-[#1a1a1a]">Wealth Protection</option>
-                    <option value="Comprehensive Executive" className="bg-[#1a1a1a]">Comprehensive Executive</option>
-                  </select>
-                </div>
-                <button 
-                  type="submit"
-                  disabled={isSubmittingIns}
-                  className="w-full mt-6 py-4 bg-[#d4af37] text-black font-bold uppercase tracking-widest rounded-xl hover:bg-[#b08d29] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
-                >
-                  {isSubmittingIns ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Redirecting to Premium Partner...
-                    </>
-                  ) : (
-                    "Submit Quote Request"
-                  )}
-                </button>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
       {/* Concierge Modal */}
       <AnimatePresence>
         {isConciergeModalOpen && (
@@ -7132,7 +6982,6 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
-    </BrowserRouter>
   );
 }
 
@@ -7142,5 +6991,173 @@ function CompassIcon({ className }: { className?: string }) {
       <circle cx="12" cy="12" r="10" />
       <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
     </svg>
+  );
+}
+
+
+function InsurancePartnerPage() {
+  const { partnerId } = useParams();
+  const navigate = useNavigate();
+  
+  const [insFullName, setInsFullName] = useState("");
+  const [insEmail, setInsEmail] = useState("");
+  const [insAge, setInsAge] = useState("18-35");
+  const [insCountry, setInsCountry] = useState("");
+  const [insCoverage, setInsCoverage] = useState("Health & Medical");
+  const [isSubmittingIns, setIsSubmittingIns] = useState(false);
+
+  useEffect(() => {
+    document.title = "Request Premium Quote | Global Compass AI";
+    return () => {
+      document.title = "Global Compass AI | Turnkey Immigration & Premium Wealth Protection";
+    };
+  }, []);
+
+  return (
+    <div className="relative min-h-screen bg-[#0a0a0a] overflow-x-hidden selection:bg-brand-gold/20 flex flex-col items-center justify-center p-4">
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[40vw] h-[40vw] bg-brand-gold/5 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[50vw] h-[50vw] bg-amber-900/10 rounded-full blur-[150px] mix-blend-screen" />
+      </div>
+      
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative z-10 bg-[#1a1a1a] border border-[#d4af37]/30 max-w-xl w-full rounded-3xl p-8 shadow-2xl backdrop-blur-xl"
+      >
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h2 className="text-xl font-bold text-white tracking-widest uppercase">Request Premium Global Insurance Quote</h2>
+            <p className="text-amber-500/80 text-xs font-bold uppercase tracking-[0.2em] mt-2">Partner: {partnerId?.toUpperCase()}</p>
+          </div>
+          <button 
+            onClick={() => navigate('/')}
+            className="text-slate-400 hover:text-white transition-colors bg-white/5 p-2 rounded-full hover:bg-white/10"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+        <form 
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setIsSubmittingIns(true);
+            const supabase = getSupabase();
+            if (!supabase) {
+              alert("System error. Please try again later.");
+              setIsSubmittingIns(false);
+              return;
+            }
+            
+            try {
+              const { error } = await supabase.from('insurance_quotes').insert([{ 
+                full_name: insFullName, 
+                email: insEmail, 
+                age_group: insAge, 
+                coverage_type: insCoverage, 
+                target_country: insCountry 
+              }]);
+              
+              if (error) throw error;
+              
+              try {
+                await fetch('/api/send-email', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    email: insEmail,
+                    name: insFullName
+                  })
+                });
+              } catch (emailError) {
+                console.error("Email automation failed:", emailError);
+              }
+              
+              const affiliateLinks: Record<string, string> = {
+                'bupa': 'https://www.bupaglobal.com/?aff_id=YOUR_FUTURE_ID_HERE',
+                'allianz': 'https://www.allianz.com/?aff_id=YOUR_FUTURE_ID_HERE',
+                'swissre': 'https://www.swissre.com/?aff_id=YOUR_FUTURE_ID_HERE',
+                'aia': 'https://www.aia.com/?aff_id=YOUR_FUTURE_ID_HERE',
+                'chubb': 'https://www.chubb.com/?aff_id=YOUR_FUTURE_ID_HERE',
+                'axa': 'https://www.axa.com/?aff_id=YOUR_FUTURE_ID_HERE',
+                'cigna': 'https://www.cignaglobal.com/?aff_id=YOUR_FUTURE_ID_HERE'
+              };
+
+              const link = affiliateLinks[partnerId?.toLowerCase() || ''] || affiliateLinks['cigna'];
+              window.open(link, '_blank');
+              
+              setInsFullName("");
+              setInsEmail("");
+              setInsAge("18-35");
+              setInsCoverage("Health & Medical");
+              setInsCountry("");
+              navigate('/');
+            } catch (err: any) {
+              console.error("Error inserting insurance quote:", err);
+              alert("Error submitting request: " + (err.message || "Unknown error"));
+            } finally {
+              setIsSubmittingIns(false);
+            }
+          }} 
+          className="space-y-4"
+        >
+          <div>
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Full Name</label>
+            <input type="text" required value={insFullName} onChange={(e) => setInsFullName(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
+          </div>
+          <div>
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Email Address</label>
+            <input type="email" required value={insEmail} onChange={(e) => setInsEmail(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
+          </div>
+          <div>
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Age Group</label>
+            <select required value={insAge} onChange={(e) => setInsAge(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors appearance-none">
+              <option value="18-35" className="bg-[#1a1a1a]">18-35</option>
+              <option value="36-50" className="bg-[#1a1a1a]">36-50</option>
+              <option value="51-65" className="bg-[#1a1a1a]">51-65</option>
+              <option value="65+" className="bg-[#1a1a1a]">65+</option>
+            </select>
+          </div>
+          <div>
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Target Relocation Country</label>
+            <input type="text" required value={insCountry} onChange={(e) => setInsCountry(e.target.value)} placeholder="e.g. UAE, Singapore, Switzerland" className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors" />
+          </div>
+          <div>
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Desired Coverage Type</label>
+            <select required value={insCoverage} onChange={(e) => setInsCoverage(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#d4af37] focus:outline-none transition-colors appearance-none">
+              <option value="Health & Medical" className="bg-[#1a1a1a]">Health & Medical</option>
+              <option value="Wealth Protection" className="bg-[#1a1a1a]">Wealth Protection</option>
+              <option value="Comprehensive Executive" className="bg-[#1a1a1a]">Comprehensive Executive</option>
+            </select>
+          </div>
+          <button 
+            type="submit"
+            disabled={isSubmittingIns}
+            className="w-full mt-6 py-4 bg-[#d4af37] text-black font-bold uppercase tracking-widest rounded-xl hover:bg-[#b08d29] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+          >
+            {isSubmittingIns ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Redirecting to Premium Partner...
+              </>
+            ) : (
+              "Submit Quote Request"
+            )}
+          </button>
+        </form>
+      </motion.div>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomeDashboard />} />
+        <Route path="/insurance/:partnerId" element={<InsurancePartnerPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
