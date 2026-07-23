@@ -6939,10 +6939,8 @@ function HomeDashboard() {
                       console.error("Email automation failed:", emailError);
                     }
                     
-                    alert("Request Received. Our AI Concierge is currently analyzing your profile and eligibility parameters. An automated comprehensive report will be generated shortly.");
-                    
                     // Affiliate Auto-Redirect
-                    window.open('https://www.henleyglobal.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
+                    window.location.href = 'https://www.henleyglobal.com/?aff_id=YOUR_FUTURE_ID_HERE';
                     
                     setConciergeFullName("");
                     setConciergeTitle("");
