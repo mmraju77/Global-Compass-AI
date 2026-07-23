@@ -172,6 +172,7 @@ function HomeDashboard() {
   const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isConciergeModalOpen, setIsConciergeModalOpen] = useState(false);
+  const [isSubmittingConcierge, setIsSubmittingConcierge] = useState(false);
   const [isMatchingInsurance, setIsMatchingInsurance] = useState(false);
   const [conciergeFullName, setConciergeFullName] = useState("");
   const [conciergeTitle, setConciergeTitle] = useState("");
@@ -6911,6 +6912,7 @@ function HomeDashboard() {
                     return;
                   }
                   
+                  setIsSubmittingConcierge(true);
                   try {
                     const { error } = await supabase.from('consultation_requests').insert([{ 
                       full_name: conciergeFullName, 
@@ -6939,6 +6941,9 @@ function HomeDashboard() {
                     
                     alert("Request Received. Our AI Concierge is currently analyzing your profile and eligibility parameters. An automated comprehensive report will be generated shortly.");
                     
+                    // Affiliate Auto-Redirect
+                    window.open('https://www.henleyglobal.com/?aff_id=YOUR_FUTURE_ID_HERE', '_blank');
+                    
                     setConciergeFullName("");
                     setConciergeTitle("");
                     setConciergeEmail("");
@@ -6947,6 +6952,8 @@ function HomeDashboard() {
                   } catch (err: any) {
                     console.error("Error inserting consultation request:", err);
                     alert("Error submitting request: " + (err.message || "Unknown error"));
+                  } finally {
+                    setIsSubmittingConcierge(false);
                   }
                 }} 
                 className="space-y-4"
@@ -6969,9 +6976,17 @@ function HomeDashboard() {
                 </div>
                 <button 
                   type="submit"
-                  className="w-full mt-6 py-4 bg-[#d4af37] text-black font-bold uppercase tracking-widest rounded-xl hover:bg-[#b08d29] transition-colors"
+                  disabled={isSubmittingConcierge}
+                  className="w-full mt-6 py-4 bg-[#d4af37] text-black font-bold uppercase tracking-widest rounded-xl hover:bg-[#b08d29] transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  Submit Request
+                  {isSubmittingConcierge ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Redirecting to Premium Partner...
+                    </>
+                  ) : (
+                    "Submit Request"
+                  )}
                 </button>
               </form>
             </motion.div>
