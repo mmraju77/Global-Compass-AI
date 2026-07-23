@@ -292,6 +292,7 @@ function HomeDashboard() {
   const [immiTargetCountry, setImmiTargetCountry] = useState<string>("Singapore");
   const [immiCitizenship, setImmiCitizenship] = useState<string>("Global");
   const [immiTier, setImmiTier] = useState<string>("Standard Application Assist");
+  const [conciergeTier, setConciergeTier] = useState("Standard Application Assist");
   const [immiResult, setImmiResult] = useState<{
     probability: string;
     deliverables: string[];
@@ -1777,6 +1778,24 @@ function HomeDashboard() {
       maximumFractionDigits: 0 
     }).format(converted);
   };
+
+  
+  const conciergeData: Record<string, {probability: string, deliverables: string[]}> = {
+    "Standard Application Assist": {
+      probability: "82% High Probability",
+      deliverables: ["Initial Eligibility Audit", "Document Checklist Preparation", "Standard Embassy Booking", "Application Review before Submission"]
+    },
+    "VIP Fast-Track Processing": {
+      probability: "92% Expedited Probability",
+      deliverables: ["Priority Embassy Processing Slots", "Dedicated Senior Case Manager", "Document Translation & Legal Notarization", "VIP Application Review & Compliance"]
+    },
+    "Ultra-Luxury Family Relocation (End-to-End)": {
+      probability: "98% Near-Guaranteed Probability",
+      deliverables: ["Elite Tax & Immigration Counsel Team", "VIP Airport Fast-Track & Chauffeur", "Private School Placement for Dependents", "Turnkey Real Estate & Bank Setup", "Full Concierge Relocation Logistics"]
+    }
+  };
+  const currentConcierge = conciergeData[conciergeTier];
+
 
   return (
     <div className="relative min-h-screen overflow-x-hidden selection:bg-brand-gold/20 subpixel-antialiased tracking-wide bg-[#0a0a0a] text-slate-200 font-sans">
@@ -4197,10 +4216,10 @@ function HomeDashboard() {
                     <div className="space-y-2">
                         <label className="text-sm font-bold text-amber-600 uppercase tracking-widest block ml-1">Desired Concierge Tier</label>
                         <select 
-                          value={immiTier}
+                          value={conciergeTier}
                           onChange={(e) => {
-                            const val = e.target.value;
-                            startTransition(() => setImmiTier(val));
+                            setConciergeTier(e.target.value);
+                            startTransition(() => setImmiTier(e.target.value));
                           }}
                           className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white font-medium focus:border-brand-gold focus:outline-none transition-all appearance-none cursor-pointer"
                         >
@@ -4232,18 +4251,12 @@ function HomeDashboard() {
                   {/* Allocation Display */}
                   <div className="bg-black/20 rounded-3xl border border-white/5 p-8 min-h-[300px] flex flex-col justify-center relative">
                     <AnimatePresence mode="wait">
-                      {!immiResult && !isAssessingImmi ? (
-                        <div className="flex flex-col items-center justify-center text-center space-y-4 h-full">
-                          <Plane className="w-12 h-12" />
-                          <p className="text-sm font-bold text-white uppercase tracking-widest">Select parameters to compute visa eligibility</p>
-                        </div>
-                      ) : isAssessingImmi ? (
+                      {isAssessingImmi ? (
                         <div className="flex flex-col items-center justify-center h-full space-y-4">
                           <Loader2 className="w-10 h-10 animate-spin text-brand-gold" />
                           <p className="text-sm font-bold text-brand-gold uppercase tracking-[0.3em] animate-pulse">Consulting Global Immigration Counsel...</p>
                         </div>
                       ) : (
-                        immiResult && (
                           <motion.div 
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -4253,13 +4266,13 @@ function HomeDashboard() {
                                 <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-4">Visa Approval Probability</span>
                                 <div className="p-4 bg-gradient-to-r from-amber-900/40 to-brand-gold/10 border border-brand-gold/30 rounded-xl mb-6">
                                   <div className="text-white text-2xl font-black tracking-tighter">
-                                    {immiResult.probability}
+                                    {currentConcierge.probability}
                                   </div>
                                 </div>
 
                                 <span className="text-amber-600 text-sm font-bold uppercase tracking-widest block mb-4">Dedicated Concierge Deliverables</span>
                                 <ul className="space-y-3 mb-8">
-                                  {immiResult.deliverables.map((item, idx) => (
+                                  {currentConcierge.deliverables.map((item, idx) => (
                                     <li key={idx} className="flex items-start gap-3">
                                       <CheckCircle2 className="w-5 h-5 text-brand-gold shrink-0 mt-0.5" />
                                       <span className="text-zinc-200 text-base font-medium">{item}</span>
@@ -4275,7 +4288,6 @@ function HomeDashboard() {
                                 </button>
                             </div>
                           </motion.div>
-                        )
                       )}
                     </AnimatePresence>
                   </div>
